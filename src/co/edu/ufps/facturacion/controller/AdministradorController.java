@@ -8,7 +8,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import co.edu.ufps.facturacion.dao.EmpresaDAO;
+import co.edu.ufps.facturacion.dao.RolUsuarioDAO;
 import co.edu.ufps.facturacion.dao.UsuarioDAO;
+import co.edu.ufps.facturacion.entities.RolUsuario;
 import co.edu.ufps.facturacion.entities.Usuario;
 
 /**
@@ -20,6 +22,7 @@ public class AdministradorController extends HttpServlet {
 
 	private UsuarioDAO uDAO;
 	private EmpresaDAO eDAO;
+	private RolUsuarioDAO rDAO;
 
 	/**
 	 * @see HttpServlet#HttpServlet()
@@ -28,6 +31,7 @@ public class AdministradorController extends HttpServlet {
 		super();
 		uDAO = new UsuarioDAO();
 		eDAO = new EmpresaDAO();
+		rDAO = new RolUsuarioDAO();
 	}
 
 	/**
@@ -79,7 +83,8 @@ public class AdministradorController extends HttpServlet {
 			String pass = request.getParameter("pass");
 			String rol = request.getParameter("rol");
 			
-			uDAO.insert(new Usuario(correo, apellido, pass, (byte)1, nombre));
+			RolUsuario ru = rDAO.find(verRol(rol));
+			uDAO.insert(new Usuario(correo, apellido, pass, (byte)1, nombre,null,ru));
 			request.getRequestDispatcher("/login").forward(request, response);
 		}else {
 			request.setAttribute("mensaje", "Ya existe un usuario con este correo");
@@ -87,6 +92,15 @@ public class AdministradorController extends HttpServlet {
 		}
 	}
 
+	private int verRol(String rol) {
+		switch(rol) {
+		case "Administrador":return 1;
+		case "Contador":return 2;
+		case "Vendedor":return 3;
+		default:return 1;
+		}
+	}
+	
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
 	 *      response)
