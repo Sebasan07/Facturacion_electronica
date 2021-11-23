@@ -7,26 +7,19 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import co.edu.ufps.facturacion.dao.EmpresaDAO;
-import co.edu.ufps.facturacion.dao.UsuarioDAO;
-
 /**
- * Servlet implementation class AdministradorController
+ * Servlet implementation class IndexController
  */
-@WebServlet({ "/login/validar", "/registro/validar" })
-public class AdministradorController extends HttpServlet {
+@WebServlet({ "/", "/inicio", "/index.jsp" })
+public class IndexController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-
-	private UsuarioDAO uDAO;
-	private EmpresaDAO eDAO;
 
 	/**
 	 * @see HttpServlet#HttpServlet()
 	 */
-	public AdministradorController() {
+	public IndexController() {
 		super();
-		uDAO = new UsuarioDAO();
-		eDAO = new EmpresaDAO();
+		// TODO Auto-generated constructor stub
 	}
 
 	/**
@@ -35,25 +28,34 @@ public class AdministradorController extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		String path = request.getServletPath();
 
 		if (request.getSession().getAttribute("usuario") != null) {
-			request.getRequestDispatcher("/").forward(request, response);
+			request.getRequestDispatcher("/login").forward(request, response);
 			return;
 		}
 
-		switch (path) {
-		case "/login/validar":
-			break;
-		case "/registro/validar":
-			break;
-		default:
-			break;
+		String path = request.getServletPath();
+
+		// request.setAttribute("nombre", "objeto");
+		if (path.equals("/") || path.equals("/inicio") || path.equals("/index.jsp")) {
+			request.getRequestDispatcher("inicio.jsp").forward(request, response);
+		}else if(path.contains("/inicio/")) {
+			verInicio(request,response,path);
 		}
 	}
 
+	protected void verInicio(HttpServletRequest request, HttpServletResponse response, String path)
+			throws ServletException, IOException {
+		// TODO Auto-generated method stub
+		path = path.replace("/inicio/", "");
+		
+		//movimientos en el inicio
+		switch(path) {
+		case "":break;
+		default:break;
+		}
+	}
 	
-
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
 	 *      response)
