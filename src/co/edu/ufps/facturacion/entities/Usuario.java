@@ -11,7 +11,8 @@ import javax.persistence.*;
 @Entity(name="usuario")
 @NamedQueries({
 	@NamedQuery(name="Usuario.findAll", query="SELECT u FROM usuario u"),
-	@NamedQuery(name="Usuario.login", query="SELECT u FROM usuario u where u.correo=:correo and u.contrasena=:contrasena ")
+	@NamedQuery(name="Usuario.login", query="SELECT u FROM usuario u where u.correo=:correo and u.contrasena=:contrasena "),
+	@NamedQuery(name="Usuario.validarCorreo", query="SELECT u FROM usuario u where u.correo=:correo")
 })
 public class Usuario implements Serializable {
 	private static final long serialVersionUID = 1L;
@@ -37,6 +38,27 @@ public class Usuario implements Serializable {
 	private RolUsuario rolUsuarioBean;
 
 	public Usuario() {
+	}
+
+	public Usuario(String correo, String apellido, String contrasena, byte estado, String nombre) {
+		super();
+		this.correo = correo;
+		this.apellido = apellido;
+		this.contrasena = contrasena;
+		this.estado = estado;
+		this.nombre = nombre;
+	}
+	
+	public Usuario(String correo, String apellido, String contrasena, byte estado, String nombre, Empresa empresa,
+			RolUsuario rolUsuarioBean) {
+		super();
+		this.correo = correo;
+		this.apellido = apellido;
+		this.contrasena = contrasena;
+		this.estado = estado;
+		this.nombre = nombre;
+		this.empresa = empresa;
+		this.rolUsuarioBean = rolUsuarioBean;
 	}
 
 	public String getCorreo() {

@@ -62,10 +62,29 @@ public class AdministradorController extends HttpServlet {
 			return;
 		} else {
 			request.setAttribute("mensaje", "No existe");
-			request.getRequestDispatcher("/Login").forward(request, response);
+			request.getRequestDispatcher("/login").forward(request, response);
 			// response.sendRedirect(request.getContextPath() + "/Usuario/Login);
 		}
 
+	}
+	
+	protected void registrarUsuario(HttpServletRequest request, HttpServletResponse response, Usuario usuario)
+			throws ServletException, IOException {
+		
+		String correo = request.getParameter("correo");
+
+		if(!uDAO.existeCorreo(correo)) {
+			String nombre = request.getParameter("nombre");
+			String apellido = request.getParameter("apellido");
+			String pass = request.getParameter("pass");
+			String rol = request.getParameter("rol");
+			
+			uDAO.insert(new Usuario(correo, apellido, pass, (byte)1, nombre));
+			request.getRequestDispatcher("/login").forward(request, response);
+		}else {
+			request.setAttribute("mensaje", "Ya existe un usuario con este correo");
+			request.getRequestDispatcher("/login").forward(request, response);
+		}
 	}
 
 	/**

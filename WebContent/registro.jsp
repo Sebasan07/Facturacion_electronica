@@ -39,19 +39,19 @@
 					<form action="#" class="signin-form">
 		              <div class="form-group mb-3">
 		            	<label class="label" for="password">Nombre</label>
-		                <input type="text" class="form-control" placeholder="Nombre" required>
+		                <input type="text" name="nombre" class="form-control" placeholder="Nombre" required>
 		             </div>
 		              <div class="form-group mb-3">
 		            	<label class="label" for="password">Apellido</label>
-		                <input type="text" class="form-control" placeholder="Apellido" required>
+		                <input type="text" name="apellido" class="form-control" placeholder="Apellido" required>
 		             </div>		             
 			      	  <div class="form-group mb-3">
 			      		<label class="label" for="name">Correo electrónico</label>
-			      		<input type="text" class="form-control" placeholder="Correo electrónico" required>
+			      		<input type="text" name="correo" class="form-control" placeholder="Correo electrónico" required>
 			      	  </div>
 		              <div class="form-group mb-3">
 		            	<label class="label" for="password">Contraseña</label>
-		                <input type="password" class="form-control" placeholder="Contraseña" required>
+		                <input type="password" name="pass" class="form-control" placeholder="Contraseña" required>
 		             </div>
 		             <div class="form-group mb-3">
 		             	<label class="label" for="password">Rol</label>

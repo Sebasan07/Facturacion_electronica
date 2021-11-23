@@ -17,7 +17,7 @@ public class UsuarioDAO extends Conexion<Usuario> implements GenericDAO<Usuario>
 		Query query = null;
 		try {
 			if (usuario.getCorreo() != null && usuario.getContrasena() != null) {
-				query = getEm().createNamedQuery(Usuario.class.getSimpleName() + ".logAdmin", Usuario.class);
+				query = getEm().createNamedQuery(Usuario.class.getSimpleName() + ".login", Usuario.class);
 				query.setParameter("correo", usuario.getCorreo());
 				query.setParameter("contrasena", usuario.getContrasena());
 				query.getSingleResult();
@@ -27,5 +27,20 @@ public class UsuarioDAO extends Conexion<Usuario> implements GenericDAO<Usuario>
 		}
 
 		return isLog;
+	}
+	
+	public boolean existeCorreo(String correo) {
+		Query query = null;
+		try {
+			if (correo!=null || correo.isEmpty()) {
+				query = getEm().createNamedQuery(Usuario.class.getSimpleName() + ".validarCorreo", Usuario.class);
+				query.setParameter("correo", correo);
+				query.getSingleResult();
+			}
+		} catch (NoResultException e) {
+			return false;
+		}
+
+		return query!=null;
 	}
 }

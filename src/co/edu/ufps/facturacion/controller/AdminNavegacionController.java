@@ -44,8 +44,6 @@ public class AdminNavegacionController extends HttpServlet {
 		default:
 			break;
 		}
-
-		response.getWriter().append("Served at: ").append(request.getContextPath());
 	}
 
 	protected void mostrarLogin(HttpServletRequest request, HttpServletResponse response)
