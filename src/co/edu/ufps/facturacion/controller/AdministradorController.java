@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import co.edu.ufps.facturacion.dao.EmpresaDAO;
 import co.edu.ufps.facturacion.dao.UsuarioDAO;
+import co.edu.ufps.facturacion.entities.Usuario;
 
 /**
  * Servlet implementation class AdministradorController
@@ -52,7 +53,20 @@ public class AdministradorController extends HttpServlet {
 		}
 	}
 
-	
+	protected void logear(HttpServletRequest request, HttpServletResponse response, Usuario usuario)
+			throws ServletException, IOException {
+
+		if (uDAO.logear(usuario)) {
+			request.getSession().setAttribute("usuario", usuario);
+			response.sendRedirect(request.getContextPath()+"/");
+			return;
+		} else {
+			request.setAttribute("mensaje", "No existe");
+			request.getRequestDispatcher("/Login").forward(request, response);
+			// response.sendRedirect(request.getContextPath() + "/Usuario/Login);
+		}
+
+	}
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse

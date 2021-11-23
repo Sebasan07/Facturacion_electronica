@@ -8,8 +8,11 @@ import javax.persistence.*;
  * The persistent class for the usuario database table.
  * 
  */
-@Entity
-@NamedQuery(name="Usuario.findAll", query="SELECT u FROM Usuario u")
+@Entity(name="usuario")
+@NamedQueries({
+	@NamedQuery(name="Usuario.findAll", query="SELECT u FROM usuario u"),
+	@NamedQuery(name="Usuario.login", query="SELECT u FROM usuario u where u.correo=:correo and u.contrasena=:contrasena ")
+})
 public class Usuario implements Serializable {
 	private static final long serialVersionUID = 1L;
 

@@ -34,12 +34,6 @@ public class Factura implements Serializable {
 	@Column(name="total_descuento")
 	private double totalDescuento;
 
-	@Column(name="total_iva")
-	private double totalIva;
-
-	@Column(name="total_pagar")
-	private double totalPagar;
-
 	@Column(name="valor_neto")
 	private double valorNeto;
 
@@ -117,22 +111,6 @@ public class Factura implements Serializable {
 
 	public void setTotalDescuento(double totalDescuento) {
 		this.totalDescuento = totalDescuento;
-	}
-
-	public double getTotalIva() {
-		return this.totalIva;
-	}
-
-	public void setTotalIva(double totalIva) {
-		this.totalIva = totalIva;
-	}
-
-	public double getTotalPagar() {
-		return this.totalPagar;
-	}
-
-	public void setTotalPagar(double totalPagar) {
-		this.totalPagar = totalPagar;
 	}
 
 	public double getValorNeto() {
