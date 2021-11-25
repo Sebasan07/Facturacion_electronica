@@ -29,7 +29,7 @@ public class IndexController extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
-		if (request.getSession().getAttribute("usuario") != null) {
+		if (request.getSession().getAttribute("usuario") == null) {
 			request.getRequestDispatcher("/login").forward(request, response);
 			return;
 		}
