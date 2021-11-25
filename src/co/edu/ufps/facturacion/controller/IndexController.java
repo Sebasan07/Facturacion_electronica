@@ -39,20 +39,6 @@ public class IndexController extends HttpServlet {
 		// request.setAttribute("nombre", "objeto");
 		if (path.equals("/") || path.equals("/inicio") || path.equals("/index.jsp")) {
 			request.getRequestDispatcher("inicio.jsp").forward(request, response);
-		}else if(path.contains("/inicio/")) {
-			verInicio(request,response,path);
-		}
-	}
-
-	protected void verInicio(HttpServletRequest request, HttpServletResponse response, String path)
-			throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		path = path.replace("/inicio/", "");
-		
-		//movimientos en el inicio
-		switch(path) {
-		case "":break;
-		default:break;
 		}
 	}
 	

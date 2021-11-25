@@ -16,7 +16,7 @@ public class Factura implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	private int cufe;
+	private String cufe;
 
 	private byte estado;
 
@@ -65,11 +65,11 @@ public class Factura implements Serializable {
 	public Factura() {
 	}
 
-	public int getCufe() {
+	public String getCufe() {
 		return this.cufe;
 	}
 
-	public void setCufe(int cufe) {
+	public void setCufe(String cufe) {
 		this.cufe = cufe;
 	}
 

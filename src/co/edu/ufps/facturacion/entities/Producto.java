@@ -17,7 +17,6 @@ public class Producto implements Serializable {
 	@Id
 	private int codigo;
 
-	@Lob
 	private String descripcion;
 
 	private byte estado;
@@ -33,7 +32,7 @@ public class Producto implements Serializable {
 	private String unidadMedia;
 
 	@Column(name="valor_unitario")
-	private int valorUnitario;
+	private double valorUnitario;
 
 	//bi-directional many-to-one association to DetalleFactura
 	@OneToMany(mappedBy="producto")
@@ -41,6 +40,21 @@ public class Producto implements Serializable {
 
 	public Producto() {
 	}
+
+	public Producto(int codigo, String descripcion, byte estado, double iva, String nombre, double porcentajeDescuento,
+			String unidadMedia, double valorUnitario) {
+		super();
+		this.codigo = codigo;
+		this.descripcion = descripcion;
+		this.estado = estado;
+		this.iva = iva;
+		this.nombre = nombre;
+		this.porcentajeDescuento = porcentajeDescuento;
+		this.unidadMedia = unidadMedia;
+		this.valorUnitario = valorUnitario;
+	}
+
+
 
 	public int getCodigo() {
 		return this.codigo;
@@ -98,11 +112,11 @@ public class Producto implements Serializable {
 		this.unidadMedia = unidadMedia;
 	}
 
-	public int getValorUnitario() {
+	public double getValorUnitario() {
 		return this.valorUnitario;
 	}
 
-	public void setValorUnitario(int valorUnitario) {
+	public void setValorUnitario(double valorUnitario) {
 		this.valorUnitario = valorUnitario;
 	}
 
