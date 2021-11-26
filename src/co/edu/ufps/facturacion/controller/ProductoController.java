@@ -66,7 +66,7 @@ public class ProductoController extends HttpServlet {
 		switch (path) {
 		case "ver":
 			request.setAttribute("productos", pDAO.list());
-			request.getRequestDispatcher("verProductos.jsp").forward(request, response);
+			request.getRequestDispatcher("Dashboard/verProductos.jsp").forward(request, response);
 			break;
 		case "agregar":
 			request.getRequestDispatcher("Dashboard/agregarProducto.jsp").forward(request, response);

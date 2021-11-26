@@ -2,6 +2,8 @@ package co.edu.ufps.facturacion.entities;
 
 import java.io.Serializable;
 import javax.persistence.*;
+
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -52,6 +54,26 @@ public class Cliente implements Serializable {
 	private List<Factura> facturas;
 
 	public Cliente() {
+	}
+
+	public Cliente(int numeroDocumento, String ciudad, String contribuyente, String correo, String departamento,
+			String direccion, byte estado, String nombre, String nombreComercial, String pais, String regimenContable,
+			String telefono, TipoDocumento tipoDocumentoBean) {
+		super();
+		this.numeroDocumento = numeroDocumento;
+		this.ciudad = ciudad;
+		this.contribuyente = contribuyente;
+		this.correo = correo;
+		this.departamento = departamento;
+		this.direccion = direccion;
+		this.estado = estado;
+		this.nombre = nombre;
+		this.nombreComercial = nombreComercial;
+		this.pais = pais;
+		this.regimenContable = regimenContable;
+		this.telefono = telefono;
+		this.tipoDocumentoBean = tipoDocumentoBean;
+		this.facturas = new ArrayList<>();
 	}
 
 	public int getNumeroDocumento() {

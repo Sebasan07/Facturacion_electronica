@@ -32,7 +32,7 @@ public class UsuarioDAO extends Conexion<Usuario> implements GenericDAO<Usuario>
 	public boolean existeCorreo(String correo) {
 		Query query = null;
 		try {
-			if (correo!=null || correo.isEmpty()) {
+			if (correo!=null && !correo.isEmpty()) {
 				query = getEm().createNamedQuery(Usuario.class.getSimpleName() + ".validarCorreo", Usuario.class);
 				query.setParameter("correo", correo);
 				query.getSingleResult();

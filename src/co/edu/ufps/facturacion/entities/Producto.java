@@ -2,6 +2,7 @@ package co.edu.ufps.facturacion.entities;
 
 import java.io.Serializable;
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -52,6 +53,7 @@ public class Producto implements Serializable {
 		this.porcentajeDescuento = porcentajeDescuento;
 		this.unidadMedia = unidadMedia;
 		this.valorUnitario = valorUnitario;
+		detalleFacturas = new ArrayList<>();
 	}
 
 

@@ -49,35 +49,39 @@ public class AdministradorController extends HttpServlet {
 
 		switch (path) {
 		case "/login/validar":
+			logear(request, response);
 			break;
 		case "/registro/validar":
+			registrarUsuario(request, response);
 			break;
 		default:
 			break;
 		}
 	}
 
-	protected void logear(HttpServletRequest request, HttpServletResponse response, Usuario usuario)
+	protected void logear(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
-		if (uDAO.logear(usuario)) {
+		Usuario usuario = uDAO.find(request.getParameter("correo"));
+		
+		if (usuario !=null && uDAO.logear(usuario)) {
 			request.getSession().setAttribute("usuario", usuario);
 			response.sendRedirect(request.getContextPath()+"/");
 			return;
 		} else {
-			request.setAttribute("mensaje", "No existe");
+			request.setAttribute("mensaje", "No existe el usuario");
 			request.getRequestDispatcher("/login").forward(request, response);
 			// response.sendRedirect(request.getContextPath() + "/Usuario/Login);
 		}
 
 	}
 	
-	protected void registrarUsuario(HttpServletRequest request, HttpServletResponse response, Usuario usuario)
+	protected void registrarUsuario(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		
 		String correo = request.getParameter("correo");
 
-		if(!uDAO.existeCorreo(correo)) {
+		if(uDAO.find(correo)==null) {
 			String nombre = request.getParameter("nombre");
 			String apellido = request.getParameter("apellido");
 			String pass = request.getParameter("pass");
