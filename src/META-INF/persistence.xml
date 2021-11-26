@@ -12,5 +12,17 @@
 		<class>co.edu.ufps.facturacion.entities.RolUsuario</class>
 		<class>co.edu.ufps.facturacion.entities.TipoDocumento</class>
 		<class>co.edu.ufps.facturacion.entities.Usuario</class>
+		
+		<properties>
+		<property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/facturacion_electronica?useSSL=false&amp;serverTimezone=UTC"/>
+				<property name="javax.persistence.jdbc.user" value="root"/>
+				<property name="javax.persistence.jdbc.password" value="1234"/>
+				<property name="javax.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver"/>
+				<property name="javax.persistence.schema-generation.database.action" value="none"/>
+				<property name="hibernate.dialect" value=" org.hibernate.dialect.MariaDB53Dialect"/>
+				<property name="hibernate.show_sql" value="true"/>
+				<property name="hibernate.format_sql" value="true"/>
+				<property name="cascade" value="all"/>
+			</properties>
 	</persistence-unit>
 </persistence>
