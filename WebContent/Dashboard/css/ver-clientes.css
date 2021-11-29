@@ -22,7 +22,7 @@
 	margin-left: 15px;
 	padding-right: 5px;
 }
-form .user-details{ /*inputs acomodados en lÃ­nea*/
+form .user-details{ /*inputs acomodados en línea*/
  	display: flex;
  	flex-wrap: wrap;
  	justify-content: space-between;
@@ -40,6 +40,18 @@ form .user-details .input-box{
 	
 }
 .user-details .input-box input{
+	height: 45px;
+	width: 100%;
+	outline: none;
+	border-radius: 5px;
+	border: 1px solid #ccc;
+	padding-left: 15px; /*el required no queda pegado a la izq*/
+	font-size: 16px;
+	border-bottom-width: 2px;
+}
+/*para los select*/
+.user-details .input-box select{
+	background: transparent;
 	height: 45px;
 	width: 100%;
 	outline: none;
@@ -72,7 +84,7 @@ form .button2{
 	left: 320px;
 	
 }
-.button_style{ /*tamaÃ±o boton*/
+.button_style{ /*tamaño boton*/
 	height: 65%;
 	width: 140%;
 	outline:none;
