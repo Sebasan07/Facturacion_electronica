@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * Servlet implementation class IndexController
  */
-@WebServlet({ "/", "/inicio", "/index.jsp" })
+@WebServlet({ "/index.jsp" })
 public class IndexController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
@@ -37,11 +37,11 @@ public class IndexController extends HttpServlet {
 		String path = request.getServletPath();
 
 		// request.setAttribute("nombre", "objeto");
-		if (path.equals("/") || path.equals("/inicio") || path.equals("/index.jsp")) {
-			request.getRequestDispatcher("inicio.jsp").forward(request, response);
-		}
+
+		request.getRequestDispatcher("inicio.jsp").forward(request, response);
+
 	}
-	
+
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
 	 *      response)

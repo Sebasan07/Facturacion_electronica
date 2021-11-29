@@ -3,8 +3,10 @@ package co.edu.ufps.facturacion.correo;
 public class Correo {
 	private String usuarioCorreo;
 	private String nombreArchivo;
+	private String nombreArchivo1;
 	private String contrasena;
 	private String rutaArchivo;
+	private String rutaArchivo1;
 	private String destino;
 	private String mensaje;
 	private String adjunto;
@@ -12,12 +14,14 @@ public class Correo {
 	public Correo() {
 	}
 
-	public Correo(String usuarioCorreo, String nombreArchivo, String contrasena, String rutaArchivo, String destino,
+	public Correo(String usuarioCorreo, String nombreArchivo,String nombreArchivo1, String contrasena, String rutaArchivo, String rutaArchivo1, String destino,
 			String mensaje, String adjunto) {
 		this.usuarioCorreo = usuarioCorreo;
 		this.nombreArchivo = nombreArchivo;
+		this.nombreArchivo1 = nombreArchivo1;
 		this.contrasena = contrasena;
 		this.rutaArchivo = rutaArchivo;
+		this.rutaArchivo1 = rutaArchivo1;
 		this.destino = destino;
 		this.mensaje = mensaje;
 		this.adjunto = adjunto;
@@ -31,6 +35,14 @@ public class Correo {
 		this.usuarioCorreo = usuarioCorreo;
 	}
 
+	public String getNombreArchivo1() {
+		return nombreArchivo1;
+	}
+
+	public void setNombreArchivo1(String nombreArchivo1) {
+		this.nombreArchivo1 = nombreArchivo1;
+	}
+	
 	public String getNombreArchivo() {
 		return nombreArchivo;
 	}
@@ -53,6 +65,14 @@ public class Correo {
 
 	public void setRutaArchivo(String rutaArchivo) {
 		this.rutaArchivo = rutaArchivo;
+	}
+	
+	public String getRutaArchivo1() {
+		return rutaArchivo1;
+	}
+	
+	public void setRutaArchivo1(String rutaArchivo1) {
+		this.rutaArchivo1 = rutaArchivo1;
 	}
 
 	public String getDestino() {

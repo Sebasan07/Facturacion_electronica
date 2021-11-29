@@ -2,6 +2,8 @@ package co.edu.ufps.facturacion.entities;
 
 import java.io.Serializable;
 import javax.persistence.*;
+
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -30,6 +32,14 @@ public class TipoDocumento implements Serializable {
 	private List<Empresa> empresas;
 
 	public TipoDocumento() {
+	}
+
+	public TipoDocumento(int idTipoDocumento, String descripcion) {
+		super();
+		this.idTipoDocumento = idTipoDocumento;
+		this.descripcion = descripcion;
+		this.clientes = new ArrayList<>();
+		this.empresas = new ArrayList<>();
 	}
 
 	public int getIdTipoDocumento() {

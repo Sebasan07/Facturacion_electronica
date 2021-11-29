@@ -2,6 +2,8 @@ package co.edu.ufps.facturacion.entities;
 
 import java.io.Serializable;
 import javax.persistence.*;
+
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -43,6 +45,20 @@ public class RangoNumeracion implements Serializable {
 	private List<Factura> facturas;
 
 	public RangoNumeracion() {
+		this.facturas = new ArrayList<>();
+	}
+
+	public RangoNumeracion(int idNumeracion, Date fechaResolucion, int numeroActual, int numeroDesde, int numeroHasta,
+			int numeroResolucion, String prefijo) {
+		super();
+		this.idNumeracion = idNumeracion;
+		this.fechaResolucion = fechaResolucion;
+		this.numeroActual = numeroActual;
+		this.numeroDesde = numeroDesde;
+		this.numeroHasta = numeroHasta;
+		this.numeroResolucion = numeroResolucion;
+		this.prefijo = prefijo;
+		this.facturas = new ArrayList<>();
 	}
 
 	public int getIdNumeracion() {

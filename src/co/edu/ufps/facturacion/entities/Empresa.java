@@ -2,6 +2,8 @@ package co.edu.ufps.facturacion.entities;
 
 import java.io.Serializable;
 import javax.persistence.*;
+
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -57,7 +59,31 @@ public class Empresa implements Serializable {
 	private List<Usuario> usuarios;
 
 	public Empresa() {
+		this.facturas = new ArrayList<>();
+		this.usuarios = new ArrayList<>();
 	}
+
+	public Empresa(int nit, String correoEmpresa, String departamento, String direccion, String documento,
+			String logoEmpresa, String municipio, String nombreRepresentante, String numeroDocumento,
+			String razonSocial, String telefono, TipoDocumento tipoDocumentoBean) {
+		super();
+		this.nit = nit;
+		this.correoEmpresa = correoEmpresa;
+		this.departamento = departamento;
+		this.direccion = direccion;
+		this.documento = documento;
+		this.logoEmpresa = logoEmpresa;
+		this.municipio = municipio;
+		this.nombreRepresentante = nombreRepresentante;
+		this.numeroDocumento = numeroDocumento;
+		this.razonSocial = razonSocial;
+		this.telefono = telefono;
+		this.tipoDocumentoBean = tipoDocumentoBean;
+		this.facturas = new ArrayList<>();
+		this.usuarios = new ArrayList<>();
+	}
+
+
 
 	public int getNit() {
 		return this.nit;

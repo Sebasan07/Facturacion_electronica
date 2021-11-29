@@ -2,6 +2,8 @@ package co.edu.ufps.facturacion.entities;
 
 import java.io.Serializable;
 import javax.persistence.*;
+
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -63,6 +65,27 @@ public class Factura implements Serializable {
 	private List<Nota> notas;
 
 	public Factura() {
+		this.notas = new ArrayList<>();
+		this.detalleFacturas = new ArrayList<>();
+		this.documentos = new ArrayList<>();
+	}
+
+	public Factura(String cufe, byte estado, Date fechaExpedicion, Date fechaVencimiento, String firma,
+			double totalDescuento, double valorNeto, Cliente cliente, Empresa empresa, RangoNumeracion rangoNumeracionBean) {
+		super();
+		this.cufe = cufe;
+		this.estado = estado;
+		this.fechaExpedicion = fechaExpedicion;
+		this.fechaVencimiento = fechaVencimiento;
+		this.firma = firma;
+		this.totalDescuento = totalDescuento;
+		this.valorNeto = valorNeto;
+		this.cliente = cliente;
+		this.empresa = empresa;
+		this.rangoNumeracionBean = rangoNumeracionBean;
+		this.notas = new ArrayList<>();
+		this.detalleFacturas = new ArrayList<>();
+		this.documentos = new ArrayList<>();
 	}
 
 	public String getCufe() {

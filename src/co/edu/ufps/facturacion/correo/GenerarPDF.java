@@ -3,6 +3,7 @@ package co.edu.ufps.facturacion.correo;
 import com.itextpdf.io.font.FontConstants;
 import com.itextpdf.io.image.ImageData;
 import com.itextpdf.io.image.ImageDataFactory;
+import com.itextpdf.kernel.color.Color;
 import com.itextpdf.kernel.font.PdfFont;
 import com.itextpdf.kernel.font.PdfFontFactory;
 import com.itextpdf.kernel.geom.PageSize;
@@ -11,86 +12,202 @@ import com.itextpdf.kernel.pdf.PdfWriter;
 import com.itextpdf.layout.Document;
 import com.itextpdf.layout.element.Image;
 import com.itextpdf.layout.element.Paragraph;
+import com.itextpdf.layout.element.Table;
 import com.itextpdf.layout.property.TextAlignment;
-
-import co.edu.ufps.facturacion.entities.Usuario;
+import co.edu.ufps.facturacion.entities.Cliente;
+import co.edu.ufps.facturacion.entities.DetalleFactura;
+import co.edu.ufps.facturacion.entities.Factura;
+import co.edu.ufps.facturacion.entities.RangoNumeracion;
 
 import java.awt.Desktop;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.time.LocalDateTime;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 public class GenerarPDF {
 
-    public GenerarPDF() {
+	public GenerarPDF() {
 
-    }
+	}
 
-    public boolean generarPDF(String nombreArchivo, String rol, File img, String nombreAnimal ,Usuario us) throws FileNotFoundException, IOException, InterruptedException {
+	public boolean generarPDF(String nombreArchivo, File img, Cliente cl, Factura fa, DetalleFactura df, RangoNumeracion rg)
+			throws FileNotFoundException, IOException, InterruptedException {
 
-        FileOutputStream f = new FileOutputStream(nombreArchivo);
+		FileOutputStream f = new FileOutputStream(nombreArchivo);// nombre pdf
 
-        PdfWriter writer = new PdfWriter(f);
-        PdfDocument pdfDoc = new PdfDocument(writer);
+		PdfWriter writer = new PdfWriter(f);
+		PdfDocument pdfDoc = new PdfDocument(writer);
 
-        Document document = new Document(pdfDoc, PageSize.A4);
-        document.setMargins(50, 30, 20, 30);
-        PdfFont font = PdfFontFactory.createFont(FontConstants.HELVETICA);
-        PdfFont font1 = PdfFontFactory.createFont(FontConstants.HELVETICA_BOLD);
+		Document document = new Document(pdfDoc, PageSize.A3);
+		document.setMargins(50, 30, 20, 30);
+		PdfFont font = PdfFontFactory.createFont(FontConstants.HELVETICA);
+		PdfFont font1 = PdfFontFactory.createFont(FontConstants.HELVETICA_BOLD);
 
-        try {
-        	System.out.println("a");
-        	Paragraph hue = new Paragraph("HUELLERITOS FUNDACIÓN").setFont(font1);
-        	hue.setTextAlignment(TextAlignment.CENTER);
-        	hue.setFontSize(36f);
-        	System.out.println("n");
-        	String[] fe=LocalDateTime.now().toString().split("T");
-        	Paragraph fecha = new Paragraph("Fecha: "+fe[0]+" "+fe[1].substring(0,8)).setFont(font1);
-        	Paragraph pTitulo = new Paragraph("Hola, "+"-------nombre----------"+"\n").setFont(font1);
-            Paragraph pCuerpo = new Paragraph("Estamos felices de que te hayas unido a esta hermosa fundación, esperemos que nuestro huellerito "+ nombreAnimal+" y tú sean muy felices juntos.\n\n"
-            		+ "Gracias al formulario que rellenó, se pudo valorar que si es apto por lo que se le generó el siguiente usuario:\n").setFont(font);               
-            Paragraph infoUsuario = new Paragraph("Nombre de usuario: "+"-----------"+"\nContraseña: "+"---------------------").setFont(font1);
-            Paragraph rolUser = new Paragraph("También se le hace saber que el usuario y usted pertenecen al rol de "+'"'+rol+'"'+", favor tener en cuenta lo anterior.").setFont(font);
-            Paragraph despedida = new Paragraph("\nMuchas gracias por su granito de arena.\nAtt: Natalia Ortiz").setFont(font1);
-            ImageData data = ImageDataFactory.create(img.getAbsolutePath());
-            System.out.println(data.toString());
-            Image imga = new Image(data).setFontSize(28f); 
-            // Adding paragraphs to document       
+		try {
 
-            document.add(imga.setTextAlignment(TextAlignment.LEFT));
-            document.add(hue);       
-            document.add(fecha.setTextAlignment(TextAlignment.RIGHT));
-            document.add(pTitulo);
-            document.add(pCuerpo.setTextAlignment(TextAlignment.JUSTIFIED));
-            document.add(infoUsuario.setTextAlignment(TextAlignment.JUSTIFIED));
+			System.out.println("a");
+			Paragraph hue = new Paragraph("Facturación Electrónica - SolTec").setFont(font1);
+			hue.setTextAlignment(TextAlignment.CENTER);
+			hue.setFontSize(26f);
+			System.out.println("n");
+			document.add(hue);
+			GenerarQRCode gc = new GenerarQRCode();
 
-            document.add(rolUser.setTextAlignment(TextAlignment.JUSTIFIED));
-            document.add(despedida.setTextAlignment(TextAlignment.JUSTIFIED));
-            document.close();
+			ImageData data = ImageDataFactory.create(img.getAbsolutePath());
+			Image imga = new Image(data).setFontSize(28f);
+			// Adding paragraphs to document
 
-        } catch (Exception ex) {
-            Logger.getLogger(GenerarPDF.class.getName()).log(Level.SEVERE, null, ex);
-            return false;
-        }
+			document.add(imga.setFixedPosition(30, 1000));
 
-       return new File(nombreArchivo).exists();
-    }
-    
-    public void abrirPDF(String nombreArchivo) throws IOException {
+			tablaInformacion(font, font1, document, fa, cl, rg);
+			ImageData data1 = ImageDataFactory.create(new File("QR.png").getAbsolutePath());
+			document.add(new Image(data1).setFixedPosition(630, 980));
+			tablaProductos(font, document, df);
+			tablaPrecios(font, document, df);
+			pieDePagina(font, font1, document);
+			document.close();
 
-        int respuesta = JOptionPane.showConfirmDialog(null, "Desea Imprimir PDF",
-                "Seguimiento", JOptionPane.YES_NO_OPTION);
-        if (respuesta == 0) {
-            File f = new File(nombreArchivo);
-            
-            Desktop.getDesktop().open(f);
-        } else {
-            JOptionPane.showMessageDialog(null, "No se abrirá el PDF");
-        }
-    }
+		} catch (Exception ex) {
+			Logger.getLogger(GenerarPDF.class.getName()).log(Level.SEVERE, null, ex);
+			return false;
+		}
+
+		return new File(nombreArchivo).exists();
+	}
+
+	public void abrirPDF(String nombreArchivo) throws IOException {
+
+		int respuesta = JOptionPane.showConfirmDialog(null, "Desea Imprimir PDF", "Seguimiento",
+				JOptionPane.YES_NO_OPTION);
+		if (respuesta == 0) {
+			File f = new File(nombreArchivo);
+
+			Desktop.getDesktop().open(f);
+		} else {
+			JOptionPane.showMessageDialog(null, "No se abrirá el PDF");
+		}
+	}
+
+	@SuppressWarnings("deprecation")
+	private void tablaProductos(PdfFont font, Document document, DetalleFactura df) {
+
+		Table tabla = new Table(6);// genera tabla
+		tabla.addHeaderCell("Codigo del producto").setBackgroundColor(Color.LIGHT_GRAY);// ENCABEZADO DE TABLA COLOR
+																						// GRIS
+		tabla.addHeaderCell("Nombre");
+		tabla.addHeaderCell("U/M");
+		tabla.addHeaderCell("Valor unitario");
+		tabla.addHeaderCell("% Desc");
+		tabla.addHeaderCell("IVA");
+		String val[] = { "AB12", "Zapato", "cm", "200.000", "3%", "0%" };
+		document.add(tabla);
+		tabla.setWidthPercent(90);
+		tabla = new Table(6);
+
+		for (int j = 0; j < 6; j++) {
+			tabla.addCell(val[j]).setFont(font);
+		}
+		document.add(tabla.setMarginBottom(20));
+		tabla.setWidthPercent(50);
+	}
+
+	@SuppressWarnings("deprecation")
+	private void tablaPrecios(PdfFont font, Document document, DetalleFactura df) {
+
+		Table tabla1 = new Table(1);// genera tabla
+		tabla1.addHeaderCell("MONEDA (COP) PESOS COLOMBIANOS").setBackgroundColor(Color.LIGHT_GRAY);
+		String valores[] = { "Subtotal", "Valor neto", "Descuento total", "IVA", "TOTAL" };
+		String val[] = { "12", "23", "43", "87", "198" };
+
+		document.add(tabla1);
+		tabla1.setWidthPercent(50);
+		Table tabla2 = new Table(2);
+
+		for (int j = 0; j < valores.length - 1; j++) {
+			tabla2.addCell(valores[j]).setFont(font);
+			tabla2.addCell(val[j]).setFont(font);
+		}
+		document.add(tabla2);
+		tabla2.setWidthPercent(50);
+
+		tabla2 = new Table(2);
+		tabla2.addCell(valores[valores.length - 1]).setFont(font).setBackgroundColor(Color.LIGHT_GRAY);
+		tabla2.addCell(val[val.length - 1]).setFont(font);
+
+		document.add(tabla2);
+		tabla2.setWidthPercent(50);
+	}
+
+	@SuppressWarnings("deprecation")
+	private void tablaInformacion(PdfFont font, PdfFont font1, Document document, Factura f, Cliente cl, RangoNumeracion rg) {
+		
+		llenarDatos(font, font1, document, f, rg);
+		String valores[] = { "Razón social/Nombre: ", "NIT: ", "Dirección: ", "Teléfono: ", "País: ", "Email: ",
+				"Ciudad: ", "Tipo Persona: " };
+		String val[] = { cl.getNombreComercial(), cl.getNumeroDocumento() + "", cl.getDireccion(), cl.getTelefono(),
+				cl.getPais(), cl.getCorreo(), cl.getCiudad() + ", " + cl.getDepartamento(), cl.getContribuyente() };
+
+		Table tabla1 = new Table(1);// genera tabla
+		tabla1.addHeaderCell("DATOS CLIENTE").setBackgroundColor(Color.LIGHT_GRAY);
+		document.add(tabla1);
+
+		tabla1.setWidthPercent(50);
+		Table tabla2 = new Table(4);
+
+		for (int j = 0; j < valores.length; j++) {
+			tabla2.addCell(valores[j]).setFont(font);
+			tabla2.addCell(val[j]).setFont(font1);
+		}
+		document.add(tabla2.setMarginBottom(20));
+		tabla2.setWidthPercent(50);
+	}
+	
+	private void llenarDatos(PdfFont font,PdfFont font1, Document document, Factura fa, RangoNumeracion rg) {
+		String resolucion = "Resolución DIAN N° 118764018183277 con Prefijo "+rg.getPrefijo()+" desde "+rg.getNumeroDesde()+ " hasta "+rg.getNumeroHasta() +" con vigencia desde "+ new SimpleDateFormat("dd/MM/yyyy hh:mm:ss").format(rg.getFechaResolucion());
+		Paragraph fecha = new Paragraph("Fecha: " + new SimpleDateFormat("dd/MM/yyyy hh:mm:ss").format(new Date())).setFont(font1);
+		Paragraph numFactura = new Paragraph("Factura Electrónica de Venta N° " + rg.getPrefijo()+ "-"+ fa.getRangoNumeracionBean().getNumeroActual()).setFont(font1);
+		Paragraph re = new Paragraph(resolucion).setFont(font);
+		re.setFontSize(10f);
+		document.add(new Paragraph("\n\n\n\n\n\n"));
+		
+		Paragraph CUFE = new Paragraph("CUFE: " + org.apache.commons.codec.digest.DigestUtils.sha1Hex(fa.getCufe()))
+				.setFont(font1);
+		document.add(numFactura.setTextAlignment(TextAlignment.CENTER));
+		document.add(fecha.setTextAlignment(TextAlignment.CENTER));
+		document.add(re.setTextAlignment(TextAlignment.CENTER));
+		document.add(CUFE.setTextAlignment(TextAlignment.RIGHT));
+	}
+
+	private void pieDePagina(PdfFont font,PdfFont font1, Document document) {
+		String resolucion = "A PARTIR DEL 1 DE ENERO DEL 2020 SOMOS BENEFICIARIOS DE LA LEY 1955 DEL 25 DE MAYO DEL 2019 Y SUS D.R. (ZESE) POR LO CUAL"
+				+ " ABSTENERSE PRACTICAR RETEFUENTE DE F.C: 05-12-2015\r\n";
+		Paragraph constar = new Paragraph("Se hace constar que la firma de una persona distinta del comprador , implica que dicha persona esta autorizada expresamente por el comprador para"
+				+ " firmar , confesar la deuda y obligar al comprador\r\n\r\n"
+				+ "Esta factura se asimila en todos sus efectos legales a una letra de cambio (Art. 774 del Codigo de Comercio)\r\n"
+				+ "Avenida Gran Colombia # 12E - 96 Barrio Colsag\r\n"
+				+ "CÚCUTA - NORTE DE SANTANDER\r\n"
+				+ "Tel. +57 314 2190138\r\n"
+				+ "Correo electronico: facturacionpyme123@gmail.com\r\n"
+				+ "").setFont(font);
+		Paragraph re = new Paragraph(resolucion).setFont(font);
+		Paragraph soltec = new Paragraph("SOLTEC").setFont(font);
+		Paragraph firma = new Paragraph("____________________________________\r\n"
+				+ 						"Firma recibido de cliente").setFont(font1);
+		re.setFontSize(10f);
+		firma.setFontSize(12f);
+		soltec.setFontSize(10f);
+		firma.setMarginTop(250);
+		
+		document.add(re.setTextAlignment(TextAlignment.CENTER));
+		document.add(firma.setTextAlignment(TextAlignment.CENTER));
+		document.add(constar.setTextAlignment(TextAlignment.CENTER));
+		document.add(soltec.setTextAlignment(TextAlignment.RIGHT));
+	}
+	
 }
