@@ -12,7 +12,7 @@
 <meta name="description" content="">
 <meta name="author" content="">
 
-<title>Clientes</title>
+<title>Usuarios</title>
 
 <!-- Custom fonts for this template -->
 <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet"
@@ -100,8 +100,6 @@
 								</form>
 							</div></li>
 
-
-
 						<!-- Nav Item - User Information -->
 						<li class="nav-item dropdown no-arrow"><a
 							class="nav-link dropdown-toggle" href="#" id="userDropdown"
@@ -126,12 +124,12 @@
 
 				</nav>
 				<!-- End of Topbar -->
-
-				<!-- Begin Page Content -->
 				<div class="container-fluid">
 
 					<!-- Page Heading -->
-					<h1 class="title_client">Clientes</h1>
+					<h1 class="title_client">Usuarios</h1>
+					<button href="<%=request.getContextPath()%>/inicio/usuario/agregar" class="btn btn-primary"
+						style="margin: 10px;">Agregar Usuario</button>
 					<!-- DataTales Example -->
 					<div class="card shadow mb-4">
 						<div class="card-body">
@@ -140,56 +138,25 @@
 									cellspacing="0">
 									<thead>
 										<tr>
-											<th>Numero documento</th>
-											<th>Nombre comercial</th>
 											<th>Nombre</th>
-											<th>Pais</th>
-											<th>Departamento</th>
-											<th>Ciudad</th>
-											<th>Direccion</th>
+											<th>Apellidos</th>
 											<th>Correo</th>
-											<th>Telefono</th>
-											<th>Contribuyente</th>
-											<th>Regimen contable</th>
-											<th>tipo de documento</th>
+											<th>Rol</th>
+											<th>Estado</th>
 											<th>Editar</th>
 											<th>Eliminar</th>
 										</tr>
 									</thead>
-									<tfoot>
-										<tr>
-											<th>Numero documento</th>
-											<th>Nombre comercial</th>
-											<th>Nombre</th>
-											<th>Pais</th>
-											<th>Departamento</th>
-											<th>Ciudad</th>
-											<th>Direccion</th>
-											<th>Correo</th>
-											<th>Telefono</th>
-											<th>Contribuyente</th>
-											<th>Regimen contable</th>
-											<th>tipo de documento</th>
-											<th>Editar</th>
-											<th>Eliminar</th>
-										</tr>
-									</tfoot>
+
 									<tbody>
 										<tr>
-											<td>1010045100</td>
-											<td>Super suelas la unión</td>
-											<td>Camila calderon</td>
-											<td>Colombia</td>
-											<td>Norte de santander</td>
-											<td>Cucuta</td>
-											<td>Calle 10</td>
-											<td>camila@gmail.com</td>
-											<td>3212030377</td>
-											<td>contribuyente</td>
-											<td>contable</td>
-											<td>Cédula</td>
+											<td>Pepito</td>
+											<td>Perez Suárez</td>
+											<td>Pepito@gmail.com</td>
+											<td>Vendedor</td>
+											<td>Activo</td>
 											<td>
-												<button class="btn boton-accion" href="<%=request.getContextPath()%>/inicio/cliente/editar">
+												<button class="btn boton-accion" href="<%=request.getContextPath()%>/inicio/usuaio/editar">
 													<i class="fas fa-pencil-alt"></i>
 												</button>
 											</td>
@@ -200,6 +167,7 @@
 											</td>
 										</tr>
 
+
 									</tbody>
 								</table>
 							</div>
@@ -207,62 +175,4 @@
 					</div>
 
 				</div>
-
-				<!-- Footer -->
-				<footer class="sticky-footer bg-white"> </footer>
-				<!-- End of Footer -->
-
-			</div>
-			<!-- End of Content Wrapper -->
-
-		</div>
-		<!-- End of Page Wrapper -->
-
-		<!-- Scroll to Top Button-->
-		<a class="scroll-to-top rounded" href="#page-top"> <i
-			class="fas fa-angle-up"></i>
-		</a>
-
-		<!-- Logout Modal-->
-		<div class="modal fade" id="logoutModal" tabindex="-1" role="dialog"
-			aria-labelledby="exampleModalLabel" aria-hidden="true">
-			<div class="modal-dialog" role="document">
-				<div class="modal-content">
-					<div class="modal-header">
-						<h5 class="modal-title" id="exampleModalLabel">¿Cerrar
-							sesión?</h5>
-						<button class="close" type="button" data-dismiss="modal"
-							aria-label="Close">
-							<span aria-hidden="true">×</span>
-						</button>
-					</div>
-					<div class="modal-body">Seleccione "Salir" si está listo para
-						cerrar su sesión.</div>
-					<div class="modal-footer">
-						<button class="btn btn-secondary" type="button"
-							data-dismiss="modal">Cancelar</button>
-						<a class="btn btn-primary" href="login.html">Salir</a>
-					</div>
-				</div>
-			</div>
-		</div>
-
-		<!-- Bootstrap core JavaScript-->
-		<script src="vendor/jquery/jquery.min.js"></script>
-		<script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-
-		<!-- Core plugin JavaScript-->
-		<script src="vendor/jquery-easing/jquery.easing.min.js"></script>
-
-		<!-- Custom scripts for all pages-->
-		<script src="js/sb-admin-2.min.js"></script>
-
-		<!-- Page level plugins -->
-		<script src="vendor/datatables/jquery.dataTables.min.js"></script>
-		<script src="vendor/datatables/dataTables.bootstrap4.min.js"></script>
-
-		<!-- Page level custom scripts -->
-		<script src="js/demo/datatables-demo.js"></script>
-</body>
-
-</html>
+				<!-- /.container-fluid -->
