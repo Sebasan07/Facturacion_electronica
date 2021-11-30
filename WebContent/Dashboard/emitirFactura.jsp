@@ -121,8 +121,9 @@
 					</ul>
 
 				</nav>
-<div class="container-fluid">
-    
+	                <!-- Begin Page Content -->
+	                <div class="container-fluid">
+	
                         <!-- Page Heading -->
                         <h1 class="title_client">Elija el cliente a facturar</h1>
                         <!-- DataTales Example -->
@@ -132,23 +133,25 @@
                                       <table #dataTable class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                                         <thead>
                                           <tr>
-                                            <th>Codigo</th>
+                                            <th>Numero documento</th>
+                                            <th>Nombre comercial</th>
                                             <th>Nombre</th>
-                                            <th>U/M</th>
-                                            <th>Vr. Unit.</th>
-                                            <th>% Dcto.</th>
-                                            <th>IVA</th>
+                                            <th>Ciudad</th>
+                                            <th>Dirección</th>
+                                            <th>Correo</th>
+                                            <th>Teléfono</th>
                                             <th>Seleccionar</th>
                                           </tr>
                                         </thead>
                                         <tfoot>
                                           <tr>
-                                            <th>Código</th>
+                                            <th>Numero documento</th>
+                                            <th>Nombre comercial</th>
                                             <th>Nombre</th>
-                                            <th>U/M</th>
-                                            <th>Vr. Unit.</th>
-                                            <th>% Dcto.</th>
-                                            <th>IVA</th>
+                                            <th>Ciudad</th>
+                                            <th>Dirección</th>
+                                            <th>Correo</th>
+                                            <th>Teléfono</th>
                                             <th>Seleccionar</th>
                                           </tr>
                                       </tfoot>                          
@@ -159,11 +162,12 @@
                                             <td></td>
                                             <td></td>
                                             <td></td>
-                                            <td></td>                    
+                                            <td></td>
+                                            <td></td>  
                                             <td>
                                               <button class="btn boton-accion" >
                                                 <i class="fas fa-plus-circle" style="color: rgb(94, 94, 243);"></i>
-                                              </button>                                         
+                                              </button>       <!--Acá se debe redireccionar a la vista de EFClienteProducto -->                                  
                                             </td> 
                                          </tr>     
                                         </tbody>
@@ -174,6 +178,9 @@
     
                     </div>
                     <!-- /.container-fluid -->
+    
+    
+    
     
     
     

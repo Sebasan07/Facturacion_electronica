@@ -1,15 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html>
-<html lang="es">
-
+<html>
 <head>
-
+    <meta charset="ISO-8859-1">
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
-    <title>Clientes</title>
 
     <!-- Custom fonts for this template -->
     <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -19,20 +16,23 @@
 
     <!-- Custom styles for this template -->
     <link href="css/sb-admin-2.min.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="css/emitir-factura.css">
     <link rel="stylesheet" type="text/css" href="css/ver-clientes.css">
+    <link rel="stylesheet" type="text/css" href="css/inicio.css">
+    <link rel="stylesheet" type="text/css" href="css/registrar-empresa.css">
+    <link rel="stylesheet" type="text/css" href="css/factura.css">
 
     <!-- Custom styles for this page -->
     <link href="vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
-
+    <title>Facturas</title>
 </head>
-
 <body id="page-top">
 
     <!-- Page Wrapper -->
     <div id="wrapper">
 
         <!-- Sidebar -->
-        <jsp:include page="navMenu.jsp" />
+       <jsp:include page="navMenu.jsp" />
         <!-- End of Sidebar -->
 
         <!-- Content Wrapper -->
@@ -44,12 +44,6 @@
                 <!-- Topbar -->
                 <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
 
-                    <!-- Sidebar Toggle (Topbar) -->
-                    <form class="form-inline">
-                        <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
-                            <i class="fa fa-bars"></i>
-                        </button>
-                    </form>
 
                     <!-- Topbar Search -->
                     <form
@@ -80,8 +74,7 @@
                                 <form class="form-inline mr-auto w-100 navbar-search">
                                     <div class="input-group">
                                         <input type="text" class="form-control bg-light border-0 small"
-                                            placeholder="Buscar" aria-label="Buscar"
-                                            aria-describedby="basic-addon2">
+                                            placeholder="Buscar" aria-label="Buscar" aria-describedby="basic-addon2">
                                         <div class="input-group-append">
                                             <button class="btn btn-primary" type="button">
                                                 <i class="fas fa-search fa-sm"></i>
@@ -92,15 +85,14 @@
                             </div>
                         </li>
 
-                       
+
 
                         <!-- Nav Item - User Information -->
                         <li class="nav-item dropdown no-arrow">
                             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <span class="mr-2 d-none d-lg-inline text-gray-600 small">Nombre del usuario</span>
-                                <img class="img-profile rounded-circle"
-                                    src="img/undraw_profile.svg">
+                                <img class="img-profile rounded-circle" src="img/undraw_profile.svg">
                             </a>
                             <!-- Dropdown - User Information -->
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
@@ -118,91 +110,96 @@
                 </nav>
                 <!-- End of Topbar -->
 
-                <!-- Begin Page Content -->
-                <div class="container-fluid">
 
-                    <!-- Page Heading -->
-                    <h1 class="title_client">Editar cliente</h1>
-                    <!-- DataTales Example -->
-                    <div class="card shadow mb-4">
-                       <div class="card-body">
-                         <form action="href=<%=request.getContextPath()%>/inicio/cliente/editar" method="post">
-                           <div class="user-details">
-                            <div class="input-box">
-                                <span class="details">Tipo de documento</span>
-                                <input type="text" placeholder="" required>
+    
+                    <div class="container-fluid">
+
+                        <!-- Page Heading -->
+                        <h1 class="title_client">Emitir factura</h1>
+                        <!-- DataTales Example -->
+                        <div class="card shadow mb-4">
+                            <div class="card-body">
+                                <form action="#">
+                                    <!--Inicio campos del cliente-->
+                                    <div class="input-box-numeracion">
+                                        <span class="span_details">No.</span>
+                                        <input class="input_numeracion" type="text" name="ciudad" required>
+                                    </div>
+
+                                    <div class="input-box">
+                                        <span class="details">Número de documento</span>
+                                        <input style="margin-left: 13px;" type="number" name="numero_documento" required>
+                                    </div>
+                                    <div class="input-box">
+                                        <span class="details">Nombre</span>
+                                        <input style="margin-left: 13px;" type="text" name="nombre" required>
+                                    </div>
+
+                                    <div class="input-box">
+                                        <span class="details">Teléfono</span>
+                                        <input style="margin-left: 10px;" type="text" name="telefono"required>
+                                    </div>
+
+                                    <div class="input-box">
+                                        <span class="details">Correo</span>
+                                        <input style="margin-left: 24px;" type="text" name="correo" required>
+                                    </div>
+
+                                    <div class="input-box">
+                                        <span class="details">Ciudad</span>
+                                        <input style="margin-left: 23px;" type="text" name="ciudad" required>
+                                    </div>
+                                    <!--Fin campos del cliente-->
+                                    <hr>
+                                    <!--Inicio tabla de agregar los productos-->
+                                    <div class="table-responsive">
+                                        <table #dataTable class="table table-bordered" id="tablaprueba" width="100%" cellspacing="0">
+                                            <thead>
+                                                <tr>
+                                                    <th>Código</th>
+                                                    <th>Nombre</th>
+                                                    <th>U/M</th>
+                                                    <th>Vr. Unit.</th>
+                                                    <th>% Dcto.</th>
+                                                    <th>IVA</th>
+
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>
+                                                        <select class="select_opciones">
+                                                            <option disabled selected>Buscar...</option>
+                                                            <option></option>
+                                                        </select>
+                                                    </td>
+                                                    <td>AA</td>
+                                                    <td>AA</td>
+                                                    <td>AA</td>
+                                                    <td>AA</td>
+                                                    <td>AA</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                        <div class="form-group">
+                                            <button type="button" class="btn btn-edit" onclick="agregarFila()">
+                                                <i class="fas fa-plus"></i>
+                                            </button>
+                                            <button type="button" class="btn" onclick="eliminarFila()">
+                                                <i class="fas fa-minus-circle"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <!--Fin tabla de agregar los productos-->
+                                    <div class="button2">
+                                        <button class="button_style">Siguiente</button>
+                                    </div>
+                                </form>
                             </div>
-                                <div class="input-box">
-                                    <span class="details">Número de documento</span>
-                                    <input type="number"  required>
-                                </div>
-                                <div class="input-box">
-                                    <span class="details">Nombre comercial</span>
-                                    <input type="text" placeholder="" required>
-                                </div>
-                                <div class="input-box">
-                                    <span class="details">Nombre </span>
-                                    <input type="text" placeholder="" required>
-                                </div>
-                                <div class="input-box">
-                                    <span class="details">Dirección</span>
-                                    <input type="text"  required>
-                                </div>
-                                <div class="input-box">
-                                    <span class="details">País</span>
-                                    <input type="text"  required>
-                                </div>
-                                <div class="input-box">
-                                    <span class="details">Departamento</span>
-                                    <input type="text"  required>
-                                </div>
-                                <div class="input-box">
-                                    <span class="details">Municipio/ciudad</span>
-                                    <input type="text"  required>
-                                </div>
-                                <div class="input-box">
-                                    <span class="details">Correo</span>
-                                    <input type="text"  required>
-                                </div>
-                                <div class="input-box">
-                                    <span class="details">Teléfono</span>
-                                    <input type="text" required>
-                                </div>
-                                <div class="input-box">
-                                    <span class="details">Contribuyente</span>
-                                    <input type="text" required>
-                                </div>
-                                <div class="input-box">
-                                    <span class="details">Regimen contable</span>
-                                    <input type="text" required>
-                                </div>
-                            </div>
-                            <div class="buttom">
-                                <input type="submit" value="Guardar">
-                            </div>
-                            <div class="buttom2">
-                               <a href="<%=request.getContextPath()%>/inicio/cliente/ver">Cancelar</a> 
-                            </div>
-                        </form>
                         </div>
                     </div>
 
-                </div>
-                <!-- /.container-fluid -->
-
-            </div>
-            <!-- End of Main Content -->
-
-            <!-- Footer -->
-            <footer class="sticky-footer bg-white">
-            </footer>
-            <!-- End of Footer -->
-
-        </div>
-        <!-- End of Content Wrapper -->
-
-    </div>
-    <!-- End of Page Wrapper -->
+		<!-- /.container-fluid -->
+    
 
     <!-- Scroll to Top Button-->
     <a class="scroll-to-top rounded" href="#page-top">
@@ -229,7 +226,8 @@
         </div>
     </div>
 
-
+    <!--Tabala del emitir-->
+    <script src="js/tabla.js"></script>
     <!-- Bootstrap core JavaScript-->
     <script src="vendor/jquery/jquery.min.js"></script>
     <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
@@ -248,5 +246,4 @@
     <script src="js/demo/datatables-demo.js"></script>
 
 </body>
-
 </html>
