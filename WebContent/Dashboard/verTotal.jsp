@@ -12,7 +12,7 @@
 <meta name="description" content="">
 <meta name="author" content="">
 
-<title>Clientes</title>
+<title>Factura</title>
 
 <!-- Custom fonts for this template -->
 <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet"
@@ -125,93 +125,66 @@
 					</ul>
 
 				</nav>
-				<!-- End of Topbar -->
 
-				<!-- Begin Page Content -->
 				<div class="container-fluid">
 
 					<!-- Page Heading -->
-					<h1 class="title_client">Agregar clientes</h1>
+					<h1 class="title_client">Emitir factura</h1>
 					<!-- DataTales Example -->
 					<div class="card shadow mb-4">
 						<div class="card-body">
-							<form action="<%=request.getContextPath()%>/inicio/cliente/agregar" method="post">
-								<div class="user-details">
-									<div class="input-box">
-										<span class="details">Tipo de documento</span> 
-										<select>
-											<option>La primera opción</option>
-										</select>
-									</div>
-									<div class="input-box">
-										<span class="details">Número de documento</span>
-										 <input type="number" name="numero_documento" required>
-									</div>
-									<div class="input-box">
-										<span class="details">Nombre comercial</span> 
-										<input type="text" name="nombre_comercial" required>
-									</div>
-									<div class="input-box">
-										<span class="details">Nombre </span> 
-										<input type="text" name="nombre" required>
-									</div>
-									<div class="input-box">
-										<span class="details">Dirección</span> 
-										<input type="text" name="direccion" required>
-									</div>
-									<div class="input-box">
-										<span class="details">País</span> 
-										<select>
-											<option>La primera opción</option>
-										</select>
-									</div>
-									<div class="input-box">
-										<span class="details">Departamento</span> 
-										<select>
-											<option>La primera opción</option>
-										</select>
-									</div>
-									<div class="input-box">
-										<span class="details">Municipio/ciudad</span> 
-										<select>
-											<option>La primera opción</option>
-										</select>
-									</div>
-									<div class="input-box">
-										<span class="details">Correo</span> 
-										<input type="text" name="correo" required>
-									</div>
-									<div class="input-box">
-										<span class="details">Teléfono</span> 
-										<input type="text" name="telefono" required>
-									</div>
-									<div class="input-box">
-										<span class="details">Contribuyente</span> 
-										<select>
-											<option>La primera opción</option>
-										</select>
-									</div>
-									<div class="input-box">
-										<span class="details">Regimen contable</span> 
-										<select>
-											<option>La primera opción</option>
-										</select>
-									</div>
+							<form action="#">
+								<!--Inicio tabla de agregar los productos-->
+								<div class="table-responsive">
+									<table #dataTable class="table table-bordered" id="tablaprueba"
+										width="100%" cellspacing="0">
+										<thead>
+											<tr>
+												<th>Código</th>
+												<th>Nombre</th>
+												<th>U/M</th>
+												<th>Vr. Unit.</th>
+												<th>% Dcto.</th>
+												<th>IVA</th>
+										</thead>
+										<tbody>
+											<tr>
+												<td><select class="select_opciones">
+														<option disabled selected>Buscar...</option>
+														<option>A50</option>
+												</select></td>
+												<td>AA</td>
+												<td>AA</td>
+												<td>AA</td>
+												<td>AA</td>
+												<td>AA</td>
+											</tr>
+										</tbody>
+									</table>
 								</div>
-								<div class="button">
-									<button class="button_style">Guardar</button>
+								<!--Fin tabla de agregar los productos-->
+								<div class="input-box">
+									<span class="details">Subtotal</span> <input
+										style="margin-left: 13px;" type="text" disabled>
 								</div>
-
-								<div class="button2">
-									<button class="button_style"
-										href="<%=request.getContextPath()%>/inicio/cliente/ver">Cancelar</button>
+								<div class="input-box">
+									<span class="details">Total descuento</span> <input
+										style="margin-left: 13px;" type="text" disabled>
+								</div>
+								<div class="input-box">
+									<span class="details">Valor neto</span> <input
+										style="margin-left: 13px;" type="text" disabled>
+								</div>
+								<hr>
+								<div class="input-box">
+									<span class="details">Total</span> <input
+										style="margin-left: 13px;" type="text" disabled>
 								</div>
 							</form>
 						</div>
 					</div>
 
 				</div>
-				<!-- /.container-fluid -->
 
 			</div>
 			<!-- End of Main Content -->
@@ -237,18 +210,18 @@
 		<div class="modal-dialog" role="document">
 			<div class="modal-content">
 				<div class="modal-header">
-					<h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
+					<h5 class="modal-title" id="exampleModalLabel">¿Cerrar sesión?</h5>
 					<button class="close" type="button" data-dismiss="modal"
 						aria-label="Close">
 						<span aria-hidden="true">×</span>
 					</button>
 				</div>
-				<div class="modal-body">Select "Logout" below if you are ready
-					to end your current session.</div>
+				<div class="modal-body">Seleccione "Salir" si está listo para
+					cerrar su sesión.</div>
 				<div class="modal-footer">
 					<button class="btn btn-secondary" type="button"
-						data-dismiss="modal">Cancel</button>
-					<a class="btn btn-primary" href="login.html">Logout</a>
+						data-dismiss="modal">Cancelar</button>
+					<a class="btn btn-primary" href="login.html">Salir</a>
 				</div>
 			</div>
 		</div>

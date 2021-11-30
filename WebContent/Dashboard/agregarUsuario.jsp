@@ -1,17 +1,14 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html>
-<html lang="es">
-
+<html>
 <head>
-
-    <meta charset="utf-8">
+	<meta charset="ISO-8859-1">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
-    <title>Clientes</title>
-
-    <!-- Custom fonts for this template -->
+	<title>Usuarios</title>
+	
+	<!-- Custom fonts for this template -->
     <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
     <link
         href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
@@ -23,16 +20,14 @@
 
     <!-- Custom styles for this page -->
     <link href="vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
-
 </head>
-
 <body id="page-top">
 
     <!-- Page Wrapper -->
     <div id="wrapper">
 
         <!-- Sidebar -->
-        <jsp:include page="navMenu.jsp" />
+		<jsp:include page="navMenu.jsp" />
         <!-- End of Sidebar -->
 
         <!-- Content Wrapper -->
@@ -80,8 +75,7 @@
                                 <form class="form-inline mr-auto w-100 navbar-search">
                                     <div class="input-group">
                                         <input type="text" class="form-control bg-light border-0 small"
-                                            placeholder="Buscar" aria-label="Buscar"
-                                            aria-describedby="basic-addon2">
+                                            placeholder="Buscar" aria-label="Buscar" aria-describedby="basic-addon2">
                                         <div class="input-group-append">
                                             <button class="btn btn-primary" type="button">
                                                 <i class="fas fa-search fa-sm"></i>
@@ -92,15 +86,14 @@
                             </div>
                         </li>
 
-                       
+
 
                         <!-- Nav Item - User Information -->
                         <li class="nav-item dropdown no-arrow">
                             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <span class="mr-2 d-none d-lg-inline text-gray-600 small">Nombre del usuario</span>
-                                <img class="img-profile rounded-circle"
-                                    src="img/undraw_profile.svg">
+                                <img class="img-profile rounded-circle" src="img/undraw_profile.svg">
                             </a>
                             <!-- Dropdown - User Information -->
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
@@ -122,68 +115,46 @@
                 <div class="container-fluid">
 
                     <!-- Page Heading -->
-                    <h1 class="title_client">Editar cliente</h1>
+                    <h1 class="title_client">Agregar usuario</h1>
                     <!-- DataTales Example -->
                     <div class="card shadow mb-4">
-                       <div class="card-body">
-                         <form action="href=<%=request.getContextPath()%>/inicio/cliente/editar" method="post">
-                           <div class="user-details">
-                            <div class="input-box">
-                                <span class="details">Tipo de documento</span>
-                                <input type="text" placeholder="" required>
-                            </div>
-                                <div class="input-box">
-                                    <span class="details">Número de documento</span>
-                                    <input type="number"  required>
+                        <div class="card-body">
+                            <form action="#" method="post">
+                                <div class="user-details">
+                                    <div class="input-box">
+                                        <span class="details">Nombre</span>
+                                        <input type="text" name="nombre" required>
+                                    </div>
+                                    <div class="input-box">
+                                        <span class="details">Apellidos</span>
+                                        <input type="number" name="apellido" required>
+                                    </div>
+                                    <div class="input-box">
+                                        <span class="details">Correo</span>
+                                        <input type="text" name="correo" required>
+                                    </div>
+                                    <div class="input-box">
+                                        <span class="details">Contraseña</span>
+                                        <input type="text" name="contrasena" placeholder="" required>
+                                    </div>
+                                   <div class="input-box">
+                                        <span class="details">Rol</span>
+                                        <select name="rol" class="form-control">
+                                           <option value="">Administrador</option> 
+                                           <option value="">Contador</option> 
+                                           <option value="">Vendedor</option>
+                                     </select>
+                                    </div>
+
                                 </div>
-                                <div class="input-box">
-                                    <span class="details">Nombre comercial</span>
-                                    <input type="text" placeholder="" required>
+                                <div class="button">
+                                    <button class="button_style">Guardar</button>
                                 </div>
-                                <div class="input-box">
-                                    <span class="details">Nombre </span>
-                                    <input type="text" placeholder="" required>
+
+                                <div class="button2">
+                                    <button href="ver-usuarios.html" class="button_style">Cancelar</button>
                                 </div>
-                                <div class="input-box">
-                                    <span class="details">Dirección</span>
-                                    <input type="text"  required>
-                                </div>
-                                <div class="input-box">
-                                    <span class="details">País</span>
-                                    <input type="text"  required>
-                                </div>
-                                <div class="input-box">
-                                    <span class="details">Departamento</span>
-                                    <input type="text"  required>
-                                </div>
-                                <div class="input-box">
-                                    <span class="details">Municipio/ciudad</span>
-                                    <input type="text"  required>
-                                </div>
-                                <div class="input-box">
-                                    <span class="details">Correo</span>
-                                    <input type="text"  required>
-                                </div>
-                                <div class="input-box">
-                                    <span class="details">Teléfono</span>
-                                    <input type="text" required>
-                                </div>
-                                <div class="input-box">
-                                    <span class="details">Contribuyente</span>
-                                    <input type="text" required>
-                                </div>
-                                <div class="input-box">
-                                    <span class="details">Regimen contable</span>
-                                    <input type="text" required>
-                                </div>
-                            </div>
-                            <div class="buttom">
-                                <input type="submit" value="Guardar">
-                            </div>
-                            <div class="buttom2">
-                               <a href="<%=request.getContextPath()%>/inicio/cliente/ver">Cancelar</a> 
-                            </div>
-                        </form>
+                            </form>
                         </div>
                     </div>
 
@@ -229,7 +200,6 @@
         </div>
     </div>
 
-
     <!-- Bootstrap core JavaScript-->
     <script src="vendor/jquery/jquery.min.js"></script>
     <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
@@ -248,5 +218,4 @@
     <script src="js/demo/datatables-demo.js"></script>
 
 </body>
-
 </html>

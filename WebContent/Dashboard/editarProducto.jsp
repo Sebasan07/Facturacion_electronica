@@ -1,25 +1,21 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
 <meta charset="utf-8">
 <meta content="IE=edge" http-equiv="X-UA-Compatible">
 <meta content="width=device-width, initial-scale=1, shrink-to-fit=no"
 	name="viewport">
-<meta content="" name="description">
-<meta content="" name="author">
-<title>SB Admin 2 - Cards</title>
+
+<title>Porductos</title>
 <!-- Custom fonts for this template-->
 <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet"
 	type="text/css">
-<link
-	href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
-	rel="stylesheet">
+<link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
 <!-- Custom styles for this template-->
 <link href="css/sb-admin-2.min.css" rel="stylesheet">
 <link href="css/ver-clientes.css" rel="stylesheet" type="text/css">
-
 </head>
 <body id="page-top">
 	<!-- Page Wrapper -->
@@ -69,7 +65,7 @@
 									<div class="input-group">
 										<input aria-describedby="basic-addon2" aria-label="Search"
 											class="form-control bg-light border-0 small"
-											placeholder="Search for..." type="text">
+											placeholder="Buscar" type="text">
 										<div class="input-group-append">
 											<button class="btn btn-primary" type="button">
 												<i class="fas fa-search fa-sm"> </i>
@@ -101,111 +97,119 @@
 				<!-- End of Topbar -->
 				<!-- Begin Page Content -->
 				<div class="container-fluid">
+					<h1 class="title_client">Editar producto</h1>
 					<!-- Page Heading -->
-					<h1 class="title_client">Editar Producto</h1>
 					<div class="card shadow mb-4">
-						<div
-							class="d-sm-flex align-items-center justify-content-between mb-4">
-
-						</div>
 						<div class="container">
 							<form action="#">
 								<div class="user-details">
 									<div class="input-box">
-										<span class="details"> ID producto </span> <input
-											placeholder="ID producto" required="" type="text"> </input>
+										<span class="details"> ID producto </span> <input type="text"
+											name="codigo" disabled>
 									</div>
 									<br>
 									<div class="input-box">
-										<span class="details"> Descripción </span> <input
-											placeholder="Descripcion" required="" type="text"> </input>
+										<span class="details"> Nombre </span> <input type="text"
+											name="nombre" required>
+									</div>
+									<br>
+									<div class="input-box">
+										<span class="details"> Descripción </span> <input type="text"
+											name="descripcion" required>
 									</div>
 									<br>
 									<div class="input-box">
 										<span class="details"> Unidad de medida </span> <input
-											placeholder="Unidad de medida" required="" type="text">
+											type="text" name="unidad_medida" required>
 									</div>
 									<br>
 									<div class="input-box">
 										<span class="details"> Valor unitario </span> <input
-											placeholder="Valor unitario" required="" type="text">
+											type="text" name="valor_unitario" required>
 									</div>
 									<br>
 									<div class="input-box">
-										<span class="details"> IVA </span> <input placeholder="IVA"
-											required="" type="text">
+										<span class="details"> IVA </span> <input type="text"
+											name="iva" required>
 									</div>
 									<br>
 									<div class="input-box">
 										<span class="details"> % Descuento </span> <input
-											placeholder="% Descuento" required="" type="number">
+											type="number" name="porcentaje_descuento" required>
 									</div>
 									<br>
-									<div class="buttom">
-										<input type="submit" value="Guardar">
+									<div class="input-box">
+										<span class="details"> Estado </span> <input type="number"
+											name="estado" required>
 									</div>
+								</div>
+								<div class="button">
+									<button class="button_style">Actualizar</button>
+								</div>
+								<div class="button2">
+									<button class="button_style">Cancelar</button>
+								</div>
+
 							</form>
+						</div>
+
+						<!-- End of Main Content -->
+						<!-- Footer -->
+						<footer class="sticky-footer bg-white">
+							<div class="container my-auto">
+								<div class="copyright text-center my-auto">
+									<span> Copyright © Your Website 2020 </span>
+								</div>
+							</div>
+						</footer>
+						<!-- End of Footer -->
+					</div>
+					<!-- End of Content Wrapper -->
+				</div>
+				<!-- End of Page Wrapper -->
+				<!-- Scroll to Top Button-->
+				<a class="scroll-to-top rounded" href="#page-top"> <i
+					class="fas fa-angle-up"> </i>
+				</a>
+				<!-- Logout Modal-->
+				<!-- Logout Modal-->
+				<div class="modal fade" id="logoutModal" tabindex="-1" role="dialog"
+					aria-labelledby="exampleModalLabel" aria-hidden="true">
+					<div class="modal-dialog" role="document">
+						<div class="modal-content">
+							<div class="modal-header">
+								<h5 class="modal-title" id="exampleModalLabel">¿Cerrar sesión?</h5>
+								<button class="close" type="button" data-dismiss="modal"
+									aria-label="Close">
+									<span aria-hidden="true">×</span>
+								</button>
+							</div>
+							<div class="modal-body">Seleccione "Salir" si está listo para cerrar su sesión.</div>
+							<div class="modal-footer">
+								<button class="btn btn-secondary" type="button"
+									data-dismiss="modal">Cancelar</button>
+								<a class="btn btn-primary">Salir</a>
+							</div>
 						</div>
 					</div>
 				</div>
 
-				<!-- End of Main Content -->
-				<!-- Footer -->
-				<footer class="sticky-footer bg-white">
-					<div class="container my-auto">
-						<div class="copyright text-center my-auto">
-							<span> Copyright © Your Website 2020 </span>
-						</div>
-					</div>
-				</footer>
-				<!-- End of Footer -->
-			</div>
-			<!-- End of Content Wrapper -->
-		</div>
-		<!-- End of Page Wrapper -->
-		<!-- Scroll to Top Button-->
-		<a class="scroll-to-top rounded" href="#page-top"> <i
-			class="fas fa-angle-up"> </i>
-		</a>
-		<!-- Logout Modal-->
-		<div aria-hidden="true" aria-labelledby="exampleModalLabel"
-			class="modal fade" id="logoutModal" role="dialog" tabindex="-1">
-			<div class="modal-dialog" role="document">
-				<div class="modal-content">
-					<div class="modal-header">
-						<h5 class="modal-title" id="exampleModalLabel">Ready to
-							Leave?</h5>
-						<button aria-label="Close" class="close" data-dismiss="modal"
-							type="button">
-							<span aria-hidden="true"> × </span>
-						</button>
-					</div>
-					<div class="modal-body">Select "Logout" below if you are
-						ready to end your current session.</div>
-					<div class="modal-footer">
-						<button class="btn btn-secondary" data-dismiss="modal"
-							type="button">Cancel</button>
-						<a class="btn btn-primary" href="login.html"> Logout </a>
-					</div>
-				</div>
+				<!-- Bootstrap core JavaScript-->
+				<script src="vendor/jquery/jquery.min.js">
+					
+				</script>
+				<script src="vendor/bootstrap/js/bootstrap.bundle.min.js">
+					
+				</script>
+				<!-- Core plugin JavaScript-->
+				<script src="vendor/jquery-easing/jquery.easing.min.js">
+					
+				</script>
+				<!-- Custom scripts for all pages-->
+				<script src="js/sb-admin-2.min.js">
+					
+				</script>
 			</div>
 		</div>
-		<!-- Bootstrap core JavaScript-->
-		<script src="vendor/jquery/jquery.min.js">
-			
-		</script>
-		<script src="vendor/bootstrap/js/bootstrap.bundle.min.js">
-			
-		</script>
-		<!-- Core plugin JavaScript-->
-		<script src="vendor/jquery-easing/jquery.easing.min.js">
-			
-		</script>
-		<!-- Custom scripts for all pages-->
-		<script src="js/sb-admin-2.min.js">
-			
-		</script>
-	</div>
-	</div>
 </body>
 </html>

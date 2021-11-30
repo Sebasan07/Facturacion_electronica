@@ -2,7 +2,7 @@
 	color:#0077b6;
 	font-weight: bold;
 }
-form .usuario-detalles{ /*inputs acomodados en lÃ­nea*/
+form .usuario-detalles{ /*inputs acomodados en línea*/
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
@@ -41,7 +41,7 @@ form .usuario-detalles .input-caja{
 	left: 500px;
 }
 
-.button_style{ /*tamaÃ±o boton*/
+.button_style{ /*tamaño boton*/
 	height: 65%;
 	width: 140%;
 	outline:none;

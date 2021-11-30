@@ -1,15 +1,15 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
+
 <head>
 <meta charset="utf-8">
 <meta content="IE=edge" http-equiv="X-UA-Compatible">
 <meta content="width=device-width, initial-scale=1, shrink-to-fit=no"
 	name="viewport">
-<meta content="" name="description">
-<meta content="" name="author">
-<title>SB Admin 2 - Cards</title>
+
+<title>Productos</title>
 <!-- Custom fonts for this template-->
 <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet"
 	type="text/css">
@@ -21,12 +21,16 @@
 <link href="css/ver-clientes.css" rel="stylesheet" type="text/css">
 
 </head>
+
 <body id="page-top">
 	<!-- Page Wrapper -->
 	<div id="wrapper">
+
 		<!-- Sidebar -->
 		<jsp:include page="navMenu.jsp" />
 		<!-- End of Sidebar -->
+
+
 		<!-- Content Wrapper -->
 		<div class="d-flex flex-column" id="content-wrapper">
 			<!-- Main Content -->
@@ -45,7 +49,7 @@
 						<div class="input-group">
 							<input aria-describedby="basic-addon2" aria-label="Search"
 								class="form-control bg-light border-0 small"
-								placeholder="Search for..." type="text">
+								placeholder="Buscar..." type="text">
 							<div class="input-group-append">
 								<button class="btn btn-primary" type="button">
 									<i class="fas fa-search fa-sm"> </i>
@@ -101,111 +105,110 @@
 				<!-- End of Topbar -->
 				<!-- Begin Page Content -->
 				<div class="container-fluid">
-					<!-- Page Heading -->
-					<h1 class="title_client">Agregar Producto</h1>
-					<div class="card shadow mb-4">
-						<div
-							class="d-sm-flex align-items-center justify-content-between mb-4">
 
-						</div>
-						<div class="container">
-							<form action="#">
+					<!-- Page Heading -->
+					<h1 class="title_client">Agregar producto</h1>
+					<!-- DataTales Example -->
+					<div class="card shadow mb-4">
+						<div class="card-body">
+							<form action="<%=request.getContextPath()%>/inicio/producto/agregar" method="post">
 								<div class="user-details">
 									<div class="input-box">
-										<span class="details"> ID producto </span> <input
-											placeholder="ID producto" required="" type="text"> </input>
+										<span class="details"> ID producto </span> 
+										<input type="number"  name="codigo"  required>
 									</div>
 									<br>
 									<div class="input-box">
-										<span class="details"> Descripción </span> <input
-											placeholder="Descripcion" required="" type="text"> </input>
+										<span class="details"> Nombre </span> 
+										<input name="nombre" type="text" required>
 									</div>
 									<br>
 									<div class="input-box">
-										<span class="details"> Unidad de medida </span> <input
-											placeholder="Unidad de medida" required="" type="text">
+										<span class="details"> Descripción </span> 
+										<input name="descripcion" type="text" required>
 									</div>
 									<br>
 									<div class="input-box">
-										<span class="details"> Valor unitario </span> <input
-											placeholder="Valor unitario" required="" type="text">
+										<span class="details"> Unidad de medida </span>
+										 <input name="unidad_medida" type="text" required>
 									</div>
 									<br>
 									<div class="input-box">
-										<span class="details"> IVA </span> <input placeholder="IVA"
-											required="" type="text">
+										<span class="details"> Valor unitario </span>
+										 <input name="valor_unitario" type="number" mrequired>
+									</div>
+									<br>
+									<div class="input-box">
+										<span class="details"> IVA </span> 
+										<input name="iva" type="number"  required>
 									</div>
 									<br>
 									<div class="input-box">
 										<span class="details"> % Descuento </span> <input
-											placeholder="% Descuento" required="" type="number">
+											name="porcentaje_descuento" type="number"  required>
 									</div>
 									<br>
-									<div class="buttom">
-										<input type="submit" value="Guardar">
+									<div class="input-box">
+										<span class="details"> Estado </span> 
+										<input name="estado" type="number"  required>
 									</div>
+								</div>
+								<div class="button">
+									<button class="button_style">Guardar</button>
+								</div>
+
+								<div class="button2">
+									<button class="button_style" href="<%=request.getContextPath()%>/inicio/producto/ver" >Cancelar</button>
+								</div>
 							</form>
 						</div>
 					</div>
-				</div>
 
-				<!-- End of Main Content -->
-				<!-- Footer -->
-				<footer class="sticky-footer bg-white">
-					<div class="container my-auto">
-						<div class="copyright text-center my-auto">
-							<span> Copyright © Your Website 2020 </span>
+				</div>
+				<!-- /.container-fluid -->
+
+
+				<!-- Scroll to Top Button-->
+				<a class="scroll-to-top rounded" href="#page-top"> <i
+					class="fas fa-angle-up"> </i>
+				</a>
+				<!-- Logout Modal-->
+				<div aria-hidden="true" aria-labelledby="exampleModalLabel"
+					class="modal fade" id="logoutModal" role="dialog" tabindex="-1">
+					<div class="modal-dialog" role="document">
+						<div class="modal-content">
+							<div class="modal-header">
+								<h5 class="modal-title" id="exampleModalLabel">¿Cerrar
+									sesión?</h5>
+								<button aria-label="Close" class="close" data-dismiss="modal"
+									type="button">
+									<span aria-hidden="true"> × </span>
+								</button>
+							</div>
+							<div class="modal-body">Seleccione "Salir" si está listo
+								para cerrar su sesión.</div>
+							<div class="modal-footer">
+								<button class="btn btn-secondary" data-dismiss="modal"
+									type="button">Cancelar</button>
+								<a class="btn btn-primary" href="login.html"> Salir </a>
+							</div>
 						</div>
 					</div>
-				</footer>
-				<!-- End of Footer -->
-			</div>
-			<!-- End of Content Wrapper -->
-		</div>
-		<!-- End of Page Wrapper -->
-		<!-- Scroll to Top Button-->
-		<a class="scroll-to-top rounded" href="#page-top"> <i
-			class="fas fa-angle-up"> </i>
-		</a>
-		<!-- Logout Modal-->
-		<div aria-hidden="true" aria-labelledby="exampleModalLabel"
-			class="modal fade" id="logoutModal" role="dialog" tabindex="-1">
-			<div class="modal-dialog" role="document">
-				<div class="modal-content">
-					<div class="modal-header">
-						<h5 class="modal-title" id="exampleModalLabel">Ready to
-							Leave?</h5>
-						<button aria-label="Close" class="close" data-dismiss="modal"
-							type="button">
-							<span aria-hidden="true"> × </span>
-						</button>
-					</div>
-					<div class="modal-body">Select "Logout" below if you are
-						ready to end your current session.</div>
-					<div class="modal-footer">
-						<button class="btn btn-secondary" data-dismiss="modal"
-							type="button">Cancel</button>
-						<a class="btn btn-primary" href="login.html"> Logout </a>
-					</div>
 				</div>
-			</div>
-		</div>
-		<!-- Bootstrap core JavaScript-->
-		<script src="vendor/jquery/jquery.min.js">
-			
-		</script>
-		<script src="vendor/bootstrap/js/bootstrap.bundle.min.js">
-			
-		</script>
-		<!-- Core plugin JavaScript-->
-		<script src="vendor/jquery-easing/jquery.easing.min.js">
-			
-		</script>
-		<!-- Custom scripts for all pages-->
-		<script src="js/sb-admin-2.min.js">
-			
-		</script>
-	</div>
-	</div>
+				<!-- Bootstrap core JavaScript-->
+				<script src="vendor/jquery/jquery.min.js">
+					
+				</script>
+				<script src="vendor/bootstrap/js/bootstrap.bundle.min.js">
+					
+				</script>
+				<!-- Core plugin JavaScript-->
+				<script src="vendor/jquery-easing/jquery.easing.min.js">
+					
+				</script>
+				<!-- Custom scripts for all pages-->
+				<script src="js/sb-admin-2.min.js">
+					
+				</script>
 </body>
 </html>
