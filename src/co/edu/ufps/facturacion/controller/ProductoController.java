@@ -17,9 +17,9 @@ import co.edu.ufps.facturacion.entities.Producto;
 		"/inicio/producto/agregar", // vista agregar
 		"/inicio/producto/editar", // vista editar producto
 
-		"/producto/agregar/", // agregar producto
-		"/producto/eliminar", // eliminar producto
-		"/producto/editar/"// editar producto
+		"/inicio/producto/agregar/validar", // agregar producto
+		"/inicio/producto/eliminar/validar", // eliminar producto
+		"/inicio/producto/editar/validar"// editar producto
 })
 public class ProductoController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
@@ -47,15 +47,7 @@ public class ProductoController extends HttpServlet {
 			request.getRequestDispatcher("/login").forward(request, response);
 			return;
 		}
-
-		if (path.contains("/inicio")) {
 			verInicio(request, response, path);
-		} else {
-			verProductoCRUD(request, response, path);
-			request.getRequestDispatcher("/inicio/producto/ver").forward(request, response);
-			return;
-		}
-
 	}
 
 	protected void verInicio(HttpServletRequest request, HttpServletResponse response, String path)
@@ -63,39 +55,44 @@ public class ProductoController extends HttpServlet {
 
 		path = path.replace("/inicio/producto/", "");
 
-		switch (path) {
-		case "ver":
-			request.setAttribute("productos", pDAO.list());
-			request.getRequestDispatcher("Dashboard/verProductos.jsp").forward(request, response);
-			break;
-		case "agregar":
-			request.getRequestDispatcher("Dashboard/agregarProducto.jsp").forward(request, response);
-			break;
-		case "editar":
-			request.setAttribute("producto", pDAO.find(request.getParameter("codigo")));
-			request.getRequestDispatcher("Dashboard/editarProducto.jsp").forward(request, response);
-			break;
-		default:
-			request.getRequestDispatcher("/inicio").forward(request, response);
-			break;
+		if (path.contains("/validar")) {
+			verProductoCRUD(request, response, path);
+			request.getRequestDispatcher("/inicio/producto/ver").forward(request, response);
+			return;
+		} else {
+			switch (path) {
+			case "ver":
+				request.setAttribute("productos", pDAO.list());
+				request.getRequestDispatcher("Dashboard/verProductos.jsp").forward(request, response);
+				break;
+			case "agregar":
+				request.getRequestDispatcher("Dashboard/agregarProducto.jsp").forward(request, response);
+				break;
+			case "editar":
+				request.setAttribute("producto", pDAO.find(request.getParameter("codigo")));
+				request.getRequestDispatcher("Dashboard/editarProducto.jsp").forward(request, response);
+				break;
+			default:
+				request.getRequestDispatcher("/inicio").forward(request, response);
+				break;
+			}
 		}
-
 	}
 
 	protected void verProductoCRUD(HttpServletRequest request, HttpServletResponse response, String path)
 			throws ServletException, IOException {
 
-		path = path.replace("/producto/", "");
+		path = path.replace("/validar", "");
 
 		switch (path) {
 		case "agregar":
 			agregarProducto(request, response);
 			break;
 		case "eliminar":
-			eliminarProducto(request,response);
+			eliminarProducto(request, response);
 			break;
 		case "editar":
-			editarProducto(request,response);
+			editarProducto(request, response);
 			break;
 		default:
 			request.getRequestDispatcher("/inicio").forward(request, response);
@@ -119,25 +116,25 @@ public class ProductoController extends HttpServlet {
 
 			pDAO.insert(new Producto(codigo, descripcion, (byte) 1, iva, nombre, porcentajeDescuento, unidadMedida,
 					valorUnitario));
-		}else {
-			request.setAttribute("mensaje", "Ya existe el producto con el ID: "+codigo);
+		} else {
+			request.setAttribute("mensaje", "Ya existe el producto con el ID: " + codigo);
 		}
 	}
-	
+
 	protected void eliminarProducto(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
 		int codigo = Integer.parseInt(request.getParameter("codigo"));
 		Producto p = pDAO.find(codigo);
-		
+
 		if (p != null) {
-			p.setEstado((byte)0);
+			p.setEstado((byte) 0);
 			pDAO.update(p);
-		}else {
-			request.setAttribute("mensaje", "No existe el producto con el ID: "+codigo);
+		} else {
+			request.setAttribute("mensaje", "No existe el producto con el ID: " + codigo);
 		}
 	}
-	
+
 	protected void editarProducto(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
@@ -152,8 +149,8 @@ public class ProductoController extends HttpServlet {
 			p.setPorcentajeDescuento(Double.parseDouble(request.getParameter("descuento")));
 
 			pDAO.update(p);
-		}else {
-			request.setAttribute("mensaje", "No existe el producto con el ID: "+codigo);
+		} else {
+			request.setAttribute("mensaje", "No existe el producto con el ID: " + codigo);
 		}
 	}
 

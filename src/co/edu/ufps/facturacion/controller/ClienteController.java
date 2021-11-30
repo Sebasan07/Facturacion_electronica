@@ -19,9 +19,9 @@ import co.edu.ufps.facturacion.entities.TipoDocumento;
 		"/inicio/cliente/agregar", // vista agregar
 		"/inicio/cliente/editar", // vista editar cliente
 
-		"/cliente/agregar/", // agregar cliente
-		"/cliente/eliminar", // eliminar cliente
-		"/cliente/editar/"// editar cliente
+		"/inicio/cliente/agregar/validar", // agregar cliente
+		"/inicio/cliente/eliminar/validar", // eliminar cliente
+		"/inicio/cliente/editar/validar"// editar cliente
 })
 public class ClienteController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
@@ -51,14 +51,7 @@ public class ClienteController extends HttpServlet {
 			request.getRequestDispatcher("/login").forward(request, response);
 			return;
 		}
-
-		if (path.contains("/inicio")) {
-			verInicio(request, response, path);
-		} else {
-			verClienteCRUD(request, response, path);
-			request.getRequestDispatcher("/inicio/cliente/ver").forward(request, response);
-			return;
-		}
+		verInicio(request, response, path);
 	}
 
 	protected void verInicio(HttpServletRequest request, HttpServletResponse response, String path)
@@ -66,26 +59,32 @@ public class ClienteController extends HttpServlet {
 
 		path = path.replace("/inicio/cliente/", "");
 		Cliente cl = null;
-		switch (path) {
-		case "ver":
-			request.setAttribute("clientes", cDAO.list());// VER SI ESTÁ VACíA EN LA VISTA <%IF(CLIENTES!=NULL)%>
-			request.getRequestDispatcher("Dashboard/verClientes.jsp").forward(request, response);
-			break;
-		case "agregar":
-			request.getRequestDispatcher("Dashboard/agregarCliente.jsp").forward(request, response);
-			break;
-		case "editar":
-			cl = cDAO.find(Integer.parseInt(request.getParameter("documento")));
-			if (cl != null) {
-				request.setAttribute("cliente", cl);
-				request.getRequestDispatcher("Dashboard/editarCliente.jsp").forward(request, response);
-			} else {
+
+		if (path.contains("validar")) {
+			verClienteCRUD(request, response, path);
+			request.getRequestDispatcher("/inicio/cliente/ver").forward(request, response);
+		} else {
+			switch (path) {
+			case "ver":
+				request.setAttribute("clientes", cDAO.list());// VER SI ESTÁ VACíA EN LA VISTA <%IF(CLIENTES!=NULL)%>
+				request.getRequestDispatcher("Dashboard/verClientes.jsp").forward(request, response);
+				break;
+			case "agregar":
+				request.getRequestDispatcher("Dashboard/agregarCliente.jsp").forward(request, response);
+				break;
+			case "editar":
+				cl = cDAO.find(Integer.parseInt(request.getParameter("documento")));
+				if (cl != null) {
+					request.setAttribute("cliente", cl);
+					request.getRequestDispatcher("Dashboard/editarCliente.jsp").forward(request, response);
+				} else {
+					request.getRequestDispatcher("/inicio").forward(request, response);
+				}
+				break;
+			default:
 				request.getRequestDispatcher("/inicio").forward(request, response);
+				break;
 			}
-			break;
-		default:
-			request.getRequestDispatcher("/inicio").forward(request, response);
-			break;
 		}
 
 	}
@@ -93,17 +92,17 @@ public class ClienteController extends HttpServlet {
 	protected void verClienteCRUD(HttpServletRequest request, HttpServletResponse response, String path)
 			throws ServletException, IOException {
 
-		path = path.replace("/cliente/", "");
+		path = path.replace("/validar", "");
 
 		switch (path) {
 		case "agregar":
 			agregarCliente(request, response);
 			break;
 		case "eliminar":
-			eliminarCliente(request,response);
+			eliminarCliente(request, response);
 			break;
 		case "editar":
-			// editarProducto(request,response);
+			editarCliente(request,response);
 			break;
 		default:
 			request.getRequestDispatcher("/inicio").forward(request, response);
@@ -133,34 +132,34 @@ public class ClienteController extends HttpServlet {
 			// el número que nos sirve para buscar en la base de datos
 			TipoDocumento tipo = tDAO.find(Integer.parseInt(request.getParameter("tipoDocumento").split(".")[0]));
 
-			cDAO.insert(new Cliente(documento, municipio, contribuyente, correo, departamento, direccion, (byte)1,
+			cDAO.insert(new Cliente(documento, municipio, contribuyente, correo, departamento, direccion, (byte) 1,
 					nombre, nombreComercial, pais, regimen, telefono, tipo));
 
 		} else {
 			request.setAttribute("mensaje", "Ya existe un cliente con documento: " + documento);
 		}
 	}
-	
+
 	protected void eliminarCliente(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
 		int documento = Integer.parseInt(request.getParameter("documento"));
 		Cliente c = cDAO.find("documento");
-		
+
 		if (c != null) {
-			c.setEstado((byte)0);
+			c.setEstado((byte) 0);
 			cDAO.update(c);
-		}else {
-			request.setAttribute("mensaje", "No existe el cliente con documento: "+documento);
+		} else {
+			request.setAttribute("mensaje", "No existe el cliente con documento: " + documento);
 		}
 	}
-	
+
 	protected void editarCliente(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
 		int documento = Integer.parseInt(request.getParameter("documento"));
 		Cliente c = cDAO.find("documento");
-		
+
 		if (c != null) {
 			c.setNombre(request.getParameter("nombre"));
 			c.setNombreComercial(request.getParameter("nombreComercial"));
@@ -176,13 +175,13 @@ public class ClienteController extends HttpServlet {
 
 			TipoDocumento tipo = tDAO.find(Integer.parseInt(request.getParameter("tipoDocumento").split(".")[0]));
 			c.setTipoDocumentoBean(tipo);
-			
+
 			cDAO.update(c);
-		}else {
-			request.setAttribute("mensaje", "No existe el cliente con documento: "+documento);
+		} else {
+			request.setAttribute("mensaje", "No existe el cliente con documento: " + documento);
 		}
 	}
-	
+
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
 	 *      response)
