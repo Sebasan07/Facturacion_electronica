@@ -23,7 +23,7 @@
 
 <!-- Custom styles for this template -->
 <link href="css/sb-admin-2.min.css" rel="stylesheet">
-<link rel="stylesheet" type="text/css" href="css/ver-clientes.css">
+<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/Dashboard/css/ver-clientes.css">
 
 <!-- Custom styles for this page -->
 <link href="vendor/datatables/dataTables.bootstrap4.min.css"

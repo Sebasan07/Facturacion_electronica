@@ -16,15 +16,16 @@
 
             <!-- Opcion inicio -->
             <li class="nav-item">
-                <a class="nav-link"  [routerLink]="['/inicio']">
+                <a class="nav-link"  href="<%=request.getContextPath()%>/inicio">
                     <i class="fas fa-home"></i>
                     <span>Inicio</span></a>
+                    
             </li>
             <hr class="sidebar-divider">
 
             <!--Opcion de producto -->
             <li class="nav-item">
-                <a class="nav-link" href="#" data-toggle="collapse" data-target="#collapseTwo" 
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" 
                     aria-controls="collapseTwo">
                     <i class="fas fa-box-open"></i>
                     <span>Producto</span>
@@ -33,7 +34,7 @@
                     data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Opciones</h6>
-                        <a class="collapse-item active" href="<%=request.getContextPath()%>/inicio/producto/ver">Ver productos</a>
+                        <a class="collapse-item " href="<%=request.getContextPath()%>/inicio/producto/ver">Ver productos</a>
                         <a class="collapse-item" href="<%=request.getContextPath()%>/inicio/producto/agregar">Agregar producto</a>
                     </div>
                 </div>
@@ -50,8 +51,8 @@
                     data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Opciones</h6>
-                        <a class="collapse-item" href="<%=request.getContextPath()%>/inicio/clientes/ver" >Ver clientes</a>
-                        <a class="collapse-item" href="<%=request.getContextPath()%>/inicio/clientes/agregar" >Agregar cliente</a>
+                        <a class="collapse-item" href="<%=request.getContextPath()%>/inicio/cliente/ver" >Ver clientes</a>
+                        <a class="collapse-item" href="<%=request.getContextPath()%>/inicio/cliente/agregar" >Agregar cliente</a>
                     </div>
                 </div>
             </li>
@@ -70,7 +71,7 @@
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Opciones</h6>
                         <a class="collapse-item" href="<%=request.getContextPath()%>/inicio/factura/ver" >Ver facturas</a>
-                        <a class="collapse-item" href="<%=request.getContextPath()%>/inicio/factura/agregar/validar" >Emitir factura</a>
+                        <a class="collapse-item" href="<%=request.getContextPath()%>/inicio/factura/agregar" >Emitir factura</a>
                         <a class="collapse-item">Rangos de numeración</a>
                     </div>
                 </div>

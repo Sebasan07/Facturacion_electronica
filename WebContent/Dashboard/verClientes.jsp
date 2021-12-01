@@ -1,3 +1,5 @@
+<%@page import="co.edu.ufps.facturacion.entities.*"%>
+<%@page import="java.util.*"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html>
@@ -5,30 +7,14 @@
 
 <head>
 
-<meta charset="utf-8">
+<meta charset="ISO-8859-1">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport"
 	content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<meta name="description" content="">
-<meta name="author" content="">
 
 <title>Clientes</title>
 
-<!-- Custom fonts for this template -->
-<link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet"
-	type="text/css">
-<link
-	href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
-	rel="stylesheet">
-
-<!-- Custom styles for this template -->
-<link href="css/sb-admin-2.min.css" rel="stylesheet">
-<link rel="stylesheet" type="text/css" href="css/ver-clientes.css">
-
-<!-- Custom styles for this page -->
-<link href="vendor/datatables/dataTables.bootstrap4.min.css"
-	rel="stylesheet">
-
+<jsp:include page="cssVistas.jsp" />
 </head>
 
 <body id="page-top">
@@ -151,54 +137,53 @@
 											<th>Telefono</th>
 											<th>Contribuyente</th>
 											<th>Regimen contable</th>
-											<th>tipo de documento</th>
+											<th>Tipo de documento</th>
 											<th>Editar</th>
 											<th>Eliminar</th>
 										</tr>
 									</thead>
-									<tfoot>
-										<tr>
-											<th>Numero documento</th>
-											<th>Nombre comercial</th>
-											<th>Nombre</th>
-											<th>Pais</th>
-											<th>Departamento</th>
-											<th>Ciudad</th>
-											<th>Direccion</th>
-											<th>Correo</th>
-											<th>Telefono</th>
-											<th>Contribuyente</th>
-											<th>Regimen contable</th>
-											<th>tipo de documento</th>
-											<th>Editar</th>
-											<th>Eliminar</th>
-										</tr>
-									</tfoot>
 									<tbody>
-										<tr>
-											<td>1010045100</td>
-											<td>Super suelas la unión</td>
-											<td>Camila calderon</td>
-											<td>Colombia</td>
-											<td>Norte de santander</td>
-											<td>Cucuta</td>
-											<td>Calle 10</td>
-											<td>camila@gmail.com</td>
-											<td>3212030377</td>
-											<td>contribuyente</td>
-											<td>contable</td>
-											<td>Cédula</td>
-											<td>
-												<button class="btn boton-accion" href="<%=request.getContextPath()%>/inicio/cliente/editar">
-													<i class="fas fa-pencil-alt"></i>
-												</button>
-											</td>
-											<td>
-												<button class="btn boton-accion">
-													<i class="far fa-trash-alt"></i>
-												</button>
-											</td>
-										</tr>
+
+											<%
+												List<Cliente> clientes= request.getAttribute("clientes") == null ? null
+													: (List<Cliente>) request.getAttribute("clientes");
+
+											if (clientes != null) {
+												for (Cliente c : clientes) {
+													if (c.getEstado() == 1) {
+											%>
+											<tr>
+												<td><%=c.getNumeroDocumento()%></td>
+												<td><%=c.getNombreComercial()%></td>
+												<td><%=c.getNombre()%></td>
+												<td><%=c.getPais()%></td>
+												<td><%=c.getDepartamento()%></td>
+												<td><%=c.getCiudad()%></td>
+												<td><%=c.getDireccion()%></td>
+												<td><%=c.getCorreo()%></td>
+												<td><%=c.getTelefono()%></td>
+												<td><%=c.getContribuyente()%></td>
+												<td><%=c.getRegimenContable()%></td>
+												<td><%=c.getTipoDocumentoBean().getDescripcion()%></td>
+
+												<td>
+													<a class="btn boton-accion" 
+													href="<%=request.getContextPath()%>/inicio/cliente/editar?documento=<%=c.getNumeroDocumento()%>">
+														<i class="far fa-pencil-alt"></i>
+													</a>
+												</td>
+												<td>
+													<a class="btn boton-accion" 
+													href="<%=request.getContextPath()%>/inicio/cliente/eliminar/validar?documento=<%=c.getNumeroDocumento()%>">
+														<i class="far fa-trash-alt"></i>
+													</a>
+												</td>
+											</tr>
+											<%
+												}
+											}
+											}
+											%>
 
 									</tbody>
 								</table>
@@ -247,22 +232,7 @@
 			</div>
 		</div>
 
-		<!-- Bootstrap core JavaScript-->
-		<script src="vendor/jquery/jquery.min.js"></script>
-		<script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-
-		<!-- Core plugin JavaScript-->
-		<script src="vendor/jquery-easing/jquery.easing.min.js"></script>
-
-		<!-- Custom scripts for all pages-->
-		<script src="js/sb-admin-2.min.js"></script>
-
-		<!-- Page level plugins -->
-		<script src="vendor/datatables/jquery.dataTables.min.js"></script>
-		<script src="vendor/datatables/dataTables.bootstrap4.min.js"></script>
-
-		<!-- Page level custom scripts -->
-		<script src="js/demo/datatables-demo.js"></script>
+		<jsp:include page="scriptsVistas.jsp" />
 </body>
 
 </html>

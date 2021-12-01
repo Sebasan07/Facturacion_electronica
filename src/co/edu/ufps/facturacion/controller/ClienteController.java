@@ -62,21 +62,21 @@ public class ClienteController extends HttpServlet {
 
 		if (path.contains("validar")) {
 			verClienteCRUD(request, response, path);
-			request.getRequestDispatcher("/inicio/cliente/ver").forward(request, response);
+			response.sendRedirect(request.getContextPath() + "/inicio/cliente/ver");
 		} else {
 			switch (path) {
 			case "ver":
 				request.setAttribute("clientes", cDAO.list());// VER SI EST¡ VACÌA EN LA VISTA <%IF(CLIENTES!=NULL)%>
-				request.getRequestDispatcher("Dashboard/verClientes.jsp").forward(request, response);
+				request.getRequestDispatcher("/Dashboard/verClientes.jsp").include(request, response);
 				break;
 			case "agregar":
-				request.getRequestDispatcher("Dashboard/agregarCliente.jsp").forward(request, response);
+				request.getRequestDispatcher("/Dashboard/agregarCliente.jsp").include(request, response);
 				break;
 			case "editar":
 				cl = cDAO.find(Integer.parseInt(request.getParameter("documento")));
 				if (cl != null) {
 					request.setAttribute("cliente", cl);
-					request.getRequestDispatcher("Dashboard/editarCliente.jsp").forward(request, response);
+					request.getRequestDispatcher("/Dashboard/editarCliente.jsp").include(request, response);
 				} else {
 					request.getRequestDispatcher("/inicio").forward(request, response);
 				}

@@ -43,7 +43,7 @@ public class AdministradorController extends HttpServlet {
 		String path = request.getServletPath();
 
 		if (request.getSession().getAttribute("usuario") != null) {
-			request.getRequestDispatcher("/").forward(request, response);
+			request.getRequestDispatcher("/inicio").forward(request, response);
 			return;
 		}
 
@@ -62,11 +62,12 @@ public class AdministradorController extends HttpServlet {
 	protected void logear(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
-		Usuario usuario = uDAO.find(request.getParameter("correo"));
+		String correo =request.getParameter("correo");
+		Usuario usuario = new Usuario(correo,request.getParameter("pass"));
 		
 		if (usuario !=null && uDAO.logear(usuario)) {
-			request.getSession().setAttribute("usuario", usuario);
-			response.sendRedirect(request.getContextPath()+"/");
+			request.getSession().setAttribute("usuario", uDAO.find(correo));
+			request.getRequestDispatcher("/inicio").forward(request, response);
 			return;
 		} else {
 			request.setAttribute("mensaje", "No existe el usuario");

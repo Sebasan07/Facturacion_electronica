@@ -40,6 +40,11 @@ public class Usuario implements Serializable {
 	public Usuario() {
 	}
 
+	public Usuario(String correo, String contrasena) {
+		this.correo = correo;
+		this.contrasena = contrasena;
+	}
+	
 	public Usuario(String correo, String apellido, String contrasena, byte estado, String nombre) {
 		super();
 		this.correo = correo;

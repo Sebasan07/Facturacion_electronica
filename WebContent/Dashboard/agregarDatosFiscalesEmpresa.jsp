@@ -100,7 +100,8 @@
 							class="nav-link dropdown-toggle" href="#" id="userDropdown"
 							role="button" data-toggle="dropdown" aria-haspopup="true"
 							aria-expanded="false"> <span
-								class="mr-2 d-none d-lg-inline text-gray-600 small">Nombre de usuario</span> <img class="img-profile rounded-circle"
+								class="mr-2 d-none d-lg-inline text-gray-600 small">Nombre
+									de usuario</span> <img class="img-profile rounded-circle"
 								src="img/undraw_profile.svg">
 						</a> <!-- Dropdown - User Information -->
 							<div
@@ -134,18 +135,20 @@
 						<form action="#">
 							<div class="user-details">
 								<div class="input-box">
-									<span class="details">Nit empresa</span> 
-									<input type="number" placeholder="NIT" name="NIT" required>
+									<span class="details">Nit empresa</span> <input type="number"
+										placeholder="NIT" name="NIT" required>
 								</div>
 
 								<div class="input-box">
 									<span class="details">Número documento</span> <input
-										type="number" placeholder="Ingrese identificación" name="nombre_representante" required>
+										type="number" placeholder="Ingrese identificación"
+										name="nombre_representante" required>
 								</div>
 
 								<div class="input-box">
 									<span class="details">Razón social empresa</span> <input
-										type="number" placeholder="Razón social"name="razon_social" required>
+										type="number" placeholder="Razón social" name="razon_social"
+										required>
 								</div>
 
 								<div class="input-box">
@@ -159,16 +162,19 @@
 
 								<div class="input-box">
 									<span class="details">Municipio/Ciudad</span> <input
-										type="text" placeholder="Municipio/Ciudad" name="municipio" required>
+										type="text" placeholder="Municipio/Ciudad" name="municipio"
+										required>
 								</div>
 
 								<div class="input-box">
 									<span class="details">Télefono de la empresa</span> <input
-										type="text" placeholder="Ingrese identificación" name="telefono" required>
+										type="text" placeholder="Ingrese identificación"
+										name="telefono" required>
 								</div>
 								<div class="input-box">
 									<span class="details">Nombre representante legal</span> <input
-										type="text" placeholder="Representante legal" name="nombre_representante" required>
+										type="text" placeholder="Representante legal"
+										name="nombre_representante" required>
 								</div>
 								<div class="input-box">
 									<span class="details">Correo empresa</span> <input type="text"
@@ -181,13 +187,14 @@
 								</div>
 							</div>
 
-                                <div class="button">
-                                    <button class="button_style">Guardar</button>
-                                </div>
+							<div class="button">
+								<button class="button_style">Guardar</button>
+							</div>
 
-                                <div class="button2">
-                                    <button  class="button_style" href="<%=request.getContextPath()%>/inicio/">Cancelar</button>
-                                </div>
+							<div class="button2">
+								<button class="button_style"
+									href="<%=request.getContextPath()%>/inicio/">Cancelar</button>
+							</div>
 						</form>
 					</div>
 					<!-- /.container-fluid -->

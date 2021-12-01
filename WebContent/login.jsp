@@ -36,20 +36,20 @@
 			      			<h3 class="mb-4">Iniciar sesión</h3>
 			      		</div>
 			      	</div>
-							<form action="#" class="signin-form">
+							<form action="<%=request.getContextPath()%>/login/validar" method = "post" class="signin-form">
 			      		<div class="form-group mb-3">
 			      			<label class="label" for="name">Correo electrónico</label>
-			      			<input type="text" class="form-control" placeholder="Correo electrónico" required>
+			      			<input type="text" name="correo" class="form-control" placeholder="Correo electrónico" required>
 			      		</div>
 		            <div class="form-group mb-3">
 		            	<label class="label" for="password">Contraseña</label>
-		              <input type="password" class="form-control" placeholder="Contraseña" required>
+		              <input type="password" name="pass" class="form-control" placeholder="Contraseña" required>
 		            </div>
 		            <div class="form-group">
 		            	<button type="submit" class="form-control btn btn-primary rounded submit px-3">Ingresar</button>
 		            </div>
 		          </form>
-		          <p class="text-center">No está registrado? <a data-toggle="tab" href="#registrarse">Regístrese</a></p>
+		          <p class="text-center">No está registrado? <a href="<%=request.getContextPath()%>/registro">Regístrese</a></p>
 		        </div>
 		      </div>
 				</div>

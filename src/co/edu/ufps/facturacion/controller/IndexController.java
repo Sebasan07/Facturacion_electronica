@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * Servlet implementation class IndexController
  */
-@WebServlet({ "/index.jsp" })
+@WebServlet({ "/inicioApp.jsp", "/index","/inicio" })
 public class IndexController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
@@ -38,7 +38,7 @@ public class IndexController extends HttpServlet {
 
 		// request.setAttribute("nombre", "objeto");
 
-		request.getRequestDispatcher("inicio.jsp").forward(request, response);
+		request.getRequestDispatcher("Dashboard/inicioApp.jsp").forward(request, response);
 
 	}
 

@@ -28,7 +28,7 @@ public class AdminNavegacionController extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
 		if (request.getSession().getAttribute("usuario") != null) {
-			request.getRequestDispatcher("/").forward(request, response);
+			request.getRequestDispatcher("/inicio").forward(request, response);
 			return;
 		}
 
@@ -44,11 +44,6 @@ public class AdminNavegacionController extends HttpServlet {
 		default:
 			break;
 		}
-	}
-
-	protected void mostrarLogin(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-		request.getRequestDispatcher("/administrador/login.jsp").forward(request, response);
 	}
 	
 	/**

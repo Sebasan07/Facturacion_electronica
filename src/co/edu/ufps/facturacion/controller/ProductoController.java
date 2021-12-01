@@ -57,20 +57,21 @@ public class ProductoController extends HttpServlet {
 
 		if (path.contains("/validar")) {
 			verProductoCRUD(request, response, path);
-			request.getRequestDispatcher("/inicio/producto/ver").forward(request, response);
+			response.sendRedirect(request.getContextPath() + "/inicio/producto/ver");
 			return;
 		} else {
 			switch (path) {
 			case "ver":
 				request.setAttribute("productos", pDAO.list());
-				request.getRequestDispatcher("Dashboard/verProductos.jsp").forward(request, response);
+				request.getRequestDispatcher("/Dashboard/verProductos.jsp").include(request, response);
 				break;
 			case "agregar":
-				request.getRequestDispatcher("Dashboard/agregarProducto.jsp").forward(request, response);
+				request.getRequestDispatcher("/Dashboard/agregarProducto.jsp").include(request, response);
+				//request.sendRedirect("Dashboard/agregarProducto.jsp").forward(request, response);
 				break;
 			case "editar":
 				request.setAttribute("producto", pDAO.find(request.getParameter("codigo")));
-				request.getRequestDispatcher("Dashboard/editarProducto.jsp").forward(request, response);
+				request.getRequestDispatcher("/Dashboard/editarProducto.jsp").include(request, response);
 				break;
 			default:
 				request.getRequestDispatcher("/inicio").forward(request, response);
@@ -113,8 +114,9 @@ public class ProductoController extends HttpServlet {
 			double valorUnitario = Double.parseDouble(request.getParameter("valorUnitario"));
 			double iva = Double.parseDouble(request.getParameter("iva"));
 			double porcentajeDescuento = Double.parseDouble(request.getParameter("descuento"));
+			byte estado = Byte.parseByte(request.getParameter("estado"));
 
-			pDAO.insert(new Producto(codigo, descripcion, (byte) 1, iva, nombre, porcentajeDescuento, unidadMedida,
+			pDAO.insert(new Producto(codigo, descripcion, estado, iva, nombre, porcentajeDescuento, unidadMedida,
 					valorUnitario));
 		} else {
 			request.setAttribute("mensaje", "Ya existe el producto con el ID: " + codigo);

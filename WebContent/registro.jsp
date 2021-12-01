@@ -36,7 +36,7 @@
 			      		  <h3 class="mb-4"><b>Registrate</b></h3>
 			      	   </div>
 			      	</div>
-					<form action="#" class="signin-form">
+					<form action="<%=request.getContextPath()%>/registro/validar" method = "post" class="signin-form">
 		              <div class="form-group mb-3">
 		            	<label class="label" for="password">Nombre</label>
 		                <input type="text" name="nombre" class="form-control" placeholder="Nombre" required>
@@ -65,7 +65,7 @@
 		            	<button type="submit" class="form-control btn btn-primary rounded submit px-3">Registrarse</button>
 		             </div>
 		          </form>
-		          <p class="text-center">¿Ya te encuentras registrado?<a href="#">Ingresa</a></p>
+		          <p class="text-center">¿Ya te encuentras registrado? <a href="<%=request.getContextPath()%>/login">Ingresa</a></p>
 		        </div>
 		      </div>
 			 </div>
