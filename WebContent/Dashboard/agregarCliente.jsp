@@ -1,3 +1,6 @@
+<%@page import="co.edu.ufps.facturacion.entities.*"%>
+<%@page import="co.edu.ufps.facturacion.dao.*"%>
+<%@page import="java.util.*"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html>
@@ -13,6 +16,71 @@
 <title>Clientes</title>
 
 <jsp:include page="cssVistas.jsp" />
+<script type="text/javascript"
+	src="http://ajax.microsoft.com/ajax/jQuery/jquery-1.4.4.min.js"></script>
+<script type="text/javascript">
+
+$(document).ready(function() {
+		llenarDepartamentos();
+		
+		function loadJSON(callback) {
+			var xobj = new XMLHttpRequest();
+			xobj.overrideMimeType("application/json");
+			xobj.open("GET", "https://raw.githubusercontent.com/marcovega/colombia-json/master/colombia.min.json", true); // Reemplaza colombia-json.json con el nombre que le hayas puesto
+			xobj.onreadystatechange = function () {
+				if (xobj.readyState == 4 && xobj.status == "200") {
+					callback(xobj.responseText);
+				}
+			};
+			xobj.send(null);
+		}
+		function llenarDepartamentos() {
+			loadJSON(function (response) {
+				// Parse JSON string into object
+				
+				var datos = JSON.parse(response);
+				
+				for(var i in datos){
+					$('#departamento').prepend("<option value='"+datos[(datos.length-1)-i].id+"' >"+datos[(datos.length-1)-i].departamento+"</option>");
+				}
+				$('#departamento').prepend("<option value='' selected>Seleccione departamento</option>");
+				
+			});
+		}
+		
+		$('#departamento').change(function() {
+			cambiarMunicipio(this, '#municipio');
+		});
+		
+		function cambiarMunicipio(combo1, combo2) {
+			combo2 = $(combo2);
+			limpiarCombo(combo2);
+			combo2.disabled = true;
+			llenarMunicipios(combo1.selectedIndex);
+			combo1.disabled =false;
+			combo2.disabled =false;
+		}
+		
+		function limpiarCombo(combo){
+			$('#municipio').empty();
+			$('#municipio').prepend("<option value='' selected>Seleccione municipio</option>");
+		}
+		
+		function llenarMunicipios(id) {
+			loadJSON(function (response) {
+				var datos = JSON.parse(response);
+				$('#municipio').empty();
+				for(var i=datos[id-1].ciudades.length-1; i>=0;i--){
+					$('#municipio').prepend("<option value='"+datos[(id-1)].ciudades[i]+"' >"+datos[(id-1)].ciudades[i]+"</option>");
+				}
+				$('#municipio').prepend("<option value='' selected>Seleccione municipio</option>");
+			});
+		}
+
+});
+
+</script>
+
 
 </head>
 
@@ -120,66 +188,82 @@
 					<!-- DataTales Example -->
 					<div class="card shadow mb-4">
 						<div class="card-body">
-							<form action="<%=request.getContextPath()%>/inicio/cliente/agregar" method="post">
+							<form
+								action="<%=request.getContextPath()%>/inicio/cliente/agregar"
+								method="post">
 								<div class="user-details">
+
+									<%
+										TipoDocumentoDAO tDAO = new TipoDocumentoDAO();
+
+									List<TipoDocumento> tipos = tDAO.list();
+									%>
 									<div class="input-box">
-										<span class="details">Tipo de documento</span> 
-										<select>
+										<span class="details">Tipo de documento</span> <select
+											name="tipoDocumento">
+											<%
+												for (TipoDocumento t : tipos) {
+											%>
+											<option value="<%=t.getIdTipoDocumento()%>"><%=t.getDescripcion()%></option>
+											<%
+												}
+											%>
+										</select>
+
+									</div>
+									<div class="input-box">
+										<span class="details">Número de documento</span> <input
+											type="number" name="documento" required>
+									</div>
+									<div class="input-box">
+										<span class="details">Nombre comercial</span> <input
+											type="text" name="nombreComercial" required>
+									</div>
+									<div class="input-box">
+										<span class="details">Nombre </span> <input type="text"
+											name="nombre" required>
+									</div>
+									<div class="input-box">
+										<span class="details">Dirección</span> <input type="text"
+											name="direccion" required>
+									</div>
+									<div class="input-box">
+										<span class="details">País</span> <select name="pais">
+											<option value="Colombia">Colombia</option>
+										</select>
+									</div>
+									<div class="input-box">
+										<span class="details">Departamento</span> <select
+											name="departamento" id="departamento">
 											<option>La primera opción</option>
 										</select>
 									</div>
 									<div class="input-box">
-										<span class="details">Número de documento</span>
-										 <input type="number" name="numero_documento" required>
-									</div>
-									<div class="input-box">
-										<span class="details">Nombre comercial</span> 
-										<input type="text" name="nombre_comercial" required>
-									</div>
-									<div class="input-box">
-										<span class="details">Nombre </span> 
-										<input type="text" name="nombre" required>
-									</div>
-									<div class="input-box">
-										<span class="details">Dirección</span> 
-										<input type="text" name="direccion" required>
-									</div>
-									<div class="input-box">
-										<span class="details">País</span> 
-										<select>
+										<span class="details">Municipio/ciudad</span> <select
+											name="municipio" id="municipio">
 											<option>La primera opción</option>
 										</select>
 									</div>
 									<div class="input-box">
-										<span class="details">Departamento</span> 
-										<select>
-											<option>La primera opción</option>
+										<span class="details">Correo</span> <input type="text"
+											name="correo" required>
+									</div>
+									<div class="input-box">
+										<span class="details">Teléfono</span> <input type="text"
+											name="telefono" required>
+									</div>
+									<div class="input-box">
+										<span class="details">Contribuyente</span> <select name="contribuyente">
+											<option>Elija tipo</option>
+											<option>Persona Natural</option>
+											<option>Persona Jurídica</option>
 										</select>
 									</div>
 									<div class="input-box">
-										<span class="details">Municipio/ciudad</span> 
-										<select>
-											<option>La primera opción</option>
-										</select>
-									</div>
-									<div class="input-box">
-										<span class="details">Correo</span> 
-										<input type="text" name="correo" required>
-									</div>
-									<div class="input-box">
-										<span class="details">Teléfono</span> 
-										<input type="text" name="telefono" required>
-									</div>
-									<div class="input-box">
-										<span class="details">Contribuyente</span> 
-										<select>
-											<option>La primera opción</option>
-										</select>
-									</div>
-									<div class="input-box">
-										<span class="details">Regimen contable</span> 
-										<select>
-											<option>La primera opción</option>
+										<span class="details">Régimen contable</span> <select name="regimen">
+											<option>Elija tipo</option>
+											<option>Común</option>
+											<option>Simplificado</option>
 										</select>
 									</div>
 								</div>
@@ -233,14 +317,15 @@
 				<div class="modal-footer">
 					<button class="btn btn-secondary" type="button"
 						data-dismiss="modal">Cancel</button>
-					<a class="btn btn-primary" href="<%=request.getContextPath()%>/inicio">Logout</a>
+					<a class="btn btn-primary"
+						href="<%=request.getContextPath()%>/inicio">Logout</a>
 				</div>
 			</div>
 		</div>
 	</div>
 
 	<!-- Bootstrap core JavaScript-->
-<jsp:include page="scriptsVistas.jsp" />
+	<jsp:include page="scriptsVistas.jsp" />
 
 </body>
 

@@ -47,13 +47,14 @@ public class ProductoController extends HttpServlet {
 			request.getRequestDispatcher("/login").forward(request, response);
 			return;
 		}
-			verInicio(request, response, path);
+		verInicio(request, response, path);
 	}
 
 	protected void verInicio(HttpServletRequest request, HttpServletResponse response, String path)
 			throws ServletException, IOException {
 
 		path = path.replace("/inicio/producto/", "");
+		Producto p = null;
 
 		if (path.contains("/validar")) {
 			verProductoCRUD(request, response, path);
@@ -67,11 +68,13 @@ public class ProductoController extends HttpServlet {
 				break;
 			case "agregar":
 				request.getRequestDispatcher("/Dashboard/agregarProducto.jsp").include(request, response);
-				//request.sendRedirect("Dashboard/agregarProducto.jsp").forward(request, response);
 				break;
 			case "editar":
-				request.setAttribute("producto", pDAO.find(request.getParameter("codigo")));
-				request.getRequestDispatcher("/Dashboard/editarProducto.jsp").include(request, response);
+				p = pDAO.find(Integer.parseInt(request.getParameter("codigo")));
+				if (p != null) {
+					request.setAttribute("producto", p);
+					request.getRequestDispatcher("/Dashboard/editarProducto.jsp").include(request, response);
+				}
 				break;
 			default:
 				request.getRequestDispatcher("/inicio").forward(request, response);

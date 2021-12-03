@@ -1,3 +1,5 @@
+<%@page import="co.edu.ufps.facturacion.entities.*"%>
+<%@page import="java.util.*"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html>
@@ -76,22 +78,9 @@
 								</form>
 							</div></li>
 						<!-- Nav Item - User Information -->
-						<li class="nav-item dropdown no-arrow"><a
-							aria-expanded="false" aria-haspopup="true"
-							class="nav-link dropdown-toggle" data-toggle="dropdown" href="#"
-							id="userDropdown" role="button"> <span
-								class="mr-2 d-none d-lg-inline text-gray-600 small">
-									Usuario </span> <img class="img-profile rounded-circle"
-								src="img/undraw_profile.svg"> </img>
-						</a> <!-- Dropdown - User Information -->
-							<div aria-labelledby="userDropdown"
-								class="dropdown-menu dropdown-menu-right shadow animated--grow-in">
-								<a class="dropdown-item" data-target="#logoutModal"
-									data-toggle="modal" href="#"> <i
-									class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400">
-								</i> Cerrar sesión
-								</a>
-							</div></li>
+						<li class="nav-item dropdown no-arrow"> 
+						<jsp:include page="imgUsuario.jsp" /><!-- Dropdown - User Information -->
+						</li>
 					</ul>
 				</nav>
 				<!-- End of Topbar -->
@@ -103,46 +92,53 @@
 						<div class="container">
 							<form action="#">
 								<div class="user-details">
+								
+								<%Producto p = request.getAttribute("producto")==null?null: (Producto)request.getAttribute("producto");
+								
+								if(p!=null){
+									
+								%>
 									<div class="input-box">
-										<span class="details"> ID producto </span> <input type="text"
-											name="codigo" disabled>
+										<span class="details"> ID producto </span> <input type="hidden"
+											name="codigo" value="<%=p.getCodigo()%>">
 									</div>
 									<br>
 									<div class="input-box">
 										<span class="details"> Nombre </span> <input type="text"
-											name="nombre" required>
+											name="nombre"value="<%=p.getNombre()%>" required>
 									</div>
 									<br>
 									<div class="input-box">
 										<span class="details"> Descripción </span> <input type="text"
-											name="descripcion" required>
+											name="descripcion" value="<%=p.getDescripcion()%>" required>
 									</div>
 									<br>
 									<div class="input-box">
 										<span class="details"> Unidad de medida </span> <input
-											type="text" name="unidad_medida" required>
+											type="text" name="unidadMedida" value="<%=p.getUnidadMedia()%>" required>
 									</div>
 									<br>
 									<div class="input-box">
 										<span class="details"> Valor unitario </span> <input
-											type="text" name="valor_unitario" required>
+											type="text" name="valorUnitario" value="<%=p.getValorUnitario()%>" required>
 									</div>
 									<br>
 									<div class="input-box">
 										<span class="details"> IVA </span> <input type="text"
-											name="iva" required>
+											name="iva" value="<%=p.getIva()%>" required>
 									</div>
 									<br>
 									<div class="input-box">
 										<span class="details"> % Descuento </span> <input
-											type="number" name="porcentaje_descuento" required>
+											type="number" name="descuento" value="<%=p.getPorcentajeDescuento()%>" required>
 									</div>
 									<br>
 									<div class="input-box">
 										<span class="details"> Estado </span> <input type="number"
-											name="estado" required>
+											name="estado" value="<%=p.getEstado()%>"required>
 									</div>
 								</div>
+								<%}%>
 								<div class="button">
 									<button class="button_style">Actualizar</button>
 								</div>

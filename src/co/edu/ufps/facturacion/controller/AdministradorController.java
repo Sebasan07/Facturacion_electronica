@@ -16,7 +16,7 @@ import co.edu.ufps.facturacion.entities.Usuario;
 /**
  * Servlet implementation class AdministradorController
  */
-@WebServlet({ "/login/validar", "/registro/validar" })
+@WebServlet({ "/login/validar", "/registro/validar","/logout" })
 public class AdministradorController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
@@ -42,17 +42,20 @@ public class AdministradorController extends HttpServlet {
 			throws ServletException, IOException {
 		String path = request.getServletPath();
 
-		if (request.getSession().getAttribute("usuario") != null) {
+		if (!path.contains("logout") && request.getSession().getAttribute("usuario") != null) {
 			request.getRequestDispatcher("/inicio").forward(request, response);
 			return;
 		}
-
+System.out.println(path);
 		switch (path) {
 		case "/login/validar":
 			logear(request, response);
 			break;
 		case "/registro/validar":
 			registrarUsuario(request, response);
+			break;
+		case "/logout":
+			logout(request,response);
 			break;
 		default:
 			break;
@@ -72,7 +75,6 @@ public class AdministradorController extends HttpServlet {
 		} else {
 			request.setAttribute("mensaje", "No existe el usuario");
 			request.getRequestDispatcher("/login").forward(request, response);
-			// response.sendRedirect(request.getContextPath() + "/Usuario/Login);
 		}
 
 	}
@@ -104,6 +106,17 @@ public class AdministradorController extends HttpServlet {
 		case "Vendedor":return 3;
 		default:return 1;
 		}
+	}
+	
+	protected void logout(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+
+		Usuario us= request.getSession().getAttribute("usuario")==null?null: (Usuario)request.getSession().getAttribute("usuario");
+		if (us !=null) {
+			request.getSession().removeAttribute("usuario");
+			request.getRequestDispatcher("/login").forward(request, response);
+			return;
+		} 
 	}
 	
 	/**

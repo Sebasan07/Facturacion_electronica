@@ -77,22 +77,9 @@
 								</form>
 							</div></li>
 						<!-- Nav Item - User Information -->
-						<li class="nav-item dropdown no-arrow"><a
-							aria-expanded="false" aria-haspopup="true"
-							class="nav-link dropdown-toggle" data-toggle="dropdown" href="#"
-							id="userDropdown" role="button"> <span
-								class="mr-2 d-none d-lg-inline text-gray-600 small">
-									Usuario </span> <img class="img-profile rounded-circle"
-								src="img/undraw_profile.svg"> </img>
-						</a> <!-- Dropdown - User Information -->
-							<div aria-labelledby="userDropdown"
-								class="dropdown-menu dropdown-menu-right shadow animated--grow-in">
-								<a class="dropdown-item" data-target="#logoutModal"
-									data-toggle="modal" href="#"> <i
-									class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400">
-								</i> Cerrar sesión
-								</a>
-							</div></li>
+						<li class="nav-item dropdown no-arrow"> 
+						<jsp:include page="imgUsuario.jsp" /><!-- Dropdown - User Information -->
+						</li>
 					</ul>
 				</nav>
 				<!-- End of Topbar -->
