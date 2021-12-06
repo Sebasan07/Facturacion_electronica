@@ -1,7 +1,10 @@
+<%@page import="co.edu.ufps.facturacion.entities.*"%>
+<%@page import="java.util.*"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
+
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 
 <head>
 
@@ -12,9 +15,7 @@
 
 <title>Facturas</title>
 
-<!-- Custom fonts for this template -->
 <jsp:include page="cssVistas.jsp" />
-
 </head>
 
 <body id="page-top">
@@ -24,7 +25,7 @@
 
 		<!-- Sidebar -->
 		<jsp:include page="navMenu.jsp" />
-		<!-- End of Sidebar -->
+		<!-- End of Sidebar ---------------------------------------------------------------------->
 
 		<!-- Content Wrapper -->
 		<div id="content-wrapper" class="d-flex flex-column">
@@ -37,19 +38,17 @@
 					class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
 
 					<!-- Sidebar Toggle (Topbar) -->
-					<form class="form-inline">
-						<button id="sidebarToggleTop"
-							class="btn btn-link d-md-none rounded-circle mr-3">
-							<i class="fa fa-bars"></i>
-						</button>
-					</form>
+					<button id="sidebarToggleTop"
+						class="btn btn-link d-md-none rounded-circle mr-3">
+						<i class="fa fa-bars"></i>
+					</button>
 
 					<!-- Topbar Search -->
 					<form
 						class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
 						<div class="input-group">
 							<input type="text" class="form-control bg-light border-0 small"
-								placeholder="Buscar" aria-label="Search"
+								placeholder="Search for..." aria-label="Search"
 								aria-describedby="basic-addon2">
 							<div class="input-group-append">
 								<button class="btn btn-primary" type="button">
@@ -75,7 +74,7 @@
 									<div class="input-group">
 										<input type="text"
 											class="form-control bg-light border-0 small"
-											placeholder="Buscar" aria-label="Buscar"
+											placeholder="Search for..." aria-label="Search"
 											aria-describedby="basic-addon2">
 										<div class="input-group-append">
 											<button class="btn btn-primary" type="button">
@@ -86,7 +85,9 @@
 								</form>
 							</div></li>
 
+						<!-- Nav Item - Alerts -->
 
+						<!-- Dropdown - Alerts -->
 
 						<!-- Nav Item - User Information -->
 						<li class="nav-item dropdown no-arrow"> 
@@ -94,6 +95,15 @@
 						</li>
 
 					</ul>
+
+				</nav>
+				<!-- End of Topbar -->
+
+				<!-- Begin Page Content -->
+				<div class="container-fluid">
+
+
+					<!-- Begin Page Content -->
 					<div class="container-fluid">
 
 						<!-- Page Heading -->
@@ -111,37 +121,38 @@
 												<th>Fecha de expedición</th>
 												<th>Fecha de vencimiento</th>
 												<th>Total</th>
-												<th>Estado</th>
 												<th>Enviar</th>
 											</tr>
 										</thead>
-										<tfoot>
-											<tr>
-												<th>Numero</th>
-												<th>Cliente</th>
-												<th>Fecha de expedición</th>
-												<th>Fecha de vencimiento</th>
-												<th>Total</th>
-												<th>Estado</th>
-												<th>Enviar</th>
-											</tr>
-										</tfoot>
 										<tbody>
+
+											<%
+												List<Factura> facturas = request.getAttribute("facturas") == null ? null
+													: (List<Factura>) request.getAttribute("facturas");
+
+											if (facturas != null) {
+												for (Factura f :facturas) {
+													if (f.getEstado() == 1) {
+											%>
 											<tr>
-												<td>xxxxx</td>
-												<td>xxxxx</td>
-												<td>xxxxx</td>
-												<td>xxxxx</td>
-												<td>xxxxx</td>
-												<td>xxxxx</td>
+												<td><%=f.getRangoNumeracionBean().getNumeroActual()%></td>
+												<td><%=f.getCliente().getNombre()%></td>
+												<td><%=f.getFechaExpedicion()%></td>
+												<td><%=f.getFechaVencimiento()%></td>
+												<td><%=f.getValorNeto()%></td>
+
+
 												<td>
-													<button class="btn boton-accion" href="<%=request.getContextPath()%>/inicio/factura/enviar">
-														<i class="fas fa-paper-plane"></i>
-													</button>
+													<a class="btn boton-accion" href="<%=request.getContextPath()%>/inicio/factura/agregar">
+														<i class="fas fa-pencil-alt"></i>
+													</a>
 												</td>
 											</tr>
-
-
+											<%
+												}
+											}
+											}
+											%>
 										</tbody>
 									</table>
 								</div>
@@ -149,46 +160,38 @@
 						</div>
 
 					</div>
-</div>
-            <!-- End of Main Content -->
 
-            <!-- Footer -->
+					<!-- Scroll to Top Button-->
+					<a class="scroll-to-top rounded" href="#page-top"> <i
+						class="fas fa-angle-up"></i>
+					</a>
 
-            <!-- End of Footer -->
+					<!-- Logout Modal-->
+					<div class="modal fade" id="logoutModal" tabindex="-1"
+						role="dialog" aria-labelledby="exampleModalLabel"
+						aria-hidden="true">
+						<div class="modal-dialog" role="document">
+							<div class="modal-content">
+								<div class="modal-header">
+									<h5 class="modal-title" id="exampleModalLabel">Ready to
+										Leave?</h5>
+									<button class="close" type="button" data-dismiss="modal"
+										aria-label="Close">
+										<span aria-hidden="true">×</span>
+									</button>
+								</div>
+								<div class="modal-body">Select "Logout" below if you are
+									ready to end your current session.</div>
+								<div class="modal-footer">
+									<button class="btn btn-secondary" type="button"
+										data-dismiss="modal">Cancel</button>
+									<a class="btn btn-primary" href="login.html">Logout</a>
+								</div>
+							</div>
+						</div>
+					</div>
 
-        </div>
-        <!-- End of Content Wrapper -->
-
-    </div>
-    <!-- End of Page Wrapper -->
-
-    <!-- Scroll to Top Button-->
-    <a class="scroll-to-top rounded" href="#page-top">
-        <i class="fas fa-angle-up"></i>
-    </a>
-
-    <!-- Logout Modal-->
-    <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-        aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">¿Cerrar sesión?</h5>
-                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">×</span>
-                    </button>
-                </div>
-                <div class="modal-body">Seleccione "Salir" si está listo para cerrar su sesión.</div>
-                <div class="modal-footer">
-                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancelar</button>
-                    <a class="btn btn-primary" href="login.html">Salir</a>
-                </div>
-            </div>
-        </div>
-    </div>
-
-<jsp:include page="scriptsVistas.jsp" />
-
+					<jsp:include page="scriptsVistas.jsp" />
 </body>
 
 </html>

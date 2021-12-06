@@ -30,9 +30,11 @@ import co.edu.ufps.facturacion.entities.RangoNumeracion;
  * Servlet implementation class FacturaController
  */
 @WebServlet({ "/inicio/factura/ver", //
-		"/inicio/factura/agregar", 
+		"/inicio/factura/agregar",
+		"/inicio/factura/rango/agregar",
 
-		"/inicio/factura/agregar/validar", 
+		"/inicio/factura/agregar/validar",
+		"/inicio/factura/rango/agregar/validar",
 		"/inicio/factura/eliminar/validar",
 })
 public class FacturaController extends HttpServlet {
@@ -90,15 +92,17 @@ public class FacturaController extends HttpServlet {
 			case "agregar":
 				request.getRequestDispatcher("Dashboard/emitirFactura.jsp").forward(request, response);
 				break;
-			case "editar":
-				fa = fDAO.find(request.getParameter("CUFE"));
-				if (fa != null) {
-					request.setAttribute("factura", fa);
-					request.getRequestDispatcher("Dashboard/editarFactura.jsp").forward(request, response);
-				} else {
-					request.getRequestDispatcher("/inicio/factura/ver").forward(request, response);
-				}
+			case "rango/agregar":
+				request.getRequestDispatcher("Dashboard/agregarRangosNumeracion.jsp").forward(request, response);
 				break;
+			/*
+			 * case "editar": fa = fDAO.find(request.getParameter("CUFE")); if (fa != null)
+			 * { request.setAttribute("factura", fa);
+			 * request.getRequestDispatcher("Dashboard/editarFactura.jsp").forward(request,
+			 * response); } else {
+			 * request.getRequestDispatcher("/inicio/factura/ver").forward(request,
+			 * response); } break;
+			 */
 			default:
 				request.getRequestDispatcher("/inicio").forward(request, response);
 				break;
@@ -129,8 +133,8 @@ public class FacturaController extends HttpServlet {
 			throws ServletException, IOException {
 		
 		Cliente cl = cDAO.find(Integer.parseInt(request.getParameter("cliente")));
-		Empresa em = eDAO.find(Integer.parseInt(request.getParameter("empresa")));
-		RangoNumeracion rg = rgDAO.find(Integer.parseInt(request.getParameter("rango")));
+		Empresa em = (Empresa) request.getSession().getAttribute("empresa");
+		RangoNumeracion rg = rgDAO.find(Integer.parseInt(request.getParameter("rango")));//ultimo rango
 		
 		Date fechaExpedicion = new Date();
         SimpleDateFormat getYearFormat = new SimpleDateFormat("dd/MM/yyyy");
@@ -142,6 +146,7 @@ public class FacturaController extends HttpServlet {
         
 		Factura f=new Factura("", (byte)1, fechaExpedicion, fechaVencimiento, firma, totalDescuento, valorNeto, cl,em,rg);
 		f.generarCufe();
+		
 		fDAO.insert(f);
 		insertarDetalleFactura(request,response,f);
 	}
