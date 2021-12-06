@@ -68,8 +68,8 @@ public class EmpresaController extends HttpServlet {
 			case "editar":
 				e = request.getSession().getAttribute("empresa")!=null?(Empresa)request.getSession().getAttribute("empresa"):null;
 				if (e != null) {//VALIDAR EN LA VISTA
-					request.setAttribute("e", e);
-					request.getRequestDispatcher("/Dashboard/editarDatosFiscales.jsp").include(request, response);
+					request.setAttribute("em", e);
+					request.getRequestDispatcher("/Dashboard/editarDatosFiscalesEmpresa.jsp").include(request, response);
 				} else {
 					request.getRequestDispatcher("/inicio").forward(request, response);
 				}

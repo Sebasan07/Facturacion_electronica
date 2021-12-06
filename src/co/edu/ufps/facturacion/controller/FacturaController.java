@@ -119,6 +119,9 @@ public class FacturaController extends HttpServlet {
 		case "agregar":
 			emitirFactura(request, response);
 			break;
+		case "rango/agregar":
+			agregarRango(request, response);
+			break;
 		case "eliminar":
 			eliminarFactura(request, response);
 			break;
@@ -160,6 +163,13 @@ public class FacturaController extends HttpServlet {
 			df= new DetalleFactura(0, a.getCantidad(), f, a.getProducto());
 			dfDAO.insert(df);
 		}
+	}
+	
+	protected void agregarRango(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		
+		String prefijo =request.getParameter("prefijo");
+		
 	}
 	
 	protected void eliminarFactura(HttpServletRequest request, HttpServletResponse response)

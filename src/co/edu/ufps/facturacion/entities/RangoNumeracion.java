@@ -12,9 +12,13 @@ import java.util.List;
  * The persistent class for the rango_numeracion database table.
  * 
  */
-@Entity
+@Entity(name="rango_numeracion")
 @Table(name="rango_numeracion")
-@NamedQuery(name="RangoNumeracion.findAll", query="SELECT r FROM RangoNumeracion r")
+@NamedQueries({
+	@NamedQuery(name="RangoNumeracion.findAll", query="SELECT r FROM rango_numeracion r"),
+	@NamedQuery(name="RangoNumeracion.findLast", query="SELECT r FROM rango_numeracion r where r.idNumeracion=(SELECT max(r.idNumeracion) from rango_numeracion r) ")
+})
+
 public class RangoNumeracion implements Serializable {
 	private static final long serialVersionUID = 1L;
 

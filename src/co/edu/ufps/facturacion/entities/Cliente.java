@@ -11,8 +11,8 @@ import java.util.List;
  * The persistent class for the cliente database table.
  * 
  */
-@Entity
-@NamedQuery(name="Cliente.findAll", query="SELECT c FROM Cliente c")
+@Entity(name="cliente")
+@NamedQuery(name="Cliente.findAll", query="SELECT c FROM cliente c")
 public class Cliente implements Serializable {
 	private static final long serialVersionUID = 1L;
 
@@ -52,6 +52,10 @@ public class Cliente implements Serializable {
 	//bi-directional many-to-one association to Factura
 	@OneToMany(mappedBy="cliente")
 	private List<Factura> facturas;
+
+	//bi-directional many-to-one association to ClienteEmpresa
+	@OneToMany(mappedBy="cliente")
+	private List<ClienteEmpresa> clienteEmpresas;
 
 	public Cliente() {
 	}
@@ -200,6 +204,28 @@ public class Cliente implements Serializable {
 		factura.setCliente(null);
 
 		return factura;
+	}
+
+	public List<ClienteEmpresa> getClienteEmpresas() {
+		return this.clienteEmpresas;
+	}
+
+	public void setClienteEmpresas(List<ClienteEmpresa> clienteEmpresas) {
+		this.clienteEmpresas = clienteEmpresas;
+	}
+
+	public ClienteEmpresa addClienteEmpresa(ClienteEmpresa clienteEmpresa) {
+		getClienteEmpresas().add(clienteEmpresa);
+		clienteEmpresa.setCliente(this);
+
+		return clienteEmpresa;
+	}
+
+	public ClienteEmpresa removeClienteEmpresa(ClienteEmpresa clienteEmpresa) {
+		getClienteEmpresas().remove(clienteEmpresa);
+		clienteEmpresa.setCliente(null);
+
+		return clienteEmpresa;
 	}
 
 }

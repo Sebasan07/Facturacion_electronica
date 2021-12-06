@@ -15,7 +15,7 @@ public class DetalleFactura implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@Column(name="id_detalle")
+	@Column(name="id_detalle_factura")
 	private int idDetalle;
 
 	private int cantidad;

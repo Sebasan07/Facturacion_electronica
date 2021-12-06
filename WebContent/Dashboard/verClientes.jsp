@@ -1,4 +1,5 @@
 <%@page import="co.edu.ufps.facturacion.entities.*"%>
+<%@page import="co.edu.ufps.facturacion.dao.*"%>
 <%@page import="java.util.*"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
@@ -89,9 +90,8 @@
 
 
 						<!-- Nav Item - User Information -->
-						<li class="nav-item dropdown no-arrow"> 
-						<jsp:include page="imgUsuario.jsp" /><!-- Dropdown - User Information -->
-						</li>
+						<li class="nav-item dropdown no-arrow"><jsp:include
+								page="imgUsuario.jsp" /><!-- Dropdown - User Information --></li>
 
 					</ul>
 
@@ -129,47 +129,45 @@
 									</thead>
 									<tbody>
 
-											<%
-												List<Cliente> clientes= request.getAttribute("clientes") == null ? null
-													: (List<Cliente>) request.getAttribute("clientes");
+										<%
+											Empresa e = request.getSession().getAttribute("empresa") != null
+												? (Empresa) request.getSession().getAttribute("empresa")
+												: null;
+										List<Cliente> clientes = null;
+										if (e != null) {
+											clientes = new ClienteDAO().findByEmpresa(e.getNit());
+										}
+										if (clientes != null) {
+											for (Cliente c : clientes) {
+										%>
+										<tr>
+											<td><%=c.getNumeroDocumento()%></td>
+											<td><%=c.getNombreComercial()%></td>
+											<td><%=c.getNombre()%></td>
+											<td><%=c.getPais()%></td>
+											<td><%=c.getDepartamento()%></td>
+											<td><%=c.getCiudad()%></td>
+											<td><%=c.getDireccion()%></td>
+											<td><%=c.getCorreo()%></td>
+											<td><%=c.getTelefono()%></td>
+											<td><%=c.getContribuyente()%></td>
+											<td><%=c.getRegimenContable()%></td>
+											<td><%=c.getTipoDocumentoBean().getDescripcion()%></td>
 
-											if (clientes != null) {
-												for (Cliente c : clientes) {
-													if (c.getEstado() == 1) {
-											%>
-											<tr>
-												<td><%=c.getNumeroDocumento()%></td>
-												<td><%=c.getNombreComercial()%></td>
-												<td><%=c.getNombre()%></td>
-												<td><%=c.getPais()%></td>
-												<td><%=c.getDepartamento()%></td>
-												<td><%=c.getCiudad()%></td>
-												<td><%=c.getDireccion()%></td>
-												<td><%=c.getCorreo()%></td>
-												<td><%=c.getTelefono()%></td>
-												<td><%=c.getContribuyente()%></td>
-												<td><%=c.getRegimenContable()%></td>
-												<td><%=c.getTipoDocumentoBean().getDescripcion()%></td>
+											<td><a class="btn boton-accion"
+												href="<%=request.getContextPath()%>/inicio/cliente/editar?documento=<%=c.getNumeroDocumento()%>">
+													<i class="fas fa-pencil-alt"></i>
+											</a></td>
+											<td><a class="btn boton-accion"
+												href="<%=request.getContextPath()%>/inicio/cliente/eliminar/validar?documento=<%=c.getNumeroDocumento()%>">
+													<i class="far fa-trash-alt"></i>
+											</a></td>
+										</tr>
 
-												<td>
-													<a class="btn boton-accion" 
-													href="<%=request.getContextPath()%>/inicio/cliente/editar?documento=<%=c.getNumeroDocumento()%>">
-														<i class="fas fa-pencil-alt"></i>
-													</a>
-												</td>
-												<td>
-													<a class="btn boton-accion" 
-													href="<%=request.getContextPath()%>/inicio/cliente/eliminar/validar?documento=<%=c.getNumeroDocumento()%>">
-														<i class="far fa-trash-alt"></i>
-													</a>
-												</td>
-											</tr>
-											
-											<%
-												}
+										<%
 											}
-											}
-											%>
+										}
+										%>
 
 									</tbody>
 								</table>

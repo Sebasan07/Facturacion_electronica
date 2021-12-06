@@ -11,9 +11,8 @@ import java.util.List;
  * The persistent class for the empresa database table.
  * 
  */
-
-@Entity(name="empresa")
-@NamedQuery(name="Empresa.findAll", query="SELECT e FROM empresa e")
+@Entity
+@NamedQuery(name="Empresa.findAll", query="SELECT e FROM Empresa e")
 public class Empresa implements Serializable {
 	private static final long serialVersionUID = 1L;
 
@@ -59,9 +58,14 @@ public class Empresa implements Serializable {
 	@OneToMany(mappedBy="empresa")
 	private List<Usuario> usuarios;
 
+	//bi-directional many-to-one association to ClienteEmpresa
+	@OneToMany(mappedBy="empresa")
+	private List<ClienteEmpresa> clienteEmpresas;
+
 	public Empresa() {
 		this.facturas = new ArrayList<>();
 		this.usuarios = new ArrayList<>();
+		this.clienteEmpresas = new ArrayList<>();
 	}
 
 	public Empresa(int nit, String correoEmpresa, String departamento, String direccion, String documento,
@@ -82,9 +86,8 @@ public class Empresa implements Serializable {
 		this.tipoDocumentoBean = tipoDocumentoBean;
 		this.facturas = new ArrayList<>();
 		this.usuarios = new ArrayList<>();
+		this.clienteEmpresas = new ArrayList<>();
 	}
-
-
 
 	public int getNit() {
 		return this.nit;
@@ -224,6 +227,28 @@ public class Empresa implements Serializable {
 		usuario.setEmpresa(null);
 
 		return usuario;
+	}
+
+	public List<ClienteEmpresa> getClienteEmpresas() {
+		return this.clienteEmpresas;
+	}
+
+	public void setClienteEmpresas(List<ClienteEmpresa> clienteEmpresas) {
+		this.clienteEmpresas = clienteEmpresas;
+	}
+
+	public ClienteEmpresa addClienteEmpresa(ClienteEmpresa clienteEmpresa) {
+		getClienteEmpresas().add(clienteEmpresa);
+		clienteEmpresa.setEmpresa(this);
+
+		return clienteEmpresa;
+	}
+
+	public ClienteEmpresa removeClienteEmpresa(ClienteEmpresa clienteEmpresa) {
+		getClienteEmpresas().remove(clienteEmpresa);
+		clienteEmpresa.setEmpresa(null);
+
+		return clienteEmpresa;
 	}
 
 }

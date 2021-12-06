@@ -123,6 +123,7 @@
 								<div class="user-details">
 									<%
 										Usuario us = (Usuario) request.getAttribute("usuario");
+									if (us != null) {
 									%>
 
 									<div class="input-box">
@@ -140,11 +141,16 @@
 									<div class="input-box">
 										<span class="details">Rol</span> <select name="rol" id="rol"
 											class="form-control">
-											<option value="<%=us.getRolUsuarioBean().getIdRol() %>"><%=us.getRolUsuarioBean().getRolUsuario()%></option>
+											<option value="<%=us.getRolUsuarioBean().getIdRol()%>"><%=us.getRolUsuarioBean().getRolUsuario()%></option>
 										</select>
 									</div>
 
 								</div>
+								<%
+									} else {
+								response.sendRedirect(request.getContextPath() + "/inicio/usuario/ver");
+								}
+								%>
 								<div class="button">
 									<button class="button_style">Guardar</button>
 								</div>
