@@ -1,27 +1,85 @@
+<%@page import="co.edu.ufps.facturacion.entities.*"%>
+<%@page import="co.edu.ufps.facturacion.dao.*"%>
+<%@page import="java.util.*"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html>
-<html>
+<html lang="es">
+
 <head>
 <meta charset="ISO-8859-1">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport"
 	content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <!-- Custom fonts for this template-->
-<link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet"
-	type="text/css">
-<link
-	href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
-	rel="stylesheet">
-<!-- Custom styles for this template-->
-<link href="css/sb-admin-2.min.css" rel="stylesheet">
-<link rel="stylesheet" href="css/registrar-empresa.css">
-<!-- Custom styles for this page -->
-<link href="vendor/datatables/dataTables.bootstrap4.min.css"
-	rel="stylesheet">
-<script src="https://kit.fontawesome.com/ba2336a3e9.js"
-	crossorigin="anonymous"></script>
-<title>Insert title here</title>
+
+<title>Datos fiscales</title>
+
+<jsp:include page="cssVistas.jsp" />
+<script type="text/javascript"
+	src="http://ajax.microsoft.com/ajax/jQuery/jquery-1.4.4.min.js"></script>
+<script type="text/javascript">
+
+$(document).ready(function() {
+		llenarDepartamentos();
+		
+		function loadJSON(callback) {
+			var xobj = new XMLHttpRequest();
+			xobj.overrideMimeType("application/json");
+			xobj.open("GET", "https://raw.githubusercontent.com/marcovega/colombia-json/master/colombia.min.json", true); // Reemplaza colombia-json.json con el nombre que le hayas puesto
+			xobj.onreadystatechange = function () {
+				if (xobj.readyState == 4 && xobj.status == "200") {
+					callback(xobj.responseText);
+				}
+			};
+			xobj.send(null);
+		}
+		function llenarDepartamentos() {
+			loadJSON(function (response) {
+				// Parse JSON string into object
+				
+				var datos = JSON.parse(response);
+				for(var i in datos){
+					$('#departamento').prepend("<option value='"+datos[(datos.length-1)-i].departamento+"' >"+datos[(datos.length-1)-i].departamento+"</option>");
+				}
+				$('#departamento').prepend("<option value='' selected>Seleccione departamento</option>");
+				$('#municipio').prop('disabled', 'disabled');
+			});
+		}
+		
+		$('#departamento').change(function() {
+			cambiarMunicipio(this, '#municipio');
+		});
+		
+		function cambiarMunicipio(combo1, combo2) {
+			combo2 = $(combo2);
+			limpiarCombo(combo2);
+			combo2.disabled = true;
+			llenarMunicipios(combo1.selectedIndex);
+			combo1.disabled =false;
+			combo2.disabled =false;
+		}
+		
+		function limpiarCombo(combo){
+			$('#municipio').empty();
+			$('#municipio').prepend("<option value='' selected>Seleccione municipio</option>");
+			$('#municipio').prop('disabled', false);
+		}
+		
+		function llenarMunicipios(id) {
+			loadJSON(function (response) {
+				var datos = JSON.parse(response);
+				$('#municipio').empty();
+				for(var i=datos[id-1].ciudades.length-1; i>=0;i--){
+					$('#municipio').prepend("<option value='"+datos[(id-1)].ciudades[i]+"' >"+datos[(id-1)].ciudades[i]+"</option>");
+				}
+				$('#municipio').prepend("<option value='' selected>Seleccione municipio</option>");
+			});
+		}
+
+});
+
+</script>
 </head>
 <body id="page-top">
 
@@ -96,24 +154,9 @@
 						<div class="topbar-divider d-none d-sm-block"></div>
 
 						<!-- Nav Item - User Information -->
-						<li class="nav-item dropdown no-arrow"><a
-							class="nav-link dropdown-toggle" href="#" id="userDropdown"
-							role="button" data-toggle="dropdown" aria-haspopup="true"
-							aria-expanded="false"> <span
-								class="mr-2 d-none d-lg-inline text-gray-600 small">Nombre
-									de usuario</span> <img class="img-profile rounded-circle"
-								src="img/undraw_profile.svg">
-						</a> <!-- Dropdown - User Information -->
-							<div
-								class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
-								aria-labelledby="userDropdown">
-								<div class="dropdown-divider"></div>
-								<a class="dropdown-item" href="#" data-toggle="modal"
-									data-target="#logoutModal"> <i
-									class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
-									Salir
-								</a>
-							</div></li>
+						<li class="nav-item dropdown no-arrow"> 
+						<jsp:include page="imgUsuario.jsp" /><!-- Dropdown - User Information -->
+						</li>
 
 					</ul>
 
@@ -132,68 +175,77 @@
 
 					<!--CARDS -->
 					<div class="container">
-						<form action="#">
+						<form action="<%=request.getContextPath()%>/inicio/empresa/agregar/validar"
+								method="post">
 							<div class="user-details">
 								<div class="input-box">
 									<span class="details">Nit empresa</span> <input type="number"
-										placeholder="NIT" name="NIT" required>
+										placeholder="NIT" name="nit" required>
 								</div>
-
-								<div class="input-box">
-									<span class="details">Número documento</span> <input
-										type="number" placeholder="Ingrese identificación"
-										name="nombre_representante" required>
-								</div>
-
 								<div class="input-box">
 									<span class="details">Razón social empresa</span> <input
-										type="number" placeholder="Razón social" name="razon_social"
-										required>
-								</div>
-
-								<div class="input-box">
-									<span class="details">Departamento</span> <input type="text"
-										placeholder="Departamento" name="departamento" required>
+										type="text" placeholder="Razón social" name="razonSocial" required>
 								</div>
 								<div class="input-box">
 									<span class="details">Dirección de la empresa</span> <input
-										type="text" placeholder="Dirección" name="dirección" required>
+										type="text" placeholder="Dirección" name="direccion" required>
 								</div>
-
 								<div class="input-box">
-									<span class="details">Municipio/Ciudad</span> <input
-										type="text" placeholder="Municipio/Ciudad" name="municipio"
-										required>
+									<span class="details">Correo empresa</span> <input type="email"
+										placeholder="Ingrese el correo" name="correo" required>
 								</div>
-
 								<div class="input-box">
-									<span class="details">Télefono de la empresa</span> <input
-										type="text" placeholder="Ingrese identificación"
+									<span class="details">Teléfono de la empresa</span> <input
+										type="number" placeholder="Ingrese teléfono"
 										name="telefono" required>
+								</div>
+								<div class="input-box">
+										<span class="details">Departamento</span> <select
+											name="departamento" id="departamento">
+										</select>
+								</div>
+								<div class="input-box">
+										<span class="details">Municipio/ciudad</span> <select 
+											name="municipio" id="municipio" required>
+											<option>Seleccione municipio</option>
+										</select>
+								</div>
+								<%
+										TipoDocumentoDAO tDAO = new TipoDocumentoDAO();
+
+									List<TipoDocumento> tipos = tDAO.list();
+									%>
+									<div class="input-box">
+										<span class="details">Tipo de documento</span> <select
+											name="tipoDocumento">
+											<%
+												for (TipoDocumento t : tipos) {
+											%>
+											<option value="<%=t.getIdTipoDocumento()%>"><%=t.getIdTipoDocumento()%>. <%=t.getDescripcion()%></option>
+											<%
+												}
+											%>
+										</select>
+
+									</div>
+								<div class="input-box">
+									<span class="details">Número documento</span> <input
+										type="number" placeholder="Ingrese identificación del representante"
+										name="documento" required>
 								</div>
 								<div class="input-box">
 									<span class="details">Nombre representante legal</span> <input
 										type="text" placeholder="Representante legal"
-										name="nombre_representante" required>
-								</div>
-								<div class="input-box">
-									<span class="details">Correo empresa</span> <input type="text"
-										placeholder="Ingrese el correo" name="correo" required>
-								</div>
-								<div class="input-box">
-									<span class="details">Tipo documento</span> <input
-										type="number" placeholder="Representante legal empresa"
-										required>
+										name="nombreRepresentante" required>
 								</div>
 							</div>
-
 							<div class="button">
 								<button class="button_style">Guardar</button>
 							</div>
 
 							<div class="button2">
 								<button class="button_style"
-									href="<%=request.getContextPath()%>/inicio/">Cancelar</button>
+									href="<%=request.getContextPath()%>/inicio">Cancelar</button>
 							</div>
 						</form>
 					</div>
@@ -209,20 +261,6 @@
 					</a>
 
 					<!-- Bootstrap core JavaScript-->
-					<script src="vendor/jquery/jquery.min.js"></script>
-					<script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-
-					<!-- Core plugin JavaScript-->
-					<script src="vendor/jquery-easing/jquery.easing.min.js"></script>
-
-					<!-- Custom scripts for all pages-->
-					<script src="js/sb-admin-2.min.js"></script>
-
-					<!-- Page level plugins -->
-					<script src="vendor/chart.js/Chart.min.js"></script>
-
-					<!-- Page level custom scripts -->
-					<script src="js/demo/chart-area-demo.js"></script>
-					<script src="js/demo/chart-pie-demo.js"></script>
+					<jsp:include page="scriptsVistas.jsp" />
 </body>
 </html>

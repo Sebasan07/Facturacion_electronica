@@ -11,8 +11,9 @@ import java.util.List;
  * The persistent class for the empresa database table.
  * 
  */
-@Entity
-@NamedQuery(name="Empresa.findAll", query="SELECT e FROM Empresa e")
+
+@Entity(name="empresa")
+@NamedQuery(name="Empresa.findAll", query="SELECT e FROM empresa e")
 public class Empresa implements Serializable {
 	private static final long serialVersionUID = 1L;
 

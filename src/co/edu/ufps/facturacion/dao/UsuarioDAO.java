@@ -1,5 +1,8 @@
 package co.edu.ufps.facturacion.dao;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.persistence.NoResultException;
 import javax.persistence.Query;
 
@@ -42,5 +45,11 @@ public class UsuarioDAO extends Conexion<Usuario> implements GenericDAO<Usuario>
 		}
 
 		return query!=null;
+	}
+	
+	public List<Usuario> listarPorEmpresa(int nit){
+		Query consulta= getEm().createNamedQuery(Usuario.class.getSimpleName()+".findByEmpresa", Usuario.class).setParameter("nit", nit);
+		List<Usuario> lista = (ArrayList<Usuario>) consulta.getResultList();
+		return lista;
 	}
 }

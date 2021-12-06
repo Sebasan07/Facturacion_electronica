@@ -1,3 +1,4 @@
+<link rel="shortcut icon" href="<%=request.getContextPath()%>/Dashboard/img/soltec.png" />
 <link href="<%=request.getContextPath()%>/Dashboard/vendor/fontawesome-free/css/all.min.css" rel="stylesheet"
 	type="text/css">
 <link

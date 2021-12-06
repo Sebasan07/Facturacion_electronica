@@ -66,7 +66,7 @@ public class ClienteController extends HttpServlet {
 		} else {
 			switch (path) {
 			case "ver":
-				request.setAttribute("clientes", cDAO.list());// VER SI ESTÁ VACíA EN LA VISTA <%IF(CLIENTES!=NULL)%>
+				request.setAttribute("clientes", cDAO.list());
 				request.getRequestDispatcher("/Dashboard/verClientes.jsp").include(request, response);
 				break;
 			case "agregar":
@@ -128,15 +128,13 @@ public class ClienteController extends HttpServlet {
 			String contribuyente = request.getParameter("contribuyente");
 			String regimen = request.getParameter("regimen");
 
-			// hace split al texto del tipo documento (ej: 1. cedula(CC) la posición [0] es
-			// el número que nos sirve para buscar en la base de datos
-			TipoDocumento tipo = tDAO.find(Integer.parseInt(request.getParameter("tipoDocumento").split(".")[0]));
+			TipoDocumento tipo = tDAO.find(Integer.parseInt(request.getParameter("tipoDocumento")));
 
 			cDAO.insert(new Cliente(documento, municipio, contribuyente, correo, departamento, direccion, (byte) 1,
 					nombre, nombreComercial, pais, regimen, telefono, tipo));
 
 		} else {
-			request.setAttribute("mensaje", "Ya existe un cliente con documento: " + documento);
+			request.setAttribute("errorAgregarCliente", "Ya existe un cliente con documento: " + documento);
 		}
 	}
 
@@ -144,7 +142,7 @@ public class ClienteController extends HttpServlet {
 			throws ServletException, IOException {
 
 		int documento = Integer.parseInt(request.getParameter("documento"));
-		Cliente c = cDAO.find("documento");
+		Cliente c = cDAO.find(documento);
 
 		if (c != null) {
 			c.setEstado((byte) 0);
@@ -158,7 +156,7 @@ public class ClienteController extends HttpServlet {
 			throws ServletException, IOException {
 
 		int documento = Integer.parseInt(request.getParameter("documento"));
-		Cliente c = cDAO.find("documento");
+		Cliente c = cDAO.find(documento);
 
 		if (c != null) {
 			c.setNombre(request.getParameter("nombre"));
@@ -173,12 +171,9 @@ public class ClienteController extends HttpServlet {
 			c.setRegimenContable(request.getParameter("regimen"));
 			c.setEstado(Byte.parseByte(request.getParameter("estado")));
 
-			TipoDocumento tipo = tDAO.find(Integer.parseInt(request.getParameter("tipoDocumento").split(".")[0]));
-			c.setTipoDocumentoBean(tipo);
-
 			cDAO.update(c);
 		} else {
-			request.setAttribute("mensaje", "No existe el cliente con documento: " + documento);
+			request.setAttribute("errorEditarEmpresa", "No existe el cliente con documento: " + documento);
 		}
 	}
 

@@ -1,28 +1,105 @@
+<%@page import="co.edu.ufps.facturacion.entities.*"%>
+<%@page import="co.edu.ufps.facturacion.dao.*"%>
+<%@page import="java.util.*"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1"%>
+	pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html>
 <html lang="es">
 
 <head>
 
-    <meta charset="utf-8">
+    <meta charset="ISO-8859-1">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <title>Clientes</title>
 
     <!-- Custom fonts for this template -->
-    <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
-    <link
-        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
-        rel="stylesheet">
+<jsp:include page="cssVistas.jsp" />
+<script type="text/javascript"
+	src="http://ajax.microsoft.com/ajax/jQuery/jquery-1.4.4.min.js"></script>
+<script type="text/javascript">
 
-    <!-- Custom styles for this template -->
-    <link href="css/sb-admin-2.min.css" rel="stylesheet">
-    <link rel="stylesheet" type="text/css" href="css/ver-clientes.css">
+$(document).ready(function() {
+	$('#municipio').prop('disabled', 'disabled');
+		
+		function loadJSON(callback) {
+			var xobj = new XMLHttpRequest();
+			xobj.overrideMimeType("application/json");
+			xobj.open("GET", "https://raw.githubusercontent.com/marcovega/colombia-json/master/colombia.min.json", true); // Reemplaza colombia-json.json con el nombre que le hayas puesto
+			xobj.onreadystatechange = function () {
+				if (xobj.readyState == 4 && xobj.status == "200") {
+					callback(xobj.responseText);
+				}
+			};
+			xobj.send(null);
+		}
+		function llenarDepartamentos() {
+			loadJSON(function (response) {
+				// Parse JSON string into object
+				
+				var datos = JSON.parse(response);
+				$('#departamento').empty();
+				for(var i in datos){
+					$('#departamento').prepend("<option value='"+datos[(datos.length-1)-i].departamento+"' >"+datos[(datos.length-1)-i].departamento+"</option>");
+				}
+				$('#departamento').prepend("<option value='' selected>Seleccione departamento</option>");
+				$('#municipio').prop('disabled', 'disabled');
+			});
+		}
+		
+		$('#departamento').one("click", function() {
+			llenarDepartamentos();
+		});
+		
+		
+		
+		$('#departamento').change(function() {
+			cambiarMunicipio(this, '#municipio');
+		});
+		
+		function cambiarMunicipio(combo1, combo2) {
+			combo2 = $(combo2);
+			limpiarCombo(combo2);
+			combo2.disabled = true;
+			llenarMunicipios(combo1.selectedIndex);
+			combo1.disabled =false;
+			combo2.disabled =false;
+		}
+		
+		function limpiarCombo(combo){
+			$('#municipio').empty();
+			$('#municipio').prepend("<option value='' selected>Seleccione municipio</option>");
+			$('#municipio').prop('disabled', false);
+		}
+		
+		function llenarMunicipios(id) {
+			loadJSON(function (response) {
+				var datos = JSON.parse(response);
+				$('#municipio').empty();
+				for(var i=datos[id-1].ciudades.length-1; i>=0;i--){
+					$('#municipio').prepend("<option value='"+datos[(id-1)].ciudades[i]+"' >"+datos[(id-1)].ciudades[i]+"</option>");
+				}
+				$('#municipio').prepend("<option value='' selected>Seleccione municipio</option>");
+			});
+		}
+		
+		$('#contribuyente').one("click", function() {
+			$('#contribuyente').empty();
+			$('#contribuyente').prepend("<option>Persona Natural</option>");
+			$('#contribuyente').prepend("<option>Persona Jurídica</option>");
+			$('#contribuyente').prepend("<option>Elija tipo</option>");
+		});
+		
+		$('#regimen').one("click", function() {
+			$('#regimen').empty();
+			$('#regimen').prepend("<option>Simplificado</option>");
+			$('#regimen').prepend("<option>Común</option>");
+			$('#regimen').prepend("<option>Elija tipo</option>");
+		});
+});
 
-    <!-- Custom styles for this page -->
-    <link href="vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+</script>
 
 </head>
 
@@ -112,56 +189,82 @@
                     <!-- DataTales Example -->
                     <div class="card shadow mb-4">
                        <div class="card-body">
-                         <form action="href=<%=request.getContextPath()%>/inicio/cliente/editar" method="post">
+                         <form action="<%=request.getContextPath()%>/inicio/cliente/editar/validar" method="post">
                            <div class="user-details">
-                            <div class="input-box">
-                                <span class="details">Tipo de documento</span>
-                                <input type="text" placeholder="" required>
-                            </div>
+                           
+                           <%Cliente c = request.getAttribute("cliente")==null?null: (Cliente)request.getAttribute("cliente");
+								
+								if(c!=null){
+									
+							%>
+							
+									<div class="input-box">
+										<span class="details">Tipo de documento</span> <select
+											name="tipoDocumento">
+											<option value="<%=c.getTipoDocumentoBean().getIdTipoDocumento()%>"><%=c.getTipoDocumentoBean().getIdTipoDocumento()%>. <%=c.getTipoDocumentoBean().getDescripcion()%></option>
+										</select>
+
+									</div>
                                 <div class="input-box">
                                     <span class="details">Número de documento</span>
-                                    <input type="number"  required>
+                                    <input type="number"  value="<%=c.getNumeroDocumento()%>" readonly>
                                 </div>
                                 <div class="input-box">
                                     <span class="details">Nombre comercial</span>
-                                    <input type="text" placeholder="" required>
+                                    <input type="text" name="nombreComercial" value="<%=c.getNombreComercial()%>" required>
                                 </div>
                                 <div class="input-box">
                                     <span class="details">Nombre </span>
-                                    <input type="text" placeholder="" required>
+                                    <input type="text" name="nombre" value="<%=c.getNombre()%>" required>
                                 </div>
                                 <div class="input-box">
                                     <span class="details">Dirección</span>
-                                    <input type="text"  required>
+                                    <input type="text" name="direccion"  value="<%=c.getDireccion()%>" required>
                                 </div>
+                               <div class="input-box">
+										<span class="details">País</span> <select name="pais">
+											<option value="<%=c.getPais()%>"><%=c.getPais()%></option>
+										</select>
+									</div>
                                 <div class="input-box">
-                                    <span class="details">País</span>
-                                    <input type="text"  required>
-                                </div>
-                                <div class="input-box">
-                                    <span class="details">Departamento</span>
-                                    <input type="text"  required>
-                                </div>
-                                <div class="input-box">
-                                    <span class="details">Municipio/ciudad</span>
-                                    <input type="text"  required>
-                                </div>
+										<span class="details">Departamento</span> <select
+											name="departamento" id="departamento">
+											<option value="<%=c.getDepartamento()%>"><%=c.getDepartamento()%></option>
+										</select>
+									</div>
+									<div class="input-box">
+										<span class="details">Municipio/ciudad</span> <select 
+											name="municipio" id="municipio" >
+											<option value="<%=c.getCiudad()%>"><%=c.getCiudad()%></option>
+										</select>
+									</div>
                                 <div class="input-box">
                                     <span class="details">Correo</span>
-                                    <input type="text"  required>
+                                    <input type="email"  name="correo" value="<%=c.getCorreo()%>" readonly>
                                 </div>
                                 <div class="input-box">
                                     <span class="details">Teléfono</span>
-                                    <input type="text" required>
+                                    <input type="number" name="telefono" value="<%=c.getTelefono()%>" required>
                                 </div>
-                                <div class="input-box">
-                                    <span class="details">Contribuyente</span>
-                                    <input type="text" required>
-                                </div>
-                                <div class="input-box">
-                                    <span class="details">Regimen contable</span>
-                                    <input type="text" required>
-                                </div>
+                               <div class="input-box">
+										<span class="details">Contribuyente</span> <select name="contribuyente" id="contribuyente">
+											<option><%=c.getContribuyente()%></option>
+										</select>
+									</div>
+									<div class="input-box">
+										<span class="details">Régimen contable</span> <select name="regimen" id="regimen">
+											<option><%=c.getRegimenContable()%></option>
+										</select>
+									</div>
+									<div class="input-box">
+										<input type="hidden"
+											name="documento" value="<%=c.getNumeroDocumento()%>">
+										<input type="hidden"
+											name="estado" value="<%=c.getEstado()%>">
+									</div>
+                                <%}else{
+                                	response.sendRedirect(request.getContextPath() + "/inicio/cliente/ver");
+                                }%>
                             </div>
                             <div class="buttom">
                                 <input type="submit" value="Guardar">
@@ -217,21 +320,7 @@
 
 
     <!-- Bootstrap core JavaScript-->
-    <script src="vendor/jquery/jquery.min.js"></script>
-    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-
-    <!-- Core plugin JavaScript-->
-    <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
-
-    <!-- Custom scripts for all pages-->
-    <script src="js/sb-admin-2.min.js"></script>
-
-    <!-- Page level plugins -->
-    <script src="vendor/datatables/jquery.dataTables.min.js"></script>
-    <script src="vendor/datatables/dataTables.bootstrap4.min.js"></script>
-
-    <!-- Page level custom scripts -->
-    <script src="js/demo/datatables-demo.js"></script>
+    	<jsp:include page="scriptsVistas.jsp" />
 
 </body>
 

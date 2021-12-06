@@ -10,8 +10,11 @@ import java.util.List;
  * The persistent class for the producto database table.
  * 
  */
-@Entity
-@NamedQuery(name="Producto.findAll", query="SELECT p FROM Producto p")
+@Entity(name="producto")
+@NamedQueries({
+	@NamedQuery(name="Producto.findAll", query="SELECT p FROM producto p"),
+	@NamedQuery(name="Producto.findByUnidad", query="SELECT p FROM producto p WHERE p.unidadMedia=:unidad")
+})
 public class Producto implements Serializable {
 	private static final long serialVersionUID = 1L;
 

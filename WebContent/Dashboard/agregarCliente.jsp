@@ -39,12 +39,11 @@ $(document).ready(function() {
 				// Parse JSON string into object
 				
 				var datos = JSON.parse(response);
-				
 				for(var i in datos){
-					$('#departamento').prepend("<option value='"+datos[(datos.length-1)-i].id+"' >"+datos[(datos.length-1)-i].departamento+"</option>");
+					$('#departamento').prepend("<option value='"+datos[(datos.length-1)-i].departamento+"' >"+datos[(datos.length-1)-i].departamento+"</option>");
 				}
 				$('#departamento').prepend("<option value='' selected>Seleccione departamento</option>");
-				
+				$('#municipio').prop('disabled', 'disabled');
 			});
 		}
 		
@@ -64,6 +63,7 @@ $(document).ready(function() {
 		function limpiarCombo(combo){
 			$('#municipio').empty();
 			$('#municipio').prepend("<option value='' selected>Seleccione municipio</option>");
+			$('#municipio').prop('disabled', false);
 		}
 		
 		function llenarMunicipios(id) {
@@ -156,24 +156,9 @@ $(document).ready(function() {
 
 
 						<!-- Nav Item - User Information -->
-						<li class="nav-item dropdown no-arrow"><a
-							class="nav-link dropdown-toggle" href="#" id="userDropdown"
-							role="button" data-toggle="dropdown" aria-haspopup="true"
-							aria-expanded="false"> <span
-								class="mr-2 d-none d-lg-inline text-gray-600 small">Nombre
-									del usuario</span> <img class="img-profile rounded-circle"
-								src="<%=request.getContextPath()%>/Dashboard/img/undraw_profile.svg">
-						</a> <!-- Dropdown - User Information -->
-							<div
-								class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
-								aria-labelledby="userDropdown">
-								<div class="dropdown-divider"></div>
-								<a class="dropdown-item" href="#" data-toggle="modal"
-									data-target="#logoutModal"> <i
-									class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
-									Cerrar sesión
-								</a>
-							</div></li>
+						<li class="nav-item dropdown no-arrow"> 
+						<jsp:include page="imgUsuario.jsp" /><!-- Dropdown - User Information -->
+						</li>
 
 					</ul>
 
@@ -189,7 +174,7 @@ $(document).ready(function() {
 					<div class="card shadow mb-4">
 						<div class="card-body">
 							<form
-								action="<%=request.getContextPath()%>/inicio/cliente/agregar"
+								action="<%=request.getContextPath()%>/inicio/cliente/agregar/validar"
 								method="post">
 								<div class="user-details">
 
@@ -204,7 +189,7 @@ $(document).ready(function() {
 											<%
 												for (TipoDocumento t : tipos) {
 											%>
-											<option value="<%=t.getIdTipoDocumento()%>"><%=t.getDescripcion()%></option>
+											<option value="<%=t.getIdTipoDocumento()%>"><%=t.getIdTipoDocumento()%>. <%=t.getDescripcion()%></option>
 											<%
 												}
 											%>
@@ -235,21 +220,20 @@ $(document).ready(function() {
 									<div class="input-box">
 										<span class="details">Departamento</span> <select
 											name="departamento" id="departamento">
-											<option>La primera opción</option>
 										</select>
 									</div>
 									<div class="input-box">
-										<span class="details">Municipio/ciudad</span> <select
-											name="municipio" id="municipio">
-											<option>La primera opción</option>
+										<span class="details">Municipio/ciudad</span> <select 
+											name="municipio" id="municipio" >
+											<option>Seleccione municipio</option>
 										</select>
 									</div>
 									<div class="input-box">
-										<span class="details">Correo</span> <input type="text"
+										<span class="details">Correo</span> <input type="email"
 											name="correo" required>
 									</div>
 									<div class="input-box">
-										<span class="details">Teléfono</span> <input type="text"
+										<span class="details">Teléfono</span> <input type="number"
 											name="telefono" required>
 									</div>
 									<div class="input-box">

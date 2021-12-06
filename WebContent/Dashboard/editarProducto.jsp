@@ -5,19 +5,13 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="utf-8">
-<meta content="IE=edge" http-equiv="X-UA-Compatible">
-<meta content="width=device-width, initial-scale=1, shrink-to-fit=no"
-	name="viewport">
+<meta charset="ISO-8859-1">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-<title>Porductos</title>
-<!-- Custom fonts for this template-->
-<link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet"
-	type="text/css">
-<link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
-<!-- Custom styles for this template-->
-<link href="css/sb-admin-2.min.css" rel="stylesheet">
-<link href="css/ver-clientes.css" rel="stylesheet" type="text/css">
+<title>Productos</title>
+<jsp:include page="cssVistas.jsp" />
 </head>
 <body id="page-top">
 	<!-- Page Wrapper -->
@@ -90,7 +84,8 @@
 					<!-- Page Heading -->
 					<div class="card shadow mb-4">
 						<div class="container">
-							<form action="#">
+							<form action="<%=request.getContextPath()%>/inicio/producto/editar/validar"
+								method="post">
 								<div class="user-details">
 								
 								<%Producto p = request.getAttribute("producto")==null?null: (Producto)request.getAttribute("producto");
@@ -138,7 +133,9 @@
 											name="estado" value="<%=p.getEstado()%>"required>
 									</div>
 								</div>
-								<%}%>
+								<%}else{
+                                	response.sendRedirect(request.getContextPath() + "/inicio/producto/ver");
+                                }%>
 								<div class="button">
 									<button class="button_style">Actualizar</button>
 								</div>
@@ -191,20 +188,7 @@
 				</div>
 
 				<!-- Bootstrap core JavaScript-->
-				<script src="vendor/jquery/jquery.min.js">
-					
-				</script>
-				<script src="vendor/bootstrap/js/bootstrap.bundle.min.js">
-					
-				</script>
-				<!-- Core plugin JavaScript-->
-				<script src="vendor/jquery-easing/jquery.easing.min.js">
-					
-				</script>
-				<!-- Custom scripts for all pages-->
-				<script src="js/sb-admin-2.min.js">
-					
-				</script>
+				<jsp:include page="scriptsVistas.jsp" />
 			</div>
 		</div>
 </body>
