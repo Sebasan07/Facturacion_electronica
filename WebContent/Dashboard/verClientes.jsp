@@ -166,7 +166,7 @@
 												}
 											}
 										}else{
-											response.sendRedirect(request.getContextPath() + "/inicio/cliente/ver");
+											response.sendRedirect(request.getContextPath() + "/inicio/");
 										}
 										%>
 

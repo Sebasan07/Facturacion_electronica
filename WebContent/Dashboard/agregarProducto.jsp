@@ -1,3 +1,5 @@
+<%@page import="co.edu.ufps.facturacion.entities.*"%>
+<%@page import="java.util.*"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html>
@@ -77,9 +79,8 @@
 								</form>
 							</div></li>
 						<!-- Nav Item - User Information -->
-						<li class="nav-item dropdown no-arrow"> 
-						<jsp:include page="imgUsuario.jsp" /><!-- Dropdown - User Information -->
-						</li>
+						<li class="nav-item dropdown no-arrow"><jsp:include
+								page="imgUsuario.jsp" /><!-- Dropdown - User Information --></li>
 					</ul>
 				</nav>
 				<!-- End of Topbar -->
@@ -91,46 +92,57 @@
 					<!-- DataTales Example -->
 					<div class="card shadow mb-4">
 						<div class="card-body">
-							<form action="<%=request.getContextPath()%>/inicio/producto/agregar/validar" method="post">
+							<%
+								Empresa e = request.getSession().getAttribute("empresa") != null
+									? (Empresa) request.getSession().getAttribute("empresa")
+									: null;
+								if (e == null) {
+									response.sendRedirect(request.getContextPath() + "/inicio");
+								}
+							%>
+
+							<form
+								action="<%=request.getContextPath()%>/inicio/producto/agregar/validar"
+								method="post">
 								<div class="user-details">
 									<div class="input-box">
-										<span class="details"> ID producto </span> 
-										<input type="number"  name="codigo"  required>
+										<span class="details"> ID producto </span> <input
+											type="number" name="codigo" required>
 									</div>
 									<br>
 									<div class="input-box">
-										<span class="details"> Nombre </span> 
-										<input name="nombre" type="text" required>
+										<span class="details"> Nombre </span> <input name="nombre"
+											type="text" required>
 									</div>
 									<br>
 									<div class="input-box">
-										<span class="details"> Descripción </span> 
-										<input name="descripcion" type="text" required>
+										<span class="details"> Descripción </span> <input
+											name="descripcion" type="text" required>
 									</div>
 									<br>
 									<div class="input-box">
-										<span class="details"> Unidad de medida </span>
-										 <input name="unidadMedida" type="text" required>
+										<span class="details"> Unidad de medida </span> <input
+											name="unidadMedida" type="text" required>
 									</div>
 									<br>
 									<div class="input-box">
-										<span class="details"> Valor unitario </span>
-										 <input name="valorUnitario" type="number" mrequired>
+										<span class="details"> Valor unitario </span> <input
+											name="valorUnitario" type="number" mrequired>
 									</div>
 									<br>
 									<div class="input-box">
-										<span class="details"> IVA </span> 
-										<input name="iva" type="number"  required>
+										<span class="details"> IVA </span> <input name="iva"
+											type="number" required>
 									</div>
 									<br>
 									<div class="input-box">
 										<span class="details"> % Descuento </span> <input
-											name="descuento" type="number"  required>
+											name="descuento" type="number" required>
 									</div>
 									<br>
 									<div class="input-box">
-										<span class="details"> Estado </span> 
-										<input name="estado" type="number"  required>
+										<span class="details"> Estado </span> <input name="estado"
+											type="number" required>
 									</div>
 								</div>
 								<div class="button">
@@ -138,7 +150,8 @@
 								</div>
 
 								<div class="button2">
-									<button class="button_style" href="<%=request.getContextPath()%>/inicio/producto/ver" >Cancelar</button>
+									<button class="button_style"
+										href="<%=request.getContextPath()%>/inicio/producto/ver">Cancelar</button>
 								</div>
 							</form>
 						</div>
@@ -176,6 +189,6 @@
 					</div>
 				</div>
 				<!-- Bootstrap core JavaScript-->
-<jsp:include page="scriptsVistas.jsp" />
+				<jsp:include page="scriptsVistas.jsp" />
 </body>
 </html>

@@ -14,11 +14,10 @@ public class Correo {
 	public Correo() {
 	}
 
-	public Correo(String usuarioCorreo, String nombreArchivo,String nombreArchivo1, String contrasena, String rutaArchivo, String rutaArchivo1, String destino,
+	public Correo(String usuarioCorreo, String nombreArchivo, String contrasena, String rutaArchivo, String rutaArchivo1, String destino,
 			String mensaje, String adjunto) {
 		this.usuarioCorreo = usuarioCorreo;
 		this.nombreArchivo = nombreArchivo;
-		this.nombreArchivo1 = nombreArchivo1;
 		this.contrasena = contrasena;
 		this.rutaArchivo = rutaArchivo;
 		this.rutaArchivo1 = rutaArchivo1;

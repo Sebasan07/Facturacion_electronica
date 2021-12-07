@@ -37,16 +37,31 @@ $(document).ready(function() {
 	var subtotal = 0;
 	var valor = 0;
 	
+		
+		$('#form-validar').on('keyup keypress', function(e) {
+		  var keyCode = e.keyCode || e.which;
+		  if (keyCode === 13) { 
+		    e.preventDefault();
+		    return false;
+		  }
+		});
+	
+		$(document).on('keyup mouseup', '#cantidad', function() {                                                                                                                     
+			calcular();
+			});
+	
 		$('#calcular').click(function(){
 			calcular();
 		});
 		
 		$("#tablaprueba").on("click", "#eliminarFila", function(){
 			$(this).parents("tr").remove();
+			calcular();
 		});
 		
 		$('#productos').change(function() {
 			agregarFila($('#productos'));
+			calcular();
 		});
 		
 		
@@ -59,8 +74,9 @@ $(document).ready(function() {
 			let verificar = verificarCodigo(valores[0]);
 						
 			if(!verificar){
+			$('.table-responsive').prepend("<input type='hidden' name='codigo' value='"+valores[0]+"'>");
 			$('#fila').prepend(" <tr><td>"+valores[0]+"</td> <td>"+valores[1]+"</td> <td>"+valores[2]+"</td> <td>"+valores[3]+"</td> <td>"+valores[4]+"</td> <td>"+valores[5]+"</td>"+
-					"<td><input type='number' id='cantidad' value='1' min='1'></td>"+
+					"<td><input type='number' id='cantidad' name='cantidad' value='1' min='1'></td>"+
                     "<td><button type='button' class='btn' id='eliminarFila'> <i class='fas fa-minus-circle'></i>"+
                     "</button></td></tr>");
 			}else{
@@ -209,7 +225,7 @@ $(document).ready(function() {
                         <!-- DataTales Example -->
                         <div class="card shadow mb-4">
                             <div class="card-body">
-                                <form action="#">
+                                <form action="<%=request.getContextPath()%>/PruebaFactura" method="post" id="form-validar">
                                 <% Empresa e = request.getSession().getAttribute("empresa") != null
 										? (Empresa) request.getSession().getAttribute("empresa") : null;
 										Cliente cl = (Cliente)request.getAttribute("cliente");
@@ -221,7 +237,7 @@ $(document).ready(function() {
                                     <!--Inicio campos del cliente-->
                                     <div class="input-box-numeracion">
                                         <span class="span_details">No.</span>
-                                        <input class="input_numeracion" type="text" name="ciudad" value="<%=rg.getNumeroActual()%>" readonly>
+                                        <input class="input_numeracion" type="number" name="rg" value="<%=rg.getIdNumeracion()%>" readonly>
                                     </div>
 
                                     <div class="input-box">
@@ -315,7 +331,7 @@ $(document).ready(function() {
                                         <input style="margin-left: 23px;background-color: #00B4D8; color:white" type="button" value="Saldar" id='calcular'>
                                  </div>
 									<%}else{
-                                    	 response.sendRedirect(request.getContextPath() + "/inicio/factura/agregar");
+                                    	 response.sendRedirect(request.getContextPath() + "/inicio");
                                      } %>
                                         
                                     <!--Fin tabla de agregar los productos-->

@@ -19,7 +19,14 @@
 </head>
 
 <body id="page-top">
-
+<%
+								Empresa e = request.getSession().getAttribute("empresa") != null
+									? (Empresa) request.getSession().getAttribute("empresa")
+									: null;
+								if (e != null) {
+									response.sendRedirect(request.getContextPath() + "/inicio");
+								}
+							%>
 	<!-- Page Wrapper -->
 	<div id="wrapper">
 

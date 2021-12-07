@@ -192,8 +192,14 @@ $(document).ready(function() {
                          <form action="<%=request.getContextPath()%>/inicio/cliente/editar/validar" method="post">
                            <div class="user-details">
                            
-                           <%Cliente c = request.getAttribute("cliente")==null?null: (Cliente)request.getAttribute("cliente");
-								
+                           <%
+							Empresa e = request.getSession().getAttribute("empresa") != null
+								? (Empresa) request.getSession().getAttribute("empresa")
+								: null;
+							if (e == null) {
+								response.sendRedirect(request.getContextPath() + "/inicio");
+							}
+							Cliente c = request.getAttribute("cliente")==null?null: (Cliente)request.getAttribute("cliente");
 								if(c!=null){
 									
 							%>

@@ -153,11 +153,12 @@ public class FacturaController extends HttpServlet {
 		double totalDescuento =Double.parseDouble(request.getParameter("totalDescuento"));
         double valorNeto = Double.parseDouble(request.getParameter("vNeto"));//total a pagar
         
-		Factura f=new Factura("", (byte)1, fechaExpedicion, fechaVencimiento, firma, totalDescuento, valorNeto, cl,e,rg);
-		f.generarCufe();
-		
-		fDAO.insert(f);
-		insertarDetalleFactura(request,response,f);
+		/*
+		 * Factura f=new Factura("", (byte)1, fechaExpedicion, fechaVencimiento, firma,
+		 * totalDescuento, valorNeto, cl,e,rg); f.generarCufe();
+		 * 
+		 * fDAO.insert(f); insertarDetalleFactura(request,response,f);
+		 */
 	}
 	
 	private void insertarDetalleFactura(HttpServletRequest request, HttpServletResponse response, Factura f)

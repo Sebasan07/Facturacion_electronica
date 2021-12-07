@@ -3,7 +3,9 @@ package co.edu.ufps.facturacion.correo;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.List;
 
+import co.edu.ufps.facturacion.entities.Articulo;
 import co.edu.ufps.facturacion.entities.Cliente;
 import co.edu.ufps.facturacion.entities.DetalleFactura;
 import co.edu.ufps.facturacion.entities.Factura;
@@ -28,7 +30,7 @@ public class EnviarCorreo {
 		this.generarPDF = generarPDF;
 	}
 
-	public boolean enviarCorreo(String nombreArchivo, File img, Cliente cl, Factura factura, DetalleFactura df, RangoNumeracion rg) {
+	public boolean enviarCorreo(String nombreArchivo, File img, Cliente cl, Factura factura, List<Articulo> articulos, RangoNumeracion rg) {
 
 		boolean creado = false;
 		boolean enviado = false;
@@ -51,13 +53,14 @@ public class EnviarCorreo {
 				+ "favor reenviarlo y borrar el mensaje recibido inmediatamente.";
 
 		try {
-			correo = new Correo("facturacionpyme123@gmail.com", nombreArchivo, nombreArchivo, "pyme12345", "", "",
+			correo = new Correo("facturacionpyme123@gmail.com", nombreArchivo,"pyme12345", "", "",
 					cl.getCorreo(), "¡Hola! \n\n" + saludo +"\n\n" + datosArchivos + "\n\n" + solicitudes, factura.getCufe()+";Factura electrónica;SOLTEC 2.0");
 
-			creado = generarPDF.generarPDF(nombreArchivo, img, cl, factura, df, rg);
+			creado = generarPDF.generarPDF(nombreArchivo, img, cl, factura, articulos, rg);
 
 			correo.setRutaArchivo(new File(nombreArchivo).toString());
-			correo.setRutaArchivo1(new File("recibo.xml").toString());
+			correo.setRutaArchivo1(new File(nombreArchivo).toString());
+			System.out.println(new File(nombreArchivo).toString());
 
 			enviado = enviar.SendMail(correo);
 
