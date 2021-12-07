@@ -49,13 +49,13 @@ public class Cliente implements Serializable {
 	@JoinColumn(name="tipo_documento")
 	private TipoDocumento tipoDocumentoBean;
 
-	//bi-directional many-to-one association to Factura
-	@OneToMany(mappedBy="cliente")
-	private List<Factura> facturas;
-
 	//bi-directional many-to-one association to ClienteEmpresa
 	@OneToMany(mappedBy="cliente")
 	private List<ClienteEmpresa> clienteEmpresas;
+
+	//bi-directional many-to-one association to Factura
+	@OneToMany(mappedBy="cliente")
+	private List<Factura> facturas;
 
 	public Cliente() {
 	}
@@ -184,28 +184,6 @@ public class Cliente implements Serializable {
 		this.tipoDocumentoBean = tipoDocumentoBean;
 	}
 
-	public List<Factura> getFacturas() {
-		return this.facturas;
-	}
-
-	public void setFacturas(List<Factura> facturas) {
-		this.facturas = facturas;
-	}
-
-	public Factura addFactura(Factura factura) {
-		getFacturas().add(factura);
-		factura.setCliente(this);
-
-		return factura;
-	}
-
-	public Factura removeFactura(Factura factura) {
-		getFacturas().remove(factura);
-		factura.setCliente(null);
-
-		return factura;
-	}
-
 	public List<ClienteEmpresa> getClienteEmpresas() {
 		return this.clienteEmpresas;
 	}
@@ -226,6 +204,28 @@ public class Cliente implements Serializable {
 		clienteEmpresa.setCliente(null);
 
 		return clienteEmpresa;
+	}
+
+	public List<Factura> getFacturas() {
+		return this.facturas;
+	}
+
+	public void setFacturas(List<Factura> facturas) {
+		this.facturas = facturas;
+	}
+
+	public Factura addFactura(Factura factura) {
+		getFacturas().add(factura);
+		factura.setCliente(this);
+
+		return factura;
+	}
+
+	public Factura removeFactura(Factura factura) {
+		getFacturas().remove(factura);
+		factura.setCliente(null);
+
+		return factura;
 	}
 
 }

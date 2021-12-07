@@ -8,8 +8,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import co.edu.ufps.facturacion.dao.ClienteDAO;
+import co.edu.ufps.facturacion.dao.ClienteEmpresaDAO;
+import co.edu.ufps.facturacion.dao.EmpresaDAO;
 import co.edu.ufps.facturacion.dao.TipoDocumentoDAO;
 import co.edu.ufps.facturacion.entities.Cliente;
+import co.edu.ufps.facturacion.entities.ClienteEmpresa;
+import co.edu.ufps.facturacion.entities.Empresa;
 import co.edu.ufps.facturacion.entities.TipoDocumento;
 
 /**
@@ -115,7 +119,9 @@ public class ClienteController extends HttpServlet {
 			throws ServletException, IOException {
 
 		int documento = Integer.parseInt(request.getParameter("documento"));
-
+		Empresa e = request.getSession().getAttribute("empresa") == null ? null
+				: (Empresa) request.getSession().getAttribute("empresa");
+		
 		if (cDAO.find(documento) == null) {
 			String nombre = request.getParameter("nombre");
 			String nombreComercial = request.getParameter("nombreComercial");
@@ -130,9 +136,14 @@ public class ClienteController extends HttpServlet {
 
 			TipoDocumento tipo = tDAO.find(Integer.parseInt(request.getParameter("tipoDocumento")));
 
-			cDAO.insert(new Cliente(documento, municipio, contribuyente, correo, departamento, direccion, (byte) 1,
-					nombre, nombreComercial, pais, regimen, telefono, tipo));
-
+			Cliente c=new Cliente(documento, municipio, contribuyente, correo, departamento, direccion, (byte) 1,
+					nombre, nombreComercial, pais, regimen, telefono, tipo);
+			ClienteEmpresa cl=new ClienteEmpresa(c,e);
+			e.addClienteEmpresa(cl);
+			cDAO.insert(c);
+			new ClienteEmpresaDAO().insert(cl);
+			new EmpresaDAO().update(e);	
+			
 		} else {
 			request.setAttribute("errorAgregarCliente", "Ya existe un cliente con documento: " + documento);
 		}

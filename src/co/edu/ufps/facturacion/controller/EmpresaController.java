@@ -135,7 +135,7 @@ public class EmpresaController extends HttpServlet {
 	protected void editarEmpresa(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
-		String n =String.valueOf(request.getParameter("nit"));
+		String n =request.getParameter("nit");
 		System.out.println(n);
 		int nit = Integer.parseInt(n);
 		Empresa e =eDAO.find(nit);

@@ -93,7 +93,7 @@
                     <!-- DataTales Example -->
                     <div class="card shadow mb-4">
                        <div class="card-body">
-                         <form action="#">
+                         <form action="<%=request.getContextPath()%>/inicio/factura/rango/validar" method="post">
                            <div class="user-details">
                             <div class="input-box">
                                 <span class="details">Prefjio</span>
@@ -101,23 +101,23 @@
                             </div>
                                 <div class="input-box">
                                     <span class="details">Número desde</span>
-                                    <input type="number" name="numero_desde"  required>
+                                    <input type="number" name="desde"  required>
                                 </div>
                                 <div class="input-box">
                                     <span class="details">Número hasta</span>
-                                    <input type="number" name="numero_hasta" required>
+                                    <input type="number" name="hasta" required>
                                 </div>
                                 <div class="input-box">
                                     <span class="details">Número actual</span>
-                                    <input type="number" name="numero_actual"  required>
+                                    <input type="number" name="actual"  required>
                                 </div>
                                 <div class="input-box">
                                     <span class="details">Número de resolución</span>
-                                    <input type="number" name="numero_resolucion" required>
+                                    <input type="number" name="numeroResolucion" required>
                                 </div>
                                 <div class="input-box">
                                     <span class="details">Fecha de resolución</span>
-                                    <input type="date" name="fecha_resolucion" required>
+                                    <input type="date" name="fecha" required>
                                 </div> 
                                 </div>
                                 <div class="button">

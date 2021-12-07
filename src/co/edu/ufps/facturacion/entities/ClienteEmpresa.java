@@ -28,6 +28,12 @@ public class ClienteEmpresa implements Serializable {
 	public ClienteEmpresa() {
 	}
 
+	public ClienteEmpresa(Cliente cliente, Empresa empresa) {
+		super();
+		this.cliente = cliente;
+		this.empresa = empresa;
+	}
+
 	public int getId() {
 		return this.id;
 	}

@@ -1,3 +1,6 @@
+<%@page import="co.edu.ufps.facturacion.entities.*"%>
+<%@page import="co.edu.ufps.facturacion.dao.*"%>
+<%@page import="java.util.*"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html>
@@ -25,6 +28,106 @@
     <!-- Custom styles for this page -->
     <link href="<%=request.getContextPath()%>/Dashboard/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
     <title>Facturas</title>
+    
+    <script type="text/javascript"
+	src="http://ajax.microsoft.com/ajax/jQuery/jquery-1.4.4.min.js"></script>
+<script type="text/javascript">
+
+$(document).ready(function() {
+	var subtotal = 0;
+	var valor = 0;
+	
+		$('#calcular').click(function(){
+			calcular();
+		});
+		
+		$("#tablaprueba").on("click", "#eliminarFila", function(){
+			$(this).parents("tr").remove();
+		});
+		
+		$('#productos').change(function() {
+			agregarFila($('#productos'));
+		});
+		
+		
+		function agregarFila(combo){
+			if(combo.val()=='0'){
+				return;
+			}
+			var valores = combo.val().split(";");
+			
+			let verificar = verificarCodigo(valores[0]);
+						
+			if(!verificar){
+			$('#fila').prepend(" <tr><td>"+valores[0]+"</td> <td>"+valores[1]+"</td> <td>"+valores[2]+"</td> <td>"+valores[3]+"</td> <td>"+valores[4]+"</td> <td>"+valores[5]+"</td>"+
+					"<td><input type='number' id='cantidad' value='1' min='1'></td>"+
+                    "<td><button type='button' class='btn' id='eliminarFila'> <i class='fas fa-minus-circle'></i>"+
+                    "</button></td></tr>");
+			}else{
+				aumentarCantidad(valores[0]);
+			}
+			$("#productos").prop('selectedIndex', 0); 
+			
+			//$("#productos option[value='"+combo.val()+"']").remove();
+		
+		}
+		
+		function verificarCodigo(id){
+			let v = false;
+			$("#fila tr").each(function(){
+				   let cod =$(this).find('td').eq(0).text();
+
+				  if(cod==id){
+					  v=true;
+				  }
+			});
+			return v;
+			
+		}
+		
+		function aumentarCantidad(id){
+			$("#fila tr").each(function(){
+				   let cod =$(this).find('td').eq(0).text();
+				  
+				  if(cod==id){
+					  let cant = $(this).find('#cantidad').val();
+					  cant =parseInt(cant,10);
+					  $(this).find('#cantidad').val(parseInt(1+cant));
+				  }
+			});
+		}
+		
+		function calcular(){
+			let subtotal = 0;
+			let totalDescuento = 0;
+			let ivaTotal = 0;
+			let total = 0;
+			$("#fila tr").each(function(){
+			   let valorUn =parseInt($(this).find('td').eq(3).text(),10);
+			   let desc =parseInt($(this).find('td').eq(4).text(),10);
+			   let iva =parseInt($(this).find('td').eq(5).text(),10);
+			   let cant = parseInt($(this).find('#cantidad').val(),10);
+			   
+			   subtotal+= (valorUn*cant);
+			   totalDescuento+= (((valorUn*cant)*desc)/100);
+			   ivaTotal += (((valorUn*cant)*iva)/100);
+		});
+			total=(subtotal-totalDescuento)+ivaTotal;
+			
+			llenarCampos(subtotal,totalDescuento,ivaTotal,total);
+		}
+		
+		function llenarCampos(subtotal,totalDesc,iva,total){
+			$('#subtotal').val(subtotal);
+			$('#tDescuento').val(totalDesc);
+			$('#iva').val(iva);
+			$('#total').val(total);
+		}
+		
+		
+});
+
+</script>
 </head>
 <body id="page-top">
 
@@ -107,38 +210,64 @@
                         <div class="card shadow mb-4">
                             <div class="card-body">
                                 <form action="#">
+                                <% Empresa e = request.getSession().getAttribute("empresa") != null
+										? (Empresa) request.getSession().getAttribute("empresa") : null;
+										Cliente cl = (Cliente)request.getAttribute("cliente");
+								
+									if(cl!=null && e!=null){
+                                 		RangoNumeracion rg = new RangoNumeracionDAO().findLast(e.getNit());
+                                
+                                 %>
                                     <!--Inicio campos del cliente-->
                                     <div class="input-box-numeracion">
                                         <span class="span_details">No.</span>
-                                        <input class="input_numeracion" type="text" name="ciudad" required>
+                                        <input class="input_numeracion" type="text" name="ciudad" value="<%=rg.getNumeroActual()%>" readonly>
                                     </div>
 
                                     <div class="input-box">
                                         <span class="details">Número de documento</span>
-                                        <input style="margin-left: 13px;" type="number" name="numero_documento" required>
+                                        <input style="margin-left: 13px;" type="number" name="numeroDocumento" value="<%=cl.getNumeroDocumento()%>" readonly>
                                     </div>
                                     <div class="input-box">
                                         <span class="details">Nombre</span>
-                                        <input style="margin-left: 13px;" type="text" name="nombre" required>
+                                        <input style="margin-left: 13px;" type="text" name="nombre" value="<%=cl.getNombre()%>" readonly>
                                     </div>
 
                                     <div class="input-box">
                                         <span class="details">Teléfono</span>
-                                        <input style="margin-left: 10px;" type="text" name="telefono"required>
+                                        <input style="margin-left: 10px;" type="text" name="telefono" value="<%=cl.getTelefono()%>" readonly>
                                     </div>
 
                                     <div class="input-box">
                                         <span class="details">Correo</span>
-                                        <input style="margin-left: 24px;" type="text" name="correo" required>
+                                        <input style="margin-left: 24px;" type="text" name="correo" value="<%=cl.getCorreo()%>" readonly>
                                     </div>
 
                                     <div class="input-box">
                                         <span class="details">Ciudad</span>
-                                        <input style="margin-left: 23px;" type="text" name="ciudad" required>
+                                        <input style="margin-left: 23px;" type="text" name="ciudad" value="<%=cl.getCiudad()%>" readonly>
                                     </div>
                                     <!--Fin campos del cliente-->
                                     <hr>
                                     <!--Inicio tabla de agregar los productos-->
+                                     
+                                      
+                                     <div class="input-box">
+                                       <select class='select_opciones' id="productos">
+                                       <option value='0'>Seleccione producto</option>
+										<% 
+
+										List<Producto> productos=new ProductoDAO().listarPorEmpresa(e.getNit());
+                                            
+                                            for(Producto p:productos){
+                                     	%>
+										<option value="<%=p.getCodigo()%>;<%=p.getNombre()%>;<%=p.getUnidadMedia()%>;<%=p.getValorUnitario()%>;<%=p.getPorcentajeDescuento()%>;<%=p.getIva()%>;<%=productos.size()%>"><%=p.getNombre()%></option>
+										<%
+                                            }
+                                     	%>
+									   </select>
+                                    </div>
+                                                
                                     <div class="table-responsive">
                                         <table #dataTable class="table table-bordered" id="tablaprueba" width="100%" cellspacing="0">
                                             <thead>
@@ -149,36 +278,52 @@
                                                     <th>Vr. Unit.</th>
                                                     <th>% Dcto.</th>
                                                     <th>IVA</th>
+                                                    <th>Cantidad</th>
+                                                    <th>Eliminar</th>
 
                                             </thead>
-                                            <tbody>
-                                                <tr>
-                                                    <td>
-                                                        <select class="select_opciones">
-                                                            <option disabled selected>Buscar...</option>
-                                                            <option></option>
-                                                        </select>
-                                                    </td>
-                                                    <td>AA</td>
-                                                    <td>AA</td>
-                                                    <td>AA</td>
-                                                    <td>AA</td>
-                                                    <td>AA</td>
-                                                </tr>
+                                            <tbody id="fila">
+                                           
+                                           
                                             </tbody>
                                         </table>
-                                        <div class="form-group">
-                                            <button type="button" class="btn btn-edit" onclick="agregarFila()">
+                                        <!-- <div class="form-group">
+                                            <button type="button" class="btn btn-edit" id="agregarFila">
                                                 <i class="fas fa-plus"></i>
                                             </button>
-                                            <button type="button" class="btn" onclick="eliminarFila()">
-                                                <i class="fas fa-minus-circle"></i>
-                                            </button>
-                                        </div>
+                                        </div> -->
                                     </div>
+                                    
+                                    <div class="input-box">
+									<span class="details">Subtotal $</span> <input
+										style="margin-left: 13px;" type="number" id="subtotal" name="subtotal" readonly>
+								</div>
+								<div class="input-box">
+									<span class="details">Total descuento $</span> <input
+										style="margin-left: 13px;" type="number" id="tDescuento" name="tDescuento" readonly>
+								</div>
+								<div class="input-box">
+									<span class="details">IVA(19%) $</span> <input
+										style="margin-left: 13px;" type="number" id="iva" name="iva" readonly>
+								</div>
+								<hr>
+								<div class="input-box">
+									<span class="details">Total $</span><input
+										style="margin-left: 13px;" type="number" id="total" name="total"readonly>
+								</div>
+								<div class="input-box">
+                                        <input style="margin-left: 23px;background-color: #00B4D8; color:white" type="button" value="Saldar" id='calcular'>
+                                 </div>
+									<%}else{
+                                    	 response.sendRedirect(request.getContextPath() + "/inicio/factura/agregar");
+                                     } %>
+                                        
                                     <!--Fin tabla de agregar los productos-->
                                     <div class="button2">
-                                        <button class="button_style">Siguiente</button>
+                                        <button type="submit" class="button_style">Siguiente</button>
+                                    </div>
+                                    <div class="button2">
+                                       
                                     </div>
                                 </form>
                             </div>

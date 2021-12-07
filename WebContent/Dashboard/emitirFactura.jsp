@@ -7,13 +7,10 @@
 <html lang="es">
 
 <head>
-
-<meta charset="utf-8">
+<meta charset="ISO-8859-1">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport"
 	content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<meta name="description" content="">
-<meta name="author" content="">
 
 <title>Facturas</title>
 
@@ -145,7 +142,7 @@
 											<td><%=c.getTelefono()%></td>
 
 											<td><a class="btn boton-accion"
-												href="<%=request.getContextPath()%>/inicio/factura/agregar?cliente=<%=c.getNumeroDocumento()%>">
+												href="<%=request.getContextPath()%>/inicio/factura/emitir?cliente=<%=c.getNumeroDocumento()%>">
 													<i class="fas fa-plus-circle"
 													style="color: rgb(94, 94, 243);"></i>
 											</a></td>

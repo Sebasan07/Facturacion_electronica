@@ -1,8 +1,8 @@
 package co.edu.ufps.facturacion.controller;
 
 import java.io.IOException;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
@@ -23,7 +23,6 @@ import co.edu.ufps.facturacion.entities.Cliente;
 import co.edu.ufps.facturacion.entities.DetalleFactura;
 import co.edu.ufps.facturacion.entities.Empresa;
 import co.edu.ufps.facturacion.entities.Factura;
-import co.edu.ufps.facturacion.entities.Producto;
 import co.edu.ufps.facturacion.entities.RangoNumeracion;
 
 /**
@@ -31,10 +30,11 @@ import co.edu.ufps.facturacion.entities.RangoNumeracion;
  */
 @WebServlet({ "/inicio/factura/ver", //
 		"/inicio/factura/agregar",
-		"/inicio/factura/rango/agregar",
+		"/inicio/factura/emitir",
+		"/inicio/factura/rango",
 
 		"/inicio/factura/agregar/validar",
-		"/inicio/factura/rango/agregar/validar",
+		"/inicio/factura/rango/validar",
 		"/inicio/factura/eliminar/validar",
 })
 public class FacturaController extends HttpServlet {
@@ -87,13 +87,18 @@ public class FacturaController extends HttpServlet {
 			switch (path) {
 			case "ver":
 				request.setAttribute("facturas", fDAO.list());// VER SI EST¡ VACÌA EN LA VISTA <%IF(CLIENTES!=NULL)%>
-				request.getRequestDispatcher("Dashboard/verFacturas.jsp").forward(request, response);
+				request.getRequestDispatcher("/Dashboard/verFacturas.jsp").include(request, response);
 				break;
 			case "agregar":
-				request.getRequestDispatcher("Dashboard/emitirFactura.jsp").forward(request, response);
+				request.getRequestDispatcher("/Dashboard/emitirFactura.jsp").include(request, response);
 				break;
-			case "rango/agregar":
-				request.getRequestDispatcher("Dashboard/agregarRangosNumeracion.jsp").forward(request, response);
+			case "emitir":
+				Cliente cl = cDAO.find(Integer.parseInt(request.getParameter("cliente")));
+				request.setAttribute("cliente", cl);
+				request.getRequestDispatcher("/Dashboard/EFClienteProducto.jsp").include(request, response);
+				break;
+			case "rango":
+				request.getRequestDispatcher("/Dashboard/agregarRangosNumeracion.jsp").include(request, response);
 				break;
 			/*
 			 * case "editar": fa = fDAO.find(request.getParameter("CUFE")); if (fa != null)
@@ -119,7 +124,7 @@ public class FacturaController extends HttpServlet {
 		case "agregar":
 			emitirFactura(request, response);
 			break;
-		case "rango/agregar":
+		case "rango":
 			agregarRango(request, response);
 			break;
 		case "eliminar":
@@ -136,18 +141,19 @@ public class FacturaController extends HttpServlet {
 			throws ServletException, IOException {
 		
 		Cliente cl = cDAO.find(Integer.parseInt(request.getParameter("cliente")));
-		Empresa em = (Empresa) request.getSession().getAttribute("empresa");
-		RangoNumeracion rg = rgDAO.find(Integer.parseInt(request.getParameter("rango")));//ultimo rango
+		Empresa e = request.getSession().getAttribute("empresa") == null ? null
+				: (Empresa) request.getSession().getAttribute("empresa");
+		RangoNumeracion rg = rgDAO.findLast(e.getNit());//ultimo rango
 		
 		Date fechaExpedicion = new Date();
         SimpleDateFormat getYearFormat = new SimpleDateFormat("dd/MM/yyyy");
         String [] dMY=getYearFormat.format(fechaExpedicion).split("/");
         Date fechaVencimiento = new GregorianCalendar((Integer.parseInt(dMY[2])+1),Integer.parseInt(dMY[1]),Integer.parseInt(dMY[0])).getTime();
 		String firma = request.getParameter("firma");
-		double totalDescuento =Double.parseDouble(request.getParameter("totalDescuento"));//descuentos de productos y de iva
-        double valorNeto = Double.parseDouble(request.getParameter("valorNeto"));//total a pagar
+		double totalDescuento =Double.parseDouble(request.getParameter("totalDescuento"));
+        double valorNeto = Double.parseDouble(request.getParameter("vNeto"));//total a pagar
         
-		Factura f=new Factura("", (byte)1, fechaExpedicion, fechaVencimiento, firma, totalDescuento, valorNeto, cl,em,rg);
+		Factura f=new Factura("", (byte)1, fechaExpedicion, fechaVencimiento, firma, totalDescuento, valorNeto, cl,e,rg);
 		f.generarCufe();
 		
 		fDAO.insert(f);
@@ -167,9 +173,30 @@ public class FacturaController extends HttpServlet {
 	
 	protected void agregarRango(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		
-		String prefijo =request.getParameter("prefijo");
-		
+		Empresa e = request.getSession().getAttribute("empresa") == null ? null
+				: (Empresa) request.getSession().getAttribute("empresa");
+		RangoNumeracion rg = rgDAO.findLast(e.getNit());
+		if(rg==null || rg.getNumeroActual()<rg.getNumeroHasta()) {
+			try {
+				String prefijo =request.getParameter("prefijo");
+				int desde = Integer.parseInt(request.getParameter("desde"));
+				int hasta = Integer.parseInt(request.getParameter("hasta"));
+				int actual = Integer.parseInt(request.getParameter("actual"));
+				int numeroResolucion = Integer.parseInt(request.getParameter("numeroResolucion"));
+				String fecha = request.getParameter("fecha");
+				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+				Date fechaResolucion = null;
+				fechaResolucion = sdf.parse(fecha);
+				
+				RangoNumeracion r =new RangoNumeracion(fechaResolucion, actual, desde, 
+						hasta, numeroResolucion, prefijo);
+				e.addRangoNumeracion(r);
+				rgDAO.insert(r);
+				eDAO.update(e);
+			} catch (ParseException ex) {
+				ex.printStackTrace();
+			}
+		}
 	}
 	
 	protected void eliminarFactura(HttpServletRequest request, HttpServletResponse response)

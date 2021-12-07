@@ -13,4 +13,10 @@ public class ProductoDAO extends Conexion<Producto> implements GenericDAO<Produc
 	public ProductoDAO() {
 		super(Producto.class);
 	}
+	
+	public List<Producto> listarPorEmpresa(int nit){
+		Query consulta= getEm().createNamedQuery(Producto.class.getSimpleName()+".findByEmpresa", Producto.class).setParameter("nit", nit);
+		List<Producto> lista = (ArrayList<Producto>) consulta.getResultList();
+		return lista;
+	}
 }

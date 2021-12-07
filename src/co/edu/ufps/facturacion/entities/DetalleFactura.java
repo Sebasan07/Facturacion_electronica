@@ -16,7 +16,7 @@ public class DetalleFactura implements Serializable {
 
 	@Id
 	@Column(name="id_detalle_factura")
-	private int idDetalle;
+	private int idDetalleFactura;
 
 	private int cantidad;
 
@@ -33,18 +33,18 @@ public class DetalleFactura implements Serializable {
 
 	public DetalleFactura(int idDetalle, int cantidad, Factura factura, Producto producto) {
 		super();
-		this.idDetalle = idDetalle;
+		this.idDetalleFactura = idDetalle;
 		this.cantidad = cantidad;
 		this.factura = factura;
 		this.producto = producto;
 	}
 
-	public int getIdDetalle() {
-		return this.idDetalle;
+	public int getIdDetalleFactura() {
+		return this.idDetalleFactura;
 	}
 
-	public void setIdDetalle(int idDetalle) {
-		this.idDetalle = idDetalle;
+	public void setIdDetalleFactura(int idDetalleFactura) {
+		this.idDetalleFactura = idDetalleFactura;
 	}
 
 	public int getCantidad() {

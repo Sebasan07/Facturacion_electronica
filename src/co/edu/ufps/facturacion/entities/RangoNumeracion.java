@@ -16,9 +16,8 @@ import java.util.List;
 @Table(name="rango_numeracion")
 @NamedQueries({
 	@NamedQuery(name="RangoNumeracion.findAll", query="SELECT r FROM rango_numeracion r"),
-	@NamedQuery(name="RangoNumeracion.findLast", query="SELECT r FROM rango_numeracion r where r.idNumeracion=(SELECT max(r.idNumeracion) from rango_numeracion r) ")
+	@NamedQuery(name="RangoNumeracion.findLast", query="SELECT r FROM rango_numeracion r where r.idNumeracion=(SELECT max(r.idNumeracion) from rango_numeracion r) and r.empresa.nit=:nit ")
 })
-
 public class RangoNumeracion implements Serializable {
 	private static final long serialVersionUID = 1L;
 
@@ -48,14 +47,17 @@ public class RangoNumeracion implements Serializable {
 	@OneToMany(mappedBy="rangoNumeracionBean")
 	private List<Factura> facturas;
 
+	//bi-directional many-to-one association to Empresa
+	@ManyToOne
+	private Empresa empresa;
+
 	public RangoNumeracion() {
 		this.facturas = new ArrayList<>();
 	}
 
-	public RangoNumeracion(int idNumeracion, Date fechaResolucion, int numeroActual, int numeroDesde, int numeroHasta,
+	public RangoNumeracion(Date fechaResolucion, int numeroActual, int numeroDesde, int numeroHasta,
 			int numeroResolucion, String prefijo) {
 		super();
-		this.idNumeracion = idNumeracion;
 		this.fechaResolucion = fechaResolucion;
 		this.numeroActual = numeroActual;
 		this.numeroDesde = numeroDesde;
@@ -141,6 +143,14 @@ public class RangoNumeracion implements Serializable {
 		factura.setRangoNumeracionBean(null);
 
 		return factura;
+	}
+
+	public Empresa getEmpresa() {
+		return this.empresa;
+	}
+
+	public void setEmpresa(Empresa empresa) {
+		this.empresa = empresa;
 	}
 
 }

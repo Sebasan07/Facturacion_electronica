@@ -8,7 +8,7 @@ public class d {
 	public static void main(String[] args) {
 		RangoNumeracionDAO rDAO =new RangoNumeracionDAO();
 		
-		RangoNumeracion r=rDAO.findLast();
+		RangoNumeracion r=rDAO.findLast(26542);
 		System.out.println(r!=null?r.getIdNumeracion():"a");
 	}
 }

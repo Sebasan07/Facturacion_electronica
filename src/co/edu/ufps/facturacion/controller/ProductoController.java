@@ -7,7 +7,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import co.edu.ufps.facturacion.dao.EmpresaDAO;
 import co.edu.ufps.facturacion.dao.ProductoDAO;
+import co.edu.ufps.facturacion.entities.Empresa;
 import co.edu.ufps.facturacion.entities.Producto;
 
 /**
@@ -109,7 +111,9 @@ public class ProductoController extends HttpServlet {
 			throws ServletException, IOException {
 
 		int codigo = Integer.parseInt(request.getParameter("codigo"));
-
+		Empresa e = request.getSession().getAttribute("empresa") == null ? null
+				: (Empresa) request.getSession().getAttribute("empresa");
+		
 		if (pDAO.find(codigo) == null) {
 			String nombre = request.getParameter("nombre");
 			String descripcion = request.getParameter("descripcion");
@@ -119,8 +123,12 @@ public class ProductoController extends HttpServlet {
 			double porcentajeDescuento = Double.parseDouble(request.getParameter("descuento"));
 			byte estado = Byte.parseByte(request.getParameter("estado"));
 
-			pDAO.insert(new Producto(codigo, descripcion, estado, iva, nombre, porcentajeDescuento, unidadMedida,
-					valorUnitario));
+			Producto p = new Producto(codigo, descripcion, estado, iva, nombre, porcentajeDescuento, unidadMedida,
+					valorUnitario);
+			e.addProducto(p);
+			pDAO.insert(p);
+			new EmpresaDAO().update(e);
+			
 		} else {
 			request.setAttribute("mensaje", "Ya existe el producto con el ID: " + codigo);
 		}

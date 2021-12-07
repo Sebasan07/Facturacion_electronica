@@ -14,11 +14,11 @@ public class RangoNumeracionDAO extends Conexion<RangoNumeracion> implements Gen
 		super(RangoNumeracion.class);
 	}
 	
-	public RangoNumeracion findLast() {
+	public RangoNumeracion findLast(int nit) {
 		Query query = null;
 		RangoNumeracion r=null;
 		try {
-				query = getEm().createNamedQuery(RangoNumeracion.class.getSimpleName() + ".findLast", RangoNumeracion.class);
+				query = getEm().createNamedQuery(RangoNumeracion.class.getSimpleName() + ".findLast", RangoNumeracion.class).setParameter("nit", nit);
 				r=(RangoNumeracion)query.getSingleResult();
 		} catch (NoResultException e) {
 			return null;

@@ -9,12 +9,13 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+
 /**
  * The persistent class for the factura database table.
  * 
  */
 @Entity
-@NamedQuery(name = "Factura.findAll", query = "SELECT f FROM Factura f")
+@NamedQuery(name="Factura.findAll", query="SELECT f FROM Factura f")
 public class Factura implements Serializable {
 	private static final long serialVersionUID = 1L;
 
@@ -24,45 +25,51 @@ public class Factura implements Serializable {
 	private byte estado;
 
 	@Temporal(TemporalType.DATE)
-	@Column(name = "fecha_expedicion")
+	@Column(name="fecha_expedicion")
 	private Date fechaExpedicion;
 
 	@Temporal(TemporalType.DATE)
-	@Column(name = "fecha_vencimiento")
+	@Column(name="fecha_vencimiento")
 	private Date fechaVencimiento;
 
 	@Lob
 	private String firma;
 
-	@Column(name = "total_descuento")
+	@Column(name="total_descuento")
 	private double totalDescuento;
 
-	@Column(name = "valor_neto")
+	@Column(name="total_iva")
+	private double totalIva;
+
+	@Column(name="total_pagar")
+	private double totalPagar;
+
+	@Column(name="valor_neto")
 	private double valorNeto;
 
-	// bi-directional many-to-one association to DetalleFactura
-	@OneToMany(mappedBy = "factura")
+	//bi-directional many-to-one association to DetalleFactura
+	@OneToMany(mappedBy="factura")
 	private List<DetalleFactura> detalleFacturas;
 
-	// bi-directional many-to-one association to Documento
-	@OneToMany(mappedBy = "factura")
+	//bi-directional many-to-one association to Documento
+	@OneToMany(mappedBy="factura")
 	private List<Documento> documentos;
 
-	// bi-directional many-to-one association to Cliente
+	//bi-directional many-to-one association to Cliente
 	@ManyToOne
 	private Cliente cliente;
 
-	// bi-directional many-to-one association to Empresa
+	//bi-directional many-to-one association to Empresa
 	@ManyToOne
 	private Empresa empresa;
 
-	// bi-directional many-to-one association to RangoNumeracion
+	//bi-directional many-to-one association to RangoNumeracion
 	@ManyToOne
-	@JoinColumn(name = "rango_numeracion")
+	@JoinColumn(name="rango_numeracion")
 	private RangoNumeracion rangoNumeracionBean;
 
-	// bi-directional many-to-one association to Nota
-	@OneToMany(mappedBy = "factura")
+	//bi-directional many-to-one association to Nota
+	@OneToMany(mappedBy="factura")
 	private List<Nota> notas;
 
 	public Factura() {
@@ -89,7 +96,7 @@ public class Factura implements Serializable {
 		this.detalleFacturas = new ArrayList<>();
 		this.documentos = new ArrayList<>();
 	}
-
+	
 	public void generarCufe() {
 		String cufe = "";
 
@@ -101,7 +108,12 @@ public class Factura implements Serializable {
 
 		this.setCufe(org.apache.commons.codec.digest.DigestUtils.sha1Hex(cufe));
 	}
-
+	
+	public String convertirFecha(Date fecha) {
+		SimpleDateFormat formatter = new SimpleDateFormat("YYYYmmddHHMMss");
+		return formatter.format(fecha);
+	}
+	
 	public String getCufe() {
 		return this.cufe;
 	}
@@ -148,6 +160,22 @@ public class Factura implements Serializable {
 
 	public void setTotalDescuento(double totalDescuento) {
 		this.totalDescuento = totalDescuento;
+	}
+
+	public double getTotalIva() {
+		return this.totalIva;
+	}
+
+	public void setTotalIva(double totalIva) {
+		this.totalIva = totalIva;
+	}
+
+	public double getTotalPagar() {
+		return this.totalPagar;
+	}
+
+	public void setTotalPagar(double totalPagar) {
+		this.totalPagar = totalPagar;
 	}
 
 	public double getValorNeto() {
@@ -248,8 +276,4 @@ public class Factura implements Serializable {
 		return nota;
 	}
 
-	public String convertirFecha(Date fecha) {
-		SimpleDateFormat formatter = new SimpleDateFormat("YYYYmmddHHMMss");
-		return formatter.format(fecha);
-	}
 }

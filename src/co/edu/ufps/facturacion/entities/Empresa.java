@@ -11,8 +11,8 @@ import java.util.List;
  * The persistent class for the empresa database table.
  * 
  */
-@Entity
-@NamedQuery(name="Empresa.findAll", query="SELECT e FROM Empresa e")
+@Entity(name="empresa")
+@NamedQuery(name="Empresa.findAll", query="SELECT e FROM empresa e")
 public class Empresa implements Serializable {
 	private static final long serialVersionUID = 1L;
 
@@ -45,6 +45,10 @@ public class Empresa implements Serializable {
 
 	private String telefono;
 
+	//bi-directional many-to-one association to ClienteEmpresa
+	@OneToMany(mappedBy="empresa")
+	private List<ClienteEmpresa> clienteEmpresas;
+
 	//bi-directional many-to-one association to TipoDocumento
 	@ManyToOne
 	@JoinColumn(name="tipo_documento")
@@ -54,18 +58,24 @@ public class Empresa implements Serializable {
 	@OneToMany(mappedBy="empresa")
 	private List<Factura> facturas;
 
+	//bi-directional many-to-one association to Producto
+	@OneToMany(mappedBy="empresa")
+	private List<Producto> productos;
+
+	//bi-directional many-to-one association to RangoNumeracion
+	@OneToMany(mappedBy="empresa")
+	private List<RangoNumeracion> rangoNumeracions;
+
 	//bi-directional many-to-one association to Usuario
 	@OneToMany(mappedBy="empresa")
 	private List<Usuario> usuarios;
-
-	//bi-directional many-to-one association to ClienteEmpresa
-	@OneToMany(mappedBy="empresa")
-	private List<ClienteEmpresa> clienteEmpresas;
 
 	public Empresa() {
 		this.facturas = new ArrayList<>();
 		this.usuarios = new ArrayList<>();
 		this.clienteEmpresas = new ArrayList<>();
+		this.rangoNumeracions = new ArrayList<>();
+		this.productos = new ArrayList<>();
 	}
 
 	public Empresa(int nit, String correoEmpresa, String departamento, String direccion, String documento,
@@ -87,6 +97,8 @@ public class Empresa implements Serializable {
 		this.facturas = new ArrayList<>();
 		this.usuarios = new ArrayList<>();
 		this.clienteEmpresas = new ArrayList<>();
+		this.rangoNumeracions = new ArrayList<>();
+		this.productos = new ArrayList<>();
 	}
 
 	public int getNit() {
@@ -177,6 +189,28 @@ public class Empresa implements Serializable {
 		this.telefono = telefono;
 	}
 
+	public List<ClienteEmpresa> getClienteEmpresas() {
+		return this.clienteEmpresas;
+	}
+
+	public void setClienteEmpresas(List<ClienteEmpresa> clienteEmpresas) {
+		this.clienteEmpresas = clienteEmpresas;
+	}
+
+	public ClienteEmpresa addClienteEmpresa(ClienteEmpresa clienteEmpresa) {
+		getClienteEmpresas().add(clienteEmpresa);
+		clienteEmpresa.setEmpresa(this);
+
+		return clienteEmpresa;
+	}
+
+	public ClienteEmpresa removeClienteEmpresa(ClienteEmpresa clienteEmpresa) {
+		getClienteEmpresas().remove(clienteEmpresa);
+		clienteEmpresa.setEmpresa(null);
+
+		return clienteEmpresa;
+	}
+
 	public TipoDocumento getTipoDocumentoBean() {
 		return this.tipoDocumentoBean;
 	}
@@ -207,6 +241,50 @@ public class Empresa implements Serializable {
 		return factura;
 	}
 
+	public List<Producto> getProductos() {
+		return this.productos;
+	}
+
+	public void setProductos(List<Producto> productos) {
+		this.productos = productos;
+	}
+
+	public Producto addProducto(Producto producto) {
+		getProductos().add(producto);
+		producto.setEmpresa(this);
+
+		return producto;
+	}
+
+	public Producto removeProducto(Producto producto) {
+		getProductos().remove(producto);
+		producto.setEmpresa(null);
+
+		return producto;
+	}
+
+	public List<RangoNumeracion> getRangoNumeracions() {
+		return this.rangoNumeracions;
+	}
+
+	public void setRangoNumeracions(List<RangoNumeracion> rangoNumeracions) {
+		this.rangoNumeracions = rangoNumeracions;
+	}
+
+	public RangoNumeracion addRangoNumeracion(RangoNumeracion rangoNumeracion) {
+		getRangoNumeracions().add(rangoNumeracion);
+		rangoNumeracion.setEmpresa(this);
+
+		return rangoNumeracion;
+	}
+
+	public RangoNumeracion removeRangoNumeracion(RangoNumeracion rangoNumeracion) {
+		getRangoNumeracions().remove(rangoNumeracion);
+		rangoNumeracion.setEmpresa(null);
+
+		return rangoNumeracion;
+	}
+
 	public List<Usuario> getUsuarios() {
 		return this.usuarios;
 	}
@@ -227,28 +305,6 @@ public class Empresa implements Serializable {
 		usuario.setEmpresa(null);
 
 		return usuario;
-	}
-
-	public List<ClienteEmpresa> getClienteEmpresas() {
-		return this.clienteEmpresas;
-	}
-
-	public void setClienteEmpresas(List<ClienteEmpresa> clienteEmpresas) {
-		this.clienteEmpresas = clienteEmpresas;
-	}
-
-	public ClienteEmpresa addClienteEmpresa(ClienteEmpresa clienteEmpresa) {
-		getClienteEmpresas().add(clienteEmpresa);
-		clienteEmpresa.setEmpresa(this);
-
-		return clienteEmpresa;
-	}
-
-	public ClienteEmpresa removeClienteEmpresa(ClienteEmpresa clienteEmpresa) {
-		getClienteEmpresas().remove(clienteEmpresa);
-		clienteEmpresa.setEmpresa(null);
-
-		return clienteEmpresa;
 	}
 
 }

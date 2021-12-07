@@ -2,6 +2,7 @@ package co.edu.ufps.facturacion.entities;
 
 import java.io.Serializable;
 import javax.persistence.*;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,7 +14,8 @@ import java.util.List;
 @Entity(name="producto")
 @NamedQueries({
 	@NamedQuery(name="Producto.findAll", query="SELECT p FROM producto p"),
-	@NamedQuery(name="Producto.findByUnidad", query="SELECT p FROM producto p WHERE p.unidadMedia=:unidad")
+	@NamedQuery(name="Producto.findByUnidad", query="SELECT p FROM producto p WHERE p.unidadMedia=:unidad"),
+	@NamedQuery(name="Producto.findByEmpresa", query="SELECT p FROM producto p WHERE p.empresa.nit=:nit")
 })
 public class Producto implements Serializable {
 	private static final long serialVersionUID = 1L;
@@ -21,6 +23,7 @@ public class Producto implements Serializable {
 	@Id
 	private int codigo;
 
+	@Lob
 	private String descripcion;
 
 	private byte estado;
@@ -42,6 +45,10 @@ public class Producto implements Serializable {
 	@OneToMany(mappedBy="producto")
 	private List<DetalleFactura> detalleFacturas;
 
+	//bi-directional many-to-one association to Empresa
+	@ManyToOne
+	private Empresa empresa;
+
 	public Producto() {
 	}
 
@@ -58,7 +65,6 @@ public class Producto implements Serializable {
 		this.valorUnitario = valorUnitario;
 		detalleFacturas = new ArrayList<>();
 	}
-
 
 
 	public int getCodigo() {
@@ -145,6 +151,14 @@ public class Producto implements Serializable {
 		detalleFactura.setProducto(null);
 
 		return detalleFactura;
+	}
+
+	public Empresa getEmpresa() {
+		return this.empresa;
+	}
+
+	public void setEmpresa(Empresa empresa) {
+		this.empresa = empresa;
 	}
 
 }

@@ -130,13 +130,11 @@
 									<tbody>
 
 										<%
-											Empresa e = request.getSession().getAttribute("empresa") != null
-												? (Empresa) request.getSession().getAttribute("empresa")
-												: null;
+										Empresa e = request.getSession().getAttribute("empresa") != null
+										? (Empresa) request.getSession().getAttribute("empresa") : null;
 										List<Cliente> clientes = null;
 										if (e != null) {
 											clientes = new ClienteDAO().findByEmpresa(e.getNit());
-										}
 										if (clientes != null) {
 											for (Cliente c : clientes) {
 										%>
@@ -165,7 +163,10 @@
 										</tr>
 
 										<%
+												}
 											}
+										}else{
+											response.sendRedirect(request.getContextPath() + "/inicio/cliente/ver");
 										}
 										%>
 
