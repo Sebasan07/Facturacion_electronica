@@ -116,12 +116,14 @@
 										cellspacing="0">
 										<thead>
 											<tr>
-												<th>Numero</th>
+												<th>CUFE</th>
 												<th>Cliente</th>
 												<th>Fecha de expedición</th>
 												<th>Fecha de vencimiento</th>
+												<th>Subtotal</th>
+												<th>Total descuento</th>
+												<th>Total iva</th>
 												<th>Total</th>
-												<th>Enviar</th>
 											</tr>
 										</thead>
 										<tbody>
@@ -131,22 +133,19 @@
 													: (List<Factura>) request.getAttribute("facturas");
 
 											if (facturas != null) {
+												java.text.DateFormat df = new java.text.SimpleDateFormat("yyyy-MM-dd");
 												for (Factura f :facturas) {
 													if (f.getEstado() == 1) {
 											%>
 											<tr>
-												<td><%=f.getRangoNumeracionBean().getNumeroActual()%></td>
+												<td><%=f.getCufe()%></td>
 												<td><%=f.getCliente().getNombre()%></td>
-												<td><%=f.getFechaExpedicion()%></td>
-												<td><%=f.getFechaVencimiento()%></td>
+												<td><%=df.format(f.getFechaExpedicion())%></td>
+												<td><%=df.format(f.getFechaVencimiento())%></td>
 												<td><%=f.getValorNeto()%></td>
-
-
-												<td>
-													<a class="btn boton-accion" href="<%=request.getContextPath()%>/inicio/factura/agregar">
-														<i class="fas fa-pencil-alt"></i>
-													</a>
-												</td>
+												<td><%=f.getTotalDescuento()%></td>
+												<td><%=f.getTotalIva()%></td>
+												<td><%=f.getTotalPagar()%></td>
 											</tr>
 											<%
 												}

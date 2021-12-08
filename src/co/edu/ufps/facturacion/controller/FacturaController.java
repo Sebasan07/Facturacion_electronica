@@ -1,8 +1,10 @@
 package co.edu.ufps.facturacion.controller;
 
+import java.io.File;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
@@ -13,10 +15,12 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import co.edu.ufps.facturacion.correo.EnviarCorreo;
 import co.edu.ufps.facturacion.dao.ClienteDAO;
 import co.edu.ufps.facturacion.dao.DetalleFacturaDAO;
 import co.edu.ufps.facturacion.dao.EmpresaDAO;
 import co.edu.ufps.facturacion.dao.FacturaDAO;
+import co.edu.ufps.facturacion.dao.ProductoDAO;
 import co.edu.ufps.facturacion.dao.RangoNumeracionDAO;
 import co.edu.ufps.facturacion.entities.Articulo;
 import co.edu.ufps.facturacion.entities.Cliente;
@@ -45,6 +49,7 @@ public class FacturaController extends HttpServlet {
 	private EmpresaDAO eDAO;
 	private ClienteDAO cDAO;
 	private RangoNumeracionDAO rgDAO;
+	private ProductoDAO pDAO;
 
 	/**
 	 * @see HttpServlet#HttpServlet()
@@ -56,6 +61,7 @@ public class FacturaController extends HttpServlet {
 		eDAO = new EmpresaDAO();
 		cDAO = new ClienteDAO();
 		rgDAO = new RangoNumeracionDAO();
+		pDAO = new ProductoDAO();
 		// TODO Auto-generated constructor stub
 	}
 
@@ -140,36 +146,56 @@ public class FacturaController extends HttpServlet {
 	protected void emitirFactura(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		
-		Cliente cl = cDAO.find(Integer.parseInt(request.getParameter("cliente")));
-		Empresa e = request.getSession().getAttribute("empresa") == null ? null
-				: (Empresa) request.getSession().getAttribute("empresa");
-		RangoNumeracion rg = rgDAO.findLast(e.getNit());//ultimo rango
+		EnviarCorreo ec = new EnviarCorreo();
+		File f= new File(System.getProperty("user.dir")+"/soltec.png");
+		File ff = new File(System.getProperty("user.dir")+"/recibo.pdf");
 		
-		Date fechaExpedicion = new Date();
-        SimpleDateFormat getYearFormat = new SimpleDateFormat("dd/MM/yyyy");
-        String [] dMY=getYearFormat.format(fechaExpedicion).split("/");
-        Date fechaVencimiento = new GregorianCalendar((Integer.parseInt(dMY[2])+1),Integer.parseInt(dMY[1]),Integer.parseInt(dMY[0])).getTime();
-		String firma = request.getParameter("firma");
-		double totalDescuento =Double.parseDouble(request.getParameter("totalDescuento"));
-        double valorNeto = Double.parseDouble(request.getParameter("vNeto"));//total a pagar
-        
-		/*
-		 * Factura f=new Factura("", (byte)1, fechaExpedicion, fechaVencimiento, firma,
-		 * totalDescuento, valorNeto, cl,e,rg); f.generarCufe();
-		 * 
-		 * fDAO.insert(f); insertarDetalleFactura(request,response,f);
-		 */
+		Cliente cl = cDAO.find(Integer.parseInt(request.getParameter("numeroDocumento")));
+		Empresa em = request.getSession().getAttribute("empresa") != null? (Empresa) request.getSession().getAttribute("empresa") : null;
+		RangoNumeracion rg = rgDAO.find(Integer.parseInt(request.getParameter("rg")));
+		
+		
+		Date fecha=new Date();
+		double descuento = Double.parseDouble(request.getParameter("tDescuento"));
+		double subtotal = Double.parseDouble(request.getParameter("subtotal"));
+		double total = Double.parseDouble(request.getParameter("total"));
+		double totalIva = Double.parseDouble(request.getParameter("iva"));
+		Factura fa = new Factura((byte) 1, fecha,obtenerFecha(fecha), em.getNombreRepresentante(), descuento, subtotal, total,totalIva, cl, em, rg);
+		fa.generarCufe();
+
+		List<Articulo> articulos = capturarValores(request,response, fa);
+		ec.enviarCorreo(ff.toString(), f, cl, fa, articulos, rg);
+		
+		fDAO.insert(fa);
+		rg.setNumeroActual(rg.getNumeroActual()+1);
+		rgDAO.update(rg);
 	}
-	
-	private void insertarDetalleFactura(HttpServletRequest request, HttpServletResponse response, Factura f)
-			throws ServletException, IOException {
-		DetalleFactura df = null;
-		List<Articulo> articulos = request.getAttribute("productos")==null ? null:(List<Articulo>) request.getAttribute("productos");
-		
-		for(Articulo a:articulos) {
-			df= new DetalleFactura(0, a.getCantidad(), f, a.getProducto());
+
+	protected List<Articulo> capturarValores(HttpServletRequest request, HttpServletResponse response, Factura fa) throws ServletException, IOException {
+
+		String [] cod = request.getParameterValues("codigo");
+		String [] can = request.getParameterValues("cantidad");
+		List<Articulo> articulos = new ArrayList<>();
+		for(int i=0;i<cod.length;i++) {
+			Articulo a = new Articulo(pDAO.find(Integer.parseInt(cod[i])), Integer.parseInt(can[i]));
+			DetalleFactura df =new DetalleFactura(a.getCantidad());
+			fa.addDetalleFactura(df);
+			a.getProducto().addDetalleFactura(df);
 			dfDAO.insert(df);
+			pDAO.update(a.getProducto());
+			articulos.add(a);
 		}
+		return articulos.isEmpty()?null:articulos;
+	}
+
+	private Date obtenerFecha(Date fecha) {
+		SimpleDateFormat dia = new SimpleDateFormat("dd");
+	    SimpleDateFormat mes = new SimpleDateFormat("MM");
+	    SimpleDateFormat anio = new SimpleDateFormat("YYYY");
+	    
+		return new GregorianCalendar(Integer.parseInt(anio.format(fecha)),
+				Integer.parseInt(mes.format(fecha)),
+				Integer.parseInt(dia.format(fecha))).getTime();
 	}
 	
 	protected void agregarRango(HttpServletRequest request, HttpServletResponse response)

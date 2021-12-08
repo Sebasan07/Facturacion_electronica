@@ -48,7 +48,7 @@ $(document).ready(function() {
 	
 		$(document).on('keyup mouseup', '#cantidad', function() {                                                                                                                     
 			calcular();
-			});
+		});
 	
 		$('#calcular').click(function(){
 			calcular();
@@ -61,6 +61,7 @@ $(document).ready(function() {
 		
 		$('#productos').change(function() {
 			agregarFila($('#productos'));
+			console.log($('#codigo'));
 			calcular();
 		});
 		
@@ -74,9 +75,9 @@ $(document).ready(function() {
 			let verificar = verificarCodigo(valores[0]);
 						
 			if(!verificar){
-			$('.table-responsive').prepend("<input type='hidden' name='codigo' value='"+valores[0]+"'>");
+			//$('.table-responsive').prepend("<input type='hidden' id='codigo' name='codigo' value='"+valores[0]+"'>");
 			$('#fila').prepend(" <tr><td>"+valores[0]+"</td> <td>"+valores[1]+"</td> <td>"+valores[2]+"</td> <td>"+valores[3]+"</td> <td>"+valores[4]+"</td> <td>"+valores[5]+"</td>"+
-					"<td><input type='number' id='cantidad' name='cantidad' value='1' min='1'></td>"+
+					"<td><input type='number' id='cantidad' name='cantidad' value='1' min='1'><input type='hidden' id='codigo' name='codigo' value='"+valores[0]+"'></td>"+
                     "<td><button type='button' class='btn' id='eliminarFila'> <i class='fas fa-minus-circle'></i>"+
                     "</button></td></tr>");
 			}else{
@@ -225,7 +226,7 @@ $(document).ready(function() {
                         <!-- DataTales Example -->
                         <div class="card shadow mb-4">
                             <div class="card-body">
-                                <form action="<%=request.getContextPath()%>/PruebaFactura" method="post" id="form-validar">
+                                <form action="<%=request.getContextPath()%>/inicio/factura/agregar/validar" method="post" id="form-validar">
                                 <% Empresa e = request.getSession().getAttribute("empresa") != null
 										? (Empresa) request.getSession().getAttribute("empresa") : null;
 										Cliente cl = (Cliente)request.getAttribute("cliente");
